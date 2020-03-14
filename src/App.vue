@@ -79,13 +79,15 @@
       app
       color="blue darken-3"
       dark
+      dense
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title
         style="width: 300px"
         class="ml-0 pl-4"
       >
-        <span class="hidden-sm-and-down">Google Contacts</span>
+      <v-icon>mdi-chess-rook</v-icon>
+        <span class="hidden-sm-and-down ml-3"> <span class="font-weight-thin">FINAL</span> SCORE</span>
       </v-toolbar-title>
       <v-text-field
         flat
@@ -96,29 +98,14 @@
         class="hidden-sm-and-down"
       />
       <v-spacer />
-      <v-btn icon>
-        <v-icon>mdi-apps</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-bell</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        large
-      >
-        <v-avatar
-          size="32px"
-          item
-        >
-          <v-img
-            src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
-            alt="Vuetify"
-          /></v-avatar>
-      </v-btn>
+      <!-- right content if needed -->
     </v-app-bar>
     <v-content>
       <router-view />
     </v-content>
+
+
+    <!-- Bottom right button {+} -->
     <v-btn
       bottom
       color="pink"
@@ -224,36 +211,23 @@
       dialog: false,
       drawer: null,
       items: [
-        { icon: 'mdi-contacts', text: 'Contacts' },
-        { icon: 'mdi-history', text: 'Frequently contacted' },
-        { icon: 'mdi-content-copy', text: 'Duplicates' },
+        { icon: 'mdi-home-outline', text: 'Home', color: '' },
+        { icon: 'mdi-history', text: 'Your Score Cards', color: '' },
         {
           icon: 'mdi-chevron-up',
           'icon-alt': 'mdi-chevron-down',
-          text: 'Labels',
-          model: true,
-          children: [
-            { icon: 'mdi-plus', text: 'Create label' },
-          ],
-        },
-        {
-          icon: 'mdi-chevron-up',
-          'icon-alt': 'mdi-chevron-down',
-          text: 'More',
+          text: 'Games',
           model: false,
           children: [
-            { text: 'Import' },
-            { text: 'Export' },
-            { text: 'Print' },
-            { text: 'Undo changes' },
-            { text: 'Other contacts' },
+            { text: 'Blank', icon: 'mdi-checkbox-blank-outline', color: '' },
+            { text: 'Settlers', icon: 'mdi-dice-5-outline', color: '' },
+            { text: 'Yahtzee', icon: 'mdi-dice-5-outline', color: '' },
+            { text: 'Quix', icon: 'mdi-dice-5-outline', color: '' },
+            { text: 'Blah Blah', icon: 'mdi-dice-5-outline', color: '' },
+            { text: 'Blah Blah', icon: 'mdi-dice-5-outline', color: '' },
           ],
         },
-        { icon: 'mdi-settings', text: 'Settings' },
-        { icon: 'mdi-message', text: 'Send feedback' },
-        { icon: 'mdi-help-circle', text: 'Help' },
-        { icon: 'mdi-cellphone-link', text: 'App downloads' },
-        { icon: 'mdi-keyboard', text: 'Go to the old version' },
+        { icon: 'mdi-settings', text: 'Settings', color: '' },
       ],
     }),
   }
