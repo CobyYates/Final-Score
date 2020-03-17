@@ -7,7 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     dices: [
-      { icon: "mdi-dice-1", color: "red" },
+      { icon: "mdi-dice-1", color: "pink darken-1" },
       { icon: "mdi-dice-2", color: "blue" },
       { icon: "mdi-dice-3", color: "green" },
       { icon: "mdi-dice-4", color: "orange" },
