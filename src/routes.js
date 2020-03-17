@@ -3,6 +3,6 @@ import Yahtzee from "./components/Yahtzee";
 
 
 export const routes = [
-    { path: '', component: Home },
+    { path: '/', component: Home },
     { path: '/yahtzee', component: Yahtzee },
 ]
