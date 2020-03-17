@@ -45,6 +45,7 @@
               v-for="(child, i) in item.children"
               :key="i"
               link
+              :to="child.to"
             >
               <v-list-item-action v-if="child.icon">
                 <v-icon>{{ child.icon }}</v-icon>
@@ -219,12 +220,12 @@
           text: 'Games',
           model: false,
           children: [
-            { text: 'Blank', icon: 'mdi-checkbox-blank-outline', color: '' },
-            { text: 'Settlers', icon: 'mdi-dice-5-outline', color: '' },
-            { text: 'Yahtzee', icon: 'mdi-dice-5-outline', color: '' },
-            { text: 'Quix', icon: 'mdi-dice-5-outline', color: '' },
-            { text: 'Blah Blah', icon: 'mdi-dice-5-outline', color: '' },
-            { text: 'Blah Blah', icon: 'mdi-dice-5-outline', color: '' },
+            { text: 'Blank', icon: 'mdi-checkbox-blank-outline', color: '', to: '' },
+            { text: 'Settlers', icon: 'mdi-dice-5-outline', color: '', to: '' },
+            { text: 'Yahtzee', icon: 'mdi-dice-5-outline', color: '', to: '' },
+            { text: 'Farkle', icon: 'mdi-dice-5-outline', color: '', to: '/farkle' },
+            { text: 'Blah Blah', icon: 'mdi-dice-5-outline', color: '', to: '' },
+            { text: 'Blah Blah', icon: 'mdi-dice-5-outline', color: '', to: '' },
           ],
         },
         { icon: 'mdi-settings', text: 'Settings', color: '' },
