@@ -50,11 +50,7 @@
               </v-list-item-content>
             </v-list-item>
           </v-list-group>
-          <v-list-item
-            v-else
-            :key="item.text"
-            link
-          >
+          <v-list-item v-else :key="item.text" link>
             <v-list-item-action>
               <v-icon :color="item.color">{{ item.icon }}</v-icon>
             </v-list-item-action>
@@ -76,12 +72,11 @@
       dense
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title
-        style="width: 300px"
-        class="ml-0 pl-4"
-      >
-      <v-icon>mdi-chess-rook</v-icon>
-        <span class="hidden-sm-and-down ml-3"> <span class="font-weight-thin">FINAL</span> SCORE</span>
+      <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
+        <v-icon>mdi-chess-rook</v-icon>
+        <span class="hidden-sm-and-down ml-3">
+          <span class="font-weight-thin">FINAL</span> SCORE</span
+        >
       </v-toolbar-title>
       <v-text-field
         flat
@@ -98,23 +93,11 @@
       <router-view />
     </v-content>
 
-
     <!-- Bottom right button {+} -->
-    <v-btn
-      bottom
-      color="pink"
-      dark
-      fab
-      fixed
-      right
-      @click="dialog = !dialog"
-    >
+    <v-btn bottom color="pink" dark fab fixed right @click="dialog = !dialog">
       <v-icon>mdi-plus</v-icon>
     </v-btn>
-    <v-dialog
-      v-model="dialog"
-      width="800px"
-    >
+    <v-dialog v-model="dialog" width="800px">
       <v-card>
         <v-card-title class="grey darken-2">
           Create contact
@@ -125,20 +108,10 @@
           </v-row>
         </v-container>
         <v-card-actions>
-          <v-btn
-            text
-            color="primary"
-          >More</v-btn>
+          <v-btn text color="primary">More</v-btn>
           <v-spacer />
-          <v-btn
-            text
-            color="primary"
-            @click="dialog = false"
-          >Cancel</v-btn>
-          <v-btn
-            text
-            @click="dialog = false"
-          >Save</v-btn>
+          <v-btn text color="primary" @click="dialog = false">Cancel</v-btn>
+          <v-btn text @click="dialog = false">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -146,32 +119,64 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      source: String,
-    },
-    data: () => ({
-      dialog: false,
-      drawer: null,
-      items: [
-        { icon: 'mdi-home-outline', text: 'Home', color: 'blue', to: '/' },
-        { icon: 'mdi-history', text: 'Your Score Cards', color: 'blue', to: 'history' },
-        {
-          icon: 'mdi-chevron-up',
-          'icon-alt': 'mdi-chevron-down',
-          text: 'Games',
-          model: false,
-          children: [
-            { text: 'Blank', icon: 'mdi-checkbox-blank-outline', color: 'blue', to: '' },
-            { text: 'Settlers', icon: 'mdi-dice-5-outline', color: 'purple', to: '' },
-            { text: 'Yahtzee', icon: 'mdi-dice-5-outline', color: 'red', to: '/yahtzee' },
-            { text: 'Quix', icon: 'mdi-dice-5-outline', color: 'green', to: '' },
-            { text: 'Blah Blah', icon: 'mdi-dice-5-outline', color: 'orange', to: '' },
-            { text: 'Blah Blah', icon: 'mdi-dice-5-outline', color: 'orange', to: '' },
-          ],
-        },
-        { icon: 'mdi-settings', text: 'Settings', color: '' },
-      ],
-    }),
-  }
+
+
+export default {
+  props: {
+    source: String
+  },
+  data: () => ({
+    dialog: false,
+    drawer: null,
+    items: [
+      { icon: "mdi-home-outline", text: "Home", color: "blue", to: "/" },
+      {
+        icon: "mdi-history",
+        text: "Your Score Cards",
+        color: "blue",
+        to: "history"
+      },
+      {
+        icon: "mdi-chevron-up",
+        "icon-alt": "mdi-chevron-down",
+        text: "Games",
+        model: false,
+        children: [
+          {
+            text: "Blank",
+            icon: "mdi-checkbox-blank-outline",
+            color: "blue",
+            to: ""
+          },
+          {
+            text: "Settlers",
+            icon: "mdi-dice-5-outline",
+            color: "purple",
+            to: ""
+          },
+          {
+            text: "Yahtzee",
+            icon: "mdi-dice-5-outline",
+            color: "red",
+            to: "/yahtzee"
+          },
+          { text: "Quix", icon: "mdi-dice-5-outline", color: "green", to: "" },
+          {
+            text: "Blah Blah",
+            icon: "mdi-dice-5-outline",
+            color: "orange",
+            to: ""
+          },
+          {
+            text: "Blah Blah",
+            icon: "mdi-dice-5-outline",
+            color: "orange",
+            to: ""
+          }
+        ]
+      },
+      { icon: "mdi-settings", text: "Settings", color: "" }
+    ]
+  })
+};
 </script>
