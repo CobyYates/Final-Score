@@ -3,10 +3,12 @@ import VueRouter from "vue-router";
 import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
 import { routes } from "./routes";
+// import VueFire from 'vuefire'
 
 import store from "./store";
 
 Vue.config.productionTip = false;
+// Vue.use(VueFire)
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -14,7 +16,7 @@ const router = new VueRouter({
   mode: "history",
 });
 
-new Vue({
+new Vue({ 
   vuetify,
   router: router,
   store,
