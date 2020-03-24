@@ -1,7 +1,8 @@
 <template>
   <v-container>
     <form>
-      <v-text-field
+      <div id="player1">
+        <v-text-field
         v-model="name"
         :error-messages="nameErrors"
         label="Name"
@@ -10,14 +11,35 @@
         @blur="$v.name.$touch()"
       ></v-text-field>
       
-      <v-checkbox
-        v-model="checkbox"
-        :error-messages="checkboxErrors"
+      <div class="mt-4">
+        <v-textarea 
+        :outlined="outlined"
+        background-color="blue"
+        color="black"
+        label="Blue Score"
+      ></v-textarea>
+      </div>
+      
+
+      <v-textarea 
+        background-color="red"
+        color="black"
         label="Red Score"
-        required
-        @change="$v.checkbox.$touch()"
-        @blur="$v.checkbox.$touch()"
-      ></v-checkbox>
+      ></v-textarea>
+
+      <v-textarea 
+        background-color="yellow"
+        color="black"
+        label="Yellow Score"
+      ></v-textarea>
+
+      <v-textarea 
+        background-color="green"
+        color="black"
+        label="Green Score"
+      ></v-textarea>
+      </div>
+      
   
       <v-btn class="mr-4" @click="submit">submit</v-btn>
       <v-btn @click="clear">clear</v-btn>
