@@ -13,7 +13,7 @@
         <p class="display-1 font-weight-bold">This is a title</p>
 
         <v-row justify="center">
-    <v-col cols="12" sm="10" md="8" lg="6">
+    <v-col cols="12" sm="9" md="8" lg="6">
       <v-card ref="form">
         <v-card-text>
           <v-text-field
