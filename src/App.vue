@@ -93,8 +93,26 @@
 			/>
 			<v-spacer />
 			<!-- right content if needed -->
-			<router-link to="/signIn">Sign In</router-link>
-			<router-link to="/signUp">Sign Up</router-link>
+			<router-link to="/signIn" class="auth-link">
+				<v-list-item link>
+					<v-list-item-icon>
+						<v-icon>mdi-login</v-icon>
+					</v-list-item-icon>
+					<v-list-item-content>
+						<v-list-item-title>Sign In</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
+			</router-link>
+			<router-link to="/signUp" class="auth-link">
+				<v-list-item link>
+					<v-list-item-icon>
+						<v-icon>mdi-account-plus</v-icon>
+					</v-list-item-icon>
+					<v-list-item-content>
+						<v-list-item-title>Sign Up</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
+			</router-link>
 		</v-app-bar>
 		<v-content>
 			<router-view />
@@ -209,3 +227,9 @@ export default {
 	},
 };
 </script>
+
+<style scoped>
+.auth-link {
+	text-decoration: none;
+}
+</style>
