@@ -18,7 +18,6 @@ function addUser(userId, email) {
 		.doc(userId)
 		.set({
 			email,
-			players: [],
 		});
 }
 

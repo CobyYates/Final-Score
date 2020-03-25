@@ -56,27 +56,17 @@ export default {
 		};
 	},
 	computed: {
-		user() {
-			return this.$store.getters.user;
-		},
 		error() {
-			return this.$store.getters.error;
+			return this.$store.state.error;
 		},
 		disabled() {
-			return this.$store.loginDisabled;
+			return this.$store.state.loginDisabled;
 		},
 	},
 	methods: {
 		signIn() {
 			this.$store.dispatch('disableLogin');
 			this.$store.dispatch('signIn', { email: this.email, password: this.password });
-		},
-	},
-	watch: {
-		user(value) {
-			if (value !== null && value !== undefined) {
-				this.$router.push('/players');
-			}
 		},
 	},
 	components: {

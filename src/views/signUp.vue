@@ -69,16 +69,16 @@ export default {
 	},
 	computed: {
 		user() {
-			return this.$store.getters.user;
+			return this.$store.state.username;
 		},
 		loginDisabled() {
-			return this.$store.getters.loginDisabled;
+			return this.$store.state.loginDisabled;
 		},
 	},
 	methods: {
 		signUp() {
 			if (this.loginDisabled == false) {
-				this.loginDisabled = true;
+				this.$store.dispatch('disableLogin');
 				this.$store.dispatch('createUser', { email: this.email, username: this.username, password: this.password });
 			}
 		},
