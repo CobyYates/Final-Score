@@ -6,6 +6,11 @@
 			app
 			hide-default-footer
 		>
+			<v-list-item v-if="username">
+				<v-list-item-content>
+					<h3 class="title">Welcome, {{ username }}</h3>
+				</v-list-item-content>
+			</v-list-item>
 			<v-list dense>
 				<template v-for="item in items">
 					<v-row
@@ -88,6 +93,8 @@
 			/>
 			<v-spacer />
 			<!-- right content if needed -->
+			<router-link to="/signIn">Sign In</router-link>
+			<router-link to="/signUp">Sign Up</router-link>
 		</v-app-bar>
 		<v-content>
 			<router-view />
@@ -119,12 +126,23 @@
 </template>
 
 <script>
-
+import firebase from 'firebase';
 
 export default {
 	props: {
 		source: String
 	},
+	beforeCreate() {
+		firebase.auth().onAuthStateChanged((currentUser) => {
+			if (currentUser) {
+				this.$store.dispatch('setUid', currentUser.uid);
+				this.$store.dispatch('setUsername', currentUser.displayName);
+			} else {
+				this.$store.commit('resetState');
+			}
+		});
+	},
+
 	data: () => ({
 		dialog: false,
 		drawer: null,
@@ -182,7 +200,12 @@ export default {
 				]
 			},
 			{ icon: "mdi-settings", text: "Settings", color: "" }
-		]
-	})
+		],
+	}),
+	computed: {
+		username() {
+			return this.$store.state.username;
+		},
+	},
 };
 </script>

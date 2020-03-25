@@ -2,7 +2,7 @@
 	<v-container>
 		<v-row>
 			<v-col>
-				<form @submit.prevent="signUp">
+				<form @submit.prevent="signIn">
 					<v-text-field
 						type="email"
 						label="Email Address"
@@ -11,7 +11,6 @@
 						id="email"
 						:rules="emailRules"
 					></v-text-field>
-					<v-text-field label="Username" v-model="username" name="username" id="username"></v-text-field>
 					<v-text-field
 						type="password"
 						label="Password"
@@ -20,24 +19,17 @@
 						id="password"
 						:rules="passwordRules"
 					></v-text-field>
-					<v-text-field
-						type="password"
-						label="Confirm Password"
-						v-model="confirmPassword"
-						name="confirmPassword"
-						id="confirmPassword"
-						:rules="password2Rules"
-					></v-text-field>
-					<v-btn class="submit primary" type="submit" :disabled="loginDisabled">Sign Up</v-btn>
+					<v-btn class="submit primary" type="submit" :disabled="disabled">Sign In</v-btn>
 				</form>
+				<error :error="error" v-if="error"></error>
 			</v-col>
 		</v-row>
 		<v-row>
 			<v-col>
 				<v-card class="text-center d-inline-flex">
 					<v-card-title class="d-block">
-						Been here before?
-						<router-link to="/signIn">Sign In</router-link>
+						New to Final Score?
+						<router-link to="/signUp">Sign Up</router-link>
 					</v-card-title>
 				</v-card>
 			</v-col>
@@ -46,24 +38,20 @@
 </template>
 
 <script>
+import Error from '../components/Error.vue';
+
 const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 export default {
 	data() {
 		return {
 			email: '',
-			username: '',
 			password: '',
-			confirmPassword: '',
 			emailRules: [
 				value => emailRegex.test(value) || 'Valid email is required',
 			],
 			passwordRules: [
-				value => value.length > 5 || 'Password much be at least 6 characters',
-			],
-			password2Rules: [
-				value => value.length > 5 || 'Password much be at least 6 characters',
-				value => value === this.password || 'Passwords much match',
+				value => value.length > 7 || 'Password much be at least 8 characters',
 			],
 		};
 	},
@@ -71,24 +59,32 @@ export default {
 		user() {
 			return this.$store.getters.user;
 		},
-		loginDisabled() {
-			return this.$store.getters.loginDisabled;
+		error() {
+			return this.$store.getters.error;
+		},
+		disabled() {
+			return this.$store.loginDisabled;
 		},
 	},
 	methods: {
-		signUp() {
-			if (this.loginDisabled == false) {
-				this.loginDisabled = true;
-				this.$store.dispatch('createUser', { email: this.email, username: this.username, password: this.password });
-			}
+		signIn() {
+			this.$store.dispatch('disableLogin');
+			this.$store.dispatch('signIn', { email: this.email, password: this.password });
 		},
 	},
 	watch: {
 		user(value) {
 			if (value !== null && value !== undefined) {
-				this.$router.push('/');
+				this.$router.push('/players');
 			}
 		},
 	},
+	components: {
+		Error,
+	},
 };
 </script>
+
+<style>
+
+</style>
