@@ -1,5 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import firebase from 'firebase';
+// import firestore from '../firebase';
 
 Vue.use(Vuex);
 
