@@ -1,8 +1,8 @@
 import Home from './components/Home';
-import SignUp from './views/signUp';
-import SignIn from './views/signIn';
+import SignUp from './views/SignUp';
+import SignIn from './views/SignIn';
 import Yahtzee from './components/Yahtzee';
-import Nertz from './views/Nertz';
+import Nertz from './views/games/Nertz';
 
 export const routes = [
 	{ path: '/', component: Home },
