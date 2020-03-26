@@ -3,6 +3,9 @@ import SignUp from './views/SignUp';
 import SignIn from './views/SignIn';
 import Yahtzee from './components/Yahtzee';
 import Nertz from './views/games/Nertz';
+import YuGiOh from './views/YuGiOh';
+
+/*test*/
 
 export const routes = [
 	{ path: '/', component: Home },
@@ -10,4 +13,5 @@ export const routes = [
 	{ path: '/signIn', component: SignIn },
 	{ path: '/yahtzee', component: Yahtzee },
 	{ path: '/nertz', component: Nertz },
+	{ path: '/yugioh', component: YuGiOh },
 ];
