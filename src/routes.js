@@ -2,7 +2,7 @@ import Home from './components/Home';
 import SignUp from './views/SignUp';
 import SignIn from './views/SignIn';
 import Yahtzee from './components/Yahtzee';
-import Nertz from './views/Nertz';
+import Nertz from './games/Nertz';
 import YuGiOh from './views/YuGiOh';
 
 export const routes = [
