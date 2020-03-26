@@ -62,6 +62,9 @@ export default {
 		disabled() {
 			return this.$store.state.loginDisabled;
 		},
+		user() {
+			return this.$store.state.username;
+		},
 	},
 	methods: {
 		signIn() {
@@ -72,6 +75,14 @@ export default {
 	components: {
 		Error,
 	},
+	watch: {
+		user(value) {
+			if (value !== null && value !== undefined) {
+				this.$router.push('/');
+			}
+		},
+	},
+
 };
 </script>
 

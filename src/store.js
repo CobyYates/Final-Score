@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth'
 // import firestore from '../firebase';
 
 Vue.use(Vuex);
@@ -29,7 +30,9 @@ export default new Vuex.Store({
 		error(state, error) {
 			state.error = error;
 		},
-
+		clearError(state) {
+			state.error = null;
+		}
 	},
 	actions: {
 		createUser(context, payload) {
@@ -43,28 +46,35 @@ export default new Vuex.Store({
 						}).catch((error) => {
 							console.error('updateProfile failed: ', error);
 						});
+						context.commit('enableLogin');
+						context.commit('clearError');
 					},
 				)
 				.catch(
 					(error) => {
-						console.error(error);
-						// context.commit('enableLogin');
+						console.error('signUp() Error while signing up:', error);
+						if (error.code === 'auth/email-already-in-use') {
+							context.commit('error', error.message);
+						}
+						context.commit('enableLogin');
 					},
 				);
 		},
 		signIn(context, payload) {
 			firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
-				.then()
+				.then(() => {
+					context.commit('enableLogin');
+					context.commit('clearError');
+				})
 				.catch(
 					(error) => {
-						console.error('signIn() Error Logging In: ', error);
+						console.error('signIn() Error while logging In: ', error);
 						if (error.code === 'auth/wrong-password') {
 							context.commit('error', 'Incorrect password. Please try again.');
-							context.commit('enableLogin');
 						} else if (error.code === 'auth/user-not-found') {
 							context.commit('error', 'No user found with that email. Create a new account instead?');
-							context.commit('enableLogin');
 						}
+						context.commit('enableLogin');
 					},
 				);
 		},
