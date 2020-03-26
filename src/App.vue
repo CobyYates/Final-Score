@@ -198,6 +198,12 @@ export default {
 					},
 					{ text: "Quix", icon: "mdi-dice-5-outline", color: "green", to: "" },
 					{
+						text: "Yu-Gi=Oh!",
+						icon: "mdi-cards-outline",
+						color: "orange",
+						to: ""
+					},
+					{
 						text: "Blah Blah",
 						icon: "mdi-dice-5-outline",
 						color: "orange",
