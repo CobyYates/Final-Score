@@ -150,37 +150,6 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-  export default {
-    props: {
-      source: String,
-    },
-    data: () => ({
-      dialog: false,
-      drawer: null,
-      items: [
-        { icon: 'mdi-home-outline', text: 'Home', color: '' },
-        { icon: 'mdi-history', text: 'Your Score Cards', color: '' },
-        {
-          icon: 'mdi-chevron-up',
-          'icon-alt': 'mdi-chevron-down',
-          text: 'Games',
-          model: false,
-          children: [
-            { text: 'Blank', icon: 'mdi-checkbox-blank-outline', color: '', to: '' },
-            { text: 'Settlers', icon: 'mdi-dice-5-outline', color: '', to: '' },
-            { text: 'Yahtzee', icon: 'mdi-dice-5-outline', color: '', to: '' },
-            { text: 'Farkle', icon: 'mdi-dice-5-outline', color: '', to: '/farkle' },
-            { text: 'Blah Blah', icon: 'mdi-dice-5-outline', color: '', to: '' },
-            { text: 'Blah Blah', icon: 'mdi-dice-5-outline', color: '', to: '' },
-          ],
-        },
-        { icon: 'mdi-settings', text: 'Settings', color: '' },
-      ],
-    }),
-  }
-</script>
-=======
 import firebase from 'firebase';
 
 export default {
@@ -270,4 +239,3 @@ export default {
 	text-decoration: none;
 }
 </style>
->>>>>>> 46f32f7c4e88b94f9d677eb355e4d8b0fa025fda

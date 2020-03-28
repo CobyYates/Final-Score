@@ -30,6 +30,7 @@
 					></v-text-field>
 					<v-btn class="submit primary" type="submit" :disabled="loginDisabled">Sign Up</v-btn>
 				</form>
+				<error :error="error" v-if="error"></error>
 			</v-col>
 		</v-row>
 		<v-row>
@@ -73,6 +74,9 @@ export default {
 		},
 		loginDisabled() {
 			return this.$store.state.loginDisabled;
+		},
+		error() {
+			return this.$store.state.error;
 		},
 	},
 	methods: {
