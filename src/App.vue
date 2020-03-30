@@ -55,7 +55,7 @@
 							</v-list-item-content>
 						</v-list-item>
 					</v-list-group>
-					<v-list-item v-else :key="item.text" link>
+					<v-list-item v-else :key="item.text" link :to="item.to">
 						<v-list-item-action>
 							<v-icon :color="item.color">{{ item.icon }}</v-icon>
 						</v-list-item-action>
@@ -170,7 +170,7 @@ export default {
 				icon: "mdi-history",
 				text: "Your Score Cards",
 				color: "blue",
-				to: "history"
+				to: "/history"
 			},
 			{
 				icon: "mdi-chevron-up",
@@ -204,10 +204,10 @@ export default {
 						to: ""
 					},
 					{
-						text: "Blah Blah",
-						icon: "mdi-dice-5-outline",
-						color: "orange",
-						to: ""
+						text: "Oh Hell!",
+						icon: "mdi-emoticon-devil-outline",
+						color: "red darken-4",
+						to: "/ohhell"
 					},
 					{
 						text: "Blah Blah",
@@ -223,7 +223,7 @@ export default {
 					}
 				]
 			},
-			{ icon: "mdi-settings", text: "Settings", color: "" }
+			{ icon: "mdi-settings", text: "Settings", color: "grey", to: "" }
 		],
 	}),
 	computed: {
