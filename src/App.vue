@@ -95,7 +95,7 @@
 			<!-- right content if needed -->
 			<router-link to="/signIn" class="auth-link">
 				<v-list-item link>
-					<v-list-item-icon>
+					<v-list-item-icon class="mr-2">
 						<v-icon>mdi-login</v-icon>
 					</v-list-item-icon>
 					<v-list-item-content>
@@ -105,7 +105,7 @@
 			</router-link>
 			<router-link to="/signUp" class="auth-link">
 				<v-list-item link>
-					<v-list-item-icon>
+					<v-list-item-icon class="mr-2">
 						<v-icon>mdi-account-plus</v-icon>
 					</v-list-item-icon>
 					<v-list-item-content>

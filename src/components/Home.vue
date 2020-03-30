@@ -11,7 +11,7 @@
 			v-for="item in items"
 			:key="item"
 			>
-			<v-img :src="'../../assets/images/' + item.img" :alt="'Image of ' + item.text" aspect-ratio="1.5"></v-img>
+			<v-img position="top center" :src="item.img" :alt="'Image of ' + item.text" aspect-ratio="1.25"></v-img>
 			<div class="d-flex justify-space-between align-center content">
 				<v-card-title>{{ item.text }}</v-card-title>
 				<v-btn
@@ -29,42 +29,40 @@
 export default {
 	name: 'Home',
 
-	data() {
-		return {
-			items: [
-				{
-					text: "Settlers",
-					img: "nertz.jpg",
-					to: ""
-				},
-				{
-					text: "Yahtzee",
-					img: "yahtzee.png",
-					to: "/yahtzee"
-				},
-				{ 
-					text: "Quix", 
-					img: "quix.jpg",
-					to: "" 
-				},
-				{
-					text: "Yu-Gi-Oh!",
-					img: "yugioh.jpg",
-					to: ""
-				},
-				{
-					text: "Oh Hell!",
-					img: "ohhell.jpg",
-					to: "/ohhell"
-				},
-				{
-					text: "Nertz",
-					img: "nertz.jpg",
-					to: ""
-				}
-			]
-		}
-	}
+	data: () => ({
+		items: [
+			{
+				text: "Settlers",
+				img: require("../../src/assets/images/settlers.jpg"),
+				to: ""
+			},
+			{
+				text: "Yahtzee",
+				img: require("../../src/assets/images/yahtzee.png"),
+				to: "/yahtzee"
+			},
+			{ 
+				text: "Quix", 
+				img: require("../../src/assets/images/quix.jpg"),
+				to: "" 
+			},
+			{
+				text: "Yu-Gi-Oh!",
+				img: require("../../src/assets/images/yugioh.jpg"),
+				to: ""
+			},
+			{
+				text: "Oh Hell!",
+				img: require("../../src/assets/images/ohhell.jpg"),
+				to: "/ohhell"
+			},
+			{
+				text: "Nertz",
+				img: require("../../src/assets/images/nertz.jpg"),
+				to: ""
+			}
+		]
+	})
 }
 </script>
 
@@ -77,14 +75,6 @@ export default {
 
 	.game-card .content {
 		padding: 10px 20px;
-	}
-
-	.game-card .v-img {
-		height: 250px;
-		width: 100%;
-		object-fit: cover;
-		object-position: top;
-		background-color: orange;
 	}
 
 	
