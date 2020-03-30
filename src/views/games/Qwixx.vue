@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    console.log('Hello')
     <v-row>
       <v-col cols="12" sm="6">
         <form>
