@@ -202,7 +202,7 @@ export default {
 						color: "red",
 						to: "/yahtzee"
 					},
-					{ text: "Qwixx", icon: "mdi-dice-5-outline", color: "green", to: "views/games/qwixx" },
+					{ text: "Qwixx", icon: "mdi-dice-5-outline", color: "green", to: "/qwixx" },
 					{
 						text: "Blah Blah",
 						icon: "mdi-dice-5-outline",
