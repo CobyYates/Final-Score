@@ -202,7 +202,17 @@ export default {
 						color: "red",
 						to: "/yahtzee"
 					},
+
 					{ text: "Qwixx", icon: "mdi-dice-5-outline", color: "green", to: "/qwixx" },
+
+					
+					{
+						text: "Yu-Gi-Oh!",
+						icon: "mdi-cards-outline",
+						color: "orange",
+						to: "/yugioh"
+					},
+
 					{
 						text: "Blah Blah",
 						icon: "mdi-dice-5-outline",
