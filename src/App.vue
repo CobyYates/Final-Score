@@ -187,7 +187,8 @@ export default {
 					}
 				]
 			},
-			{ icon: "mdi-settings", text: "Settings", color: "" }	]
+			{ icon: "mdi-settings", text: "Settings", color: "" }	
+		]
 	}),
 	computed: {
 		username() {
