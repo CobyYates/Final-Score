@@ -201,7 +201,7 @@ export default {
 						text: "Yu-Gi-Oh!",
 						icon: "mdi-cards-outline",
 						color: "orange",
-						to: ""
+						to: "/yugioh"
 					},
 					{
 						text: "Blah Blah",
