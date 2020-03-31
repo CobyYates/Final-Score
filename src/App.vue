@@ -161,12 +161,23 @@ export default {
 						color: "red",
 						to: "/yahtzee"
 					},
+<<<<<<< HEAD
+=======
+
+					{ text: "Qwixx", icon: "mdi-dice-5-outline", color: "green", to: "/qwixx" },
+
+					
+>>>>>>> c79d7566fa450dbf350dfd920d05841c344a0669
 					{
 						text: "Qwixx",
 						icon: "mdi-dice-5-outline",
 						color: "green",
 						to: "/qwixx"
 					},
+<<<<<<< HEAD
+=======
+
+>>>>>>> c79d7566fa450dbf350dfd920d05841c344a0669
 					{
 						text: "Blah Blah",
 						icon: "mdi-dice-5-outline",
