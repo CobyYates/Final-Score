@@ -161,7 +161,8 @@ export default {
 						color: "red",
 						to: "/yahtzee"
 					},
-					{text: "Yu-Gi-Oh!",
+					{
+						text: "Yu-Gi-Oh!",
 						icon: "mdi-cards-outline",
 						color: "orange",
 						to: "/yugioh"
@@ -192,7 +193,7 @@ export default {
 					}
 				]
 			},
-			{ icon: "mdi-settings", text: "Settings", color: "" }	
+			{ icon: "mdi-settings", text: "Settings", color: "" }
 		]
 	}),
 	computed: {
