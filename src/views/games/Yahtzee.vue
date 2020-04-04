@@ -1,80 +1,123 @@
 <template>
-  <div class="my-12">
-    <p class="display-2 text-center">YAHTZEE</p>
+  <div class="my-2" id="container">
     <v-row>
-      <v-col cols="12" xs="12" sm="12" md="4" class="mx-auto d-flex justify-center">
-        <div class="mx-auto">
-          <p v-for="(item, i) in data.upperNew" :key="i" class="d-flex title">
-            <span>{{item.text}}</span>
-            <v-icon x-large>{{item.icon}}</v-icon>
-            <v-col v-if="item.button">
-              <v-btn
-                color="error"
-                class="mx-1 my-1 elevation-4"
-                v-for="(btn, i) in item.values"
-                :key="i"
-                @click="add(btn, upperScore), item.enabled = true"
-                :disabled="item.enabled"
-              >{{btn}}</v-btn>
-            </v-col>
-            <v-col cols="7" v-if="upperScore >= 63 && item.extra">
-              <v-alert dense text border="left" icon="mdi-dice-6" prominent color="red">Bonus Added!</v-alert>
-            </v-col>
-            <v-col v-if="item.extra && upperScore < 63">
-              <p class="subtitle-1">If Upper Section is greater than 63</p>
-            </v-col>
-          </p>
-        </div>
+      <v-col xs="12" md="11" lg="10" xl="8" class="mx-auto">
+        <p class="display-2 text-center">YAHTZEE</p>
+        <v-row>
+          <v-col cols="12" xs="12" sm="12" md="6" class="mx-auto d-flex justify-center">
+            <div class="mx-auto">
+              <p v-for="(item, i) in data.upperNew" :key="i" class="d-flex title">
+                <span v-if="item.text">
+                  <p id="bonus">{{item.text}}</p>
+                </span>
+                <v-icon color="black" x-large>{{item.icon}}</v-icon>
+                <v-col v-if="item.button">
+                  <v-btn
+                    color="red"
+                    dark
+                    class="mx-1 mt-1 elevation-4"
+                    v-for="(btn, i) in item.values"
+                    :key="i"
+                    @click="add(btn, 0), item.enabled = true"
+                    :disabled="item.enabled"
+                  >{{btn}}</v-btn>
+                </v-col>
+                <v-col cols="7" v-if="upperScore >= 63 && item.extra">
+                  <v-alert
+                    dense
+                    dark
+                    text
+                    border="left"
+                    icon="mdi-dice-6"
+                    prominent
+                    color="red"
+                  >Bonus Added! (35 pts)</v-alert>
+                </v-col>
+                <v-col v-if="item.extra && upperScore < 63">
+                  <p class="subtitle-1 bonus">If Upper Section is greater than 63</p>
+                </v-col>
+              </p>
+            </div>
+          </v-col>
+          <v-col cols="12" xs="12" sm="12" md="6" class="mr-auto d-flex justify-center">
+            <div>
+              <p v-for="(item, i) in data.lowerNew" :key="i" wi class="d-flex title">
+                <span>
+                  <p id="textAlign">{{item.text}}</p>
+                </span>
+                <v-col v-if="item.button">
+                  <!-- add functionality for single button to be disabled for Yahtzee -->
+                  <v-btn
+                    color="red"
+                    dark
+                    class="mx-1 mt-1 elevation-4"
+                    v-for="(btn, i) in item.values"
+                    :key="i"
+                    @click="add(btn, item.yahtzee), item.enabled = true"
+                    :disabled="item.enabled"
+                  >{{btn}}</v-btn>
+                </v-col>
+                <v-col
+                  v-if="item.input"
+                  cols="80"
+                  class="d-flex align-baseline justify-space-between"
+                >
+                  <v-text-field
+                    dense
+                    solo
+                    placeholder="total of dice"
+                    class="mr-6"
+                    v-model="item.values"
+                  ></v-text-field>
+                  <v-btn
+                    color="red"
+                    dark
+                    class="ml-1 elevation-4"
+                    @click="add(parseInt(item.values), lowerScore), item.enabled = true"
+                    :disabled="item.enabled"
+                  >Add</v-btn>
+                </v-col>
+              </p>
+            </div>
+            <v-dialog v-model="dialog" persistent max-width="290">
+              <v-card>
+                <v-card-title class="headline">Game Over</v-card-title>
+                <v-card-text>Congratulations! You have finished the game. Would you like to save your score?</v-card-text>
+                <p
+                  class="display-1 text-center mx-auto d-flex justify-center align-center"
+                >Your Score: {{this.totalScore}}</p>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="green darken-1" text @click="dialog = false">No</v-btn>
+                  <v-btn color="green darken-1" text @click="dialog = false">Yes</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col v-if="!this.yahtzee" class="my-0 pt-0 text-center">
+            <p class="headline">Extra YAHTZEE's</p>
+            <v-btn
+              class="mx-1"
+              color="green"
+              @click="add(bonus.v, bonus.e = true)"
+              :disabled="bonus.e"
+              v-for="(bonus, i) in yahtzeeBonus"
+              :key="i"
+            >{{bonus.v}}</v-btn>
+          </v-col>
+        </v-row>
       </v-col>
-      <v-col cols="12" xs="12" sm="12" md="4" class="mr-auto d-flex justify-center">
-        <div>
-          <p v-for="(item, i) in data.lowerNew" :key="i" wi class="d-flex title">
-            <span>{{item.text}}</span>
-            <v-col v-if="item.button">
-              <!-- add functionality for single button to be disabled for Yahtzee -->
-              <v-btn
-                color="error"
-                class="mx-1 my-1 elevation-4"
-                v-for="(btn, i) in item.values"
-                :key="i"
-                @click="add(btn, lowerScore), item.enabled = true"
-                :disabled="item.enabled"
-              >{{btn}}</v-btn>
-            </v-col>
-            <v-col v-if="item.input" cols="80" class="d-flex align-baseline justify-space-between">
-              <v-text-field dense solo placeholder="total of dice" class="mr-6" v-model="item.values"></v-text-field>
-              <v-btn
-                color="error"
-                class="ml-1 elevation-4"
-                @click="add(parseInt(item.values), lowerScore), item.enabled = true"
-                :disabled="item.enabled"
-              >Add</v-btn>
-            </v-col>
-          </p>
-        </div>
-        <v-dialog v-model="dialog" persistent max-width="290">
-          <v-card>
-            <v-card-title class="headline">Game Over</v-card-title>
-            <v-card-text>Congratulations! You have finished the game. Would you like to save your score?</v-card-text>
-			<p
-				class="display-1 text-center mx-auto d-flex justify-center align-center"
-				>Your Score: {{this.totalScore}}</p>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="green darken-1" text @click="dialog = false">No</v-btn>
-              <v-btn color="green darken-1" text @click="dialog = false">Yes</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-col>
+	
     </v-row>
-    <v-card
-      class="display-1 text-center mx-auto d-flex justify-center align-center elevation-4"
-      height="100"
-      color="error"
-      width="300"
-      dark
-    >Total: {{this.totalScore}}</v-card>
+        <v-card
+          class="display-1 mx-auto d-flex justify-center align-center elevation-4"
+          height="100"
+          color="red"
+          width="300"
+          dark
+        >Total: {{this.totalScore}}</v-card>
   </div>
 </template>
 
@@ -86,6 +129,7 @@ export default {
 			dialog: false,
 			upperScore: 0,
 			lowerScore: 0,
+			yahtzee: true,
 			totalScore: 0,
 			data: {
 				upperNew: [
@@ -198,6 +242,7 @@ export default {
 						text: "YAHTZEE",
 						button: true,
 						input: false,
+						yahtzee: true,
 						default: 0,
 						enabled: false,
 						values: [50]
@@ -212,7 +257,12 @@ export default {
 					}
 				]
 			},
-			yahtzeeBonus: [ 100, 100, 100 ]
+			yahtzeeBonus: [
+				{ e: false, v: 100 },
+				{ e: false, v: 100 },
+				{ e: false, v: 100 },
+				{ e: false, v: 100 }
+			]
 		};
 	},
 	methods: {
@@ -221,20 +271,41 @@ export default {
 				return acc + parseInt(section.score);
 			}, 0);
 		},
+		isDisable(bonus, i) {
+			console.log(bonus, i);
+		},
 		add(value, section) {
+			console.log(section);
 			this.rolls++;
-			console.log(this.rolls);
-			section === this.upperScore
-				? (this.upperScore += value)
-				: (this.lowerScore += value);
+			section === 0 ? (this.upperScore += value) : (this.lowerScore += value);
+			console.log(this.upperScore);
 			this.totalScore += value;
-			this.rolls === 13 ? (this.dialog = true) : this.dialog = false;
+			this.rolls === 13 ? (this.dialog = true) : (this.dialog = false);
+			if (section == true) {
+				this.yahtzee = false;
+			}
+			if (this.upperScore >= 63) {
+				this.totalScore += 63;
+			}
 		}
-	},
-	mounted() {
-		// console.log(this.data[0].upper.text)
 	}
 };
 </script>
 
-<style></style>
+<style>
+#textAlign {
+  width: 120px;
+  margin-top: 20px;
+  text-align: right;
+}
+#bonus {
+  padding-right: 10px;
+  margin-top: 20px;
+}
+.bonus {
+  margin-top: 12px;
+}
+#container {
+	/* background-color: grey; */
+}
+</style>

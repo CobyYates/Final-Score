@@ -3,7 +3,7 @@
 		<v-navigation-drawer
 			v-model="drawer"
 			:clipped="$vuetify.breakpoint.lgAndUp"
-			disable-resize-watcher="true"
+			:disable-resize-watcher="sizeResponse"
 			app
 			hide-default-footer
 		>
@@ -164,6 +164,7 @@ export default {
 
 	data: () => ({
 		dialog: false,
+		sizeResponse: true,
 		drawer: null,
 		items: [
 			{ icon: "mdi-home-outline", text: "Home", color: "blue", to: "/" },
