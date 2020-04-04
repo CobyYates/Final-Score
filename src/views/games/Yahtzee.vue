@@ -2,15 +2,15 @@
   <div class="my-12">
     <p class="display-2 text-center">YAHTZEE</p>
     <v-row>
-      <v-col cols="4" class="ml-auto d-flex justify-center">
-        <div>
+      <v-col cols="12" xs="12" sm="12" md="4" class="mx-auto d-flex justify-center">
+        <div class="mx-auto">
           <p v-for="(item, i) in data.upperNew" :key="i" class="d-flex title">
             <span>{{item.text}}</span>
             <v-icon x-large>{{item.icon}}</v-icon>
             <v-col v-if="item.button">
               <v-btn
                 color="error"
-                class="mx-1 my-1 elevation-8"
+                class="mx-1 my-1 elevation-4"
                 v-for="(btn, i) in item.values"
                 :key="i"
                 @click="add(btn, upperScore), item.enabled = true"
@@ -26,7 +26,7 @@
           </p>
         </div>
       </v-col>
-      <v-col cols="4" class="mr-auto d-flex justify-center">
+      <v-col cols="12" xs="12" sm="12" md="4" class="mr-auto d-flex justify-center">
         <div>
           <p v-for="(item, i) in data.lowerNew" :key="i" wi class="d-flex title">
             <span>{{item.text}}</span>
@@ -34,18 +34,18 @@
               <!-- add functionality for single button to be disabled for Yahtzee -->
               <v-btn
                 color="error"
-                class="mx-1 my-1 elevation-8"
+                class="mx-1 my-1 elevation-4"
                 v-for="(btn, i) in item.values"
                 :key="i"
                 @click="add(btn, lowerScore), item.enabled = true"
                 :disabled="item.enabled"
               >{{btn}}</v-btn>
             </v-col>
-            <v-col v-if="item.input" cols="6" class="d-flex align-baseline">
-              <v-text-field dense solo placeholder="total of dice" v-model="item.values"></v-text-field>
+            <v-col v-if="item.input" cols="80" class="d-flex align-baseline justify-space-between">
+              <v-text-field dense solo placeholder="total of dice" class="mr-6" v-model="item.values"></v-text-field>
               <v-btn
                 color="error"
-                class="ml-1 elevation-8"
+                class="ml-1 elevation-4"
                 @click="add(parseInt(item.values), lowerScore), item.enabled = true"
                 :disabled="item.enabled"
               >Add</v-btn>
@@ -53,9 +53,6 @@
           </p>
         </div>
         <v-dialog v-model="dialog" persistent max-width="290">
-          <!-- <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
-          </template> -->
           <v-card>
             <v-card-title class="headline">Game Over</v-card-title>
             <v-card-text>Congratulations! You have finished the game. Would you like to save your score?</v-card-text>
@@ -72,7 +69,7 @@
       </v-col>
     </v-row>
     <v-card
-      class="display-1 text-center mx-auto d-flex justify-center align-center"
+      class="display-1 text-center mx-auto d-flex justify-center align-center elevation-4"
       height="100"
       color="error"
       width="300"
@@ -203,7 +200,7 @@ export default {
 						input: false,
 						default: 0,
 						enabled: false,
-						values: [50, 100, 100, 100, 100]
+						values: [50]
 					},
 					{
 						text: "Chance",
@@ -214,7 +211,8 @@ export default {
 						values: null
 					}
 				]
-			}
+			},
+			yahtzeeBonus: [ 100, 100, 100 ]
 		};
 	},
 	methods: {

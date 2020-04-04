@@ -3,6 +3,7 @@
 		<v-navigation-drawer
 			v-model="drawer"
 			:clipped="$vuetify.breakpoint.lgAndUp"
+			disable-resize-watcher="true"
 			app
 			hide-default-footer
 		>
@@ -185,18 +186,16 @@ export default {
 						to: ""
 					},
 					{
-						text: "Settlers",
-						icon: "mdi-dice-5-outline",
-						color: "purple",
-						to: ""
-					},
-					{
 						text: "Yahtzee",
 						icon: "mdi-dice-5-outline",
 						color: "red",
 						to: "/yahtzee"
 					},
-					{ text: "Quix", icon: "mdi-dice-5-outline", color: "green", to: "" },
+					{ 
+						text: "Quix", 
+						icon: "mdi-dice-5-outline", 
+						color: "green", 
+						to: "/quix" },
 					{
 						text: "Yu-Gi-Oh!",
 						icon: "mdi-cards-outline",
@@ -204,22 +203,10 @@ export default {
 						to: "/yugioh"
 					},
 					{
-						text: "Blah Blah",
-						icon: "mdi-dice-5-outline",
-						color: "orange",
-						to: ""
-					},
-					{
-						text: "Blah Blah",
-						icon: "mdi-dice-5-outline",
-						color: "orange",
-						to: ""
-					},
-					{
 						text: "Nertz",
 						icon: "mdi-cards-outline",
 						color: "red",
-						to: ""
+						to: "/nertz"
 					}
 				]
 			},
