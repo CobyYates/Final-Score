@@ -8,9 +8,21 @@
 						<v-col>
 							<error :error="error" v-if="error" class="mb-6"></error>
 							<div class="game-players-list d-flex flex-wrap">
-								<v-card class="game-player mb-6" v-for="player in players" :key="player.name">
+								<v-card class="game-player mb-6" v-for="(player, index) in players" :key="player.id">
 									<div class="player">
-										<h3>{{ player.name }}</h3>
+										<v-btn text fab absolute small class="delete-player" @click="deletePlayer(index)"><v-icon>mdi-delete</v-icon></v-btn>
+										<h3 v-if="!player.editName" @click="editName(player)">{{ player.name }}</h3>
+										<v-text-field
+											v-if="player.editName"
+											label="Player Name"
+											:clearable="true"
+											class="editNameInput"
+											v-model="player.name"
+											@blur="endEditName(player)"
+											autofocus
+											ref="playerName"
+											aria-autocomplete="off"
+										></v-text-field>
 										<ul>
 											<li
 												class="round-score"
@@ -26,7 +38,6 @@
 											:rules="scoreRules"
 											pattern="[0-9]*"
 											lazy-validation="true"
-											:clearable="true"
 											class="scoreInput"
 										></v-text-field>
 									</div>
@@ -61,39 +72,42 @@ export default {
 			userId: this.$store.state.uid,
 			gameId: this.$store.state.gameId || 0,
 			gameName: this.$store.state.gameName || '',
-			players: [
-				{
-					name: 'Austin',
-					scores: [ 12, 15 ],
-					totalScore: 0,
-				},
-				{
-					name: 'Shae',
-					scores: [ 22, 32 ],
-					totalScore: 0,
-				}
-			],
+			players: [],
 			newScores: [],
 			scoreRules: [
 				value => numRegex.test(value) || 'Only Numbers are Valid',
 			],
 			editingPlayer: null,
+			editingName: '',
 		};
 	},
 	computed: {
-		// sumScore() {
-		// 	if (this.player.scores) {
-		// 		return this.player.scores.reduce((a, b) => a + b, 0);
-		// 	}
-		// 	return 0;
-		// },
 		error() {
 			return this.$store.state.error;
 		},
 	},
 	methods: {
 		addPlayer() {
-
+			let nextId = 1;
+			if (this.players.length > 0) {
+				nextId = this.players[this.players.length - 1].id + 1;
+			}
+			this.players.push({
+				id: nextId,
+				name: 'New Player',
+				scores: [],
+				totalScore: 0,
+				editName: true,
+			});
+		},
+		editName(player) {
+			player.editName = true;
+		},
+		endEditName(player) {
+			player.editName = false;
+		},
+		deletePlayer(index) {
+			this.players.splice(index, 1);
 		},
 		sumScores() {
 			for (let player of this.players) {
@@ -102,19 +116,25 @@ export default {
 		},
 		endRound() {
 			document.getElementsByClassName('scoreInput').forEach((score) => {
-				const value = parseInt(score.getElementsByTagName('input')[0].value);
-				this.newScores.push(value);
-				if (this.newScores.length === this.players.length) {
-					for (let i = 0; i < this.newScores.length; i++) {
-						this.players[i].scores.push(this.newScores[i]);
-					}
-					this.$store.dispatch('clearError');
-					this.newScores = [];
-					this.sumScores();
-				} else {
-					this.$store.dispatch('error', 'You must enter a score for each player');
+				if (score.getElementsByTagName('input')[0].value != '') {
+					const value = parseInt(score.getElementsByTagName('input')[0].value);
+					this.newScores.push(value);
 				}
 			});
+			if (this.newScores.length === this.players.length) {
+				for (let i = 0; i < this.newScores.length; i++) {
+					this.players[i].scores.push(this.newScores[i]);
+				}
+				this.$store.dispatch('clearError');
+				this.newScores = [];
+				this.sumScores();
+				document.getElementsByClassName('scoreInput').forEach((score) => {
+					score.getElementsByTagName('input')[0].value = '';
+				});
+			} else {
+				this.$store.dispatch('error', 'You must enter a score for each player');
+				this.newScores = [];
+			}
 		},
 		editScore(index) {
 			console.log(index);
@@ -136,10 +156,15 @@ export default {
 }
 .player {
 	padding: 1rem;
+	position: relative;
 	ul {
 		list-style: none;
 		padding: 0;
 	}
+}
+.delete-player {
+	top: .5rem;
+	right: .5rem;
 }
 .sum {
 	font-weight: 900;
