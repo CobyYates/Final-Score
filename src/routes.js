@@ -5,7 +5,7 @@ import Yahtzee from './views/games/Yahtzee';
 import Nertz from './views/games/Nertz';
 import YuGiOh from './views/YuGiOh';
 import OhHell from './views/games/OhHell';
-import Qwixx from '.views/games/Qwixx';
+import Qwixx from './views/games/Qwixx';
 
 /*test*/
 
