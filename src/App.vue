@@ -165,7 +165,7 @@ export default {
 						text: 'Quixx', 
 						icon: 'mdi-dice-5-outline', 
 						color: 'green', 
-						to: '/quixx' ,
+						to: '/qwixx' ,
 					},
 					{
 						text: 'Yu-Gi-Oh!',
