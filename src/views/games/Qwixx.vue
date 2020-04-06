@@ -1,12 +1,13 @@
 <template>
 	<v-container>
 		<v-row class="mx-4 my-4">
-			<h1 class="display-3" underlined="true">Qwixx</h1>
+			<h2 class="display-3 font-weight-black underlined">Qwixx</h2>
 		</v-row>
 		<v-row>
 			<input class="mx-4 my-4" v-model="name" placeholder="Put name here" />
-			<v-btn outlined="true" color="purple">Submit</v-btn>
+			<v-btn small outlined="true" color="purple">Submit</v-btn>
 		</v-row>
+		<v-row></v-row>
 		<v-row>
 			<v-col>
 				<v-btn class="mx-2" color="red" dark v-for="(item, i) in 11" :key="item.i">{{ i + 2}}</v-btn>
@@ -39,6 +40,35 @@
 				>{{ i + 2}}</v-btn>
 			</v-col>
 		</v-row>
+
+		<v-row>
+			<v-col>
+				<p>Penalties</p>
+				<v-btn
+					class="mx-2"
+					outlined="true"
+					color="black"
+					dark
+					v-for="(item, i) in 4"
+					:key="item.i"
+				>{{ i }}</v-btn>
+			</v-col>
+		</v-row>
+
+		<v-row>
+			<v-col>
+				<p>Totals</p>
+				<v-btn
+					x-large
+					class="mx-2"
+					outlined="true"
+					color="black"
+					dark
+					v-for="(item, i) in 4"
+					:key="item.i"
+				>{{ i }}</v-btn>
+			</v-col>
+		</v-row>
 	</v-container>
 </template>
 
@@ -62,6 +92,14 @@ export default {
 						return total + amount;
 					});
 					sum;
+				},
+				save() {
+					if (this.editedIndex > -1) {
+						Object.assign(this.rounds[this.editedIndex], this.editedItem);
+					} else {
+						this.rounds.push(this.editedItem);
+					}
+					this.close();
 				},
 			},
 		};
