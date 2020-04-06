@@ -1,6 +1,17 @@
 <template>
 	<v-app id="inspire">
-		<v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
+		<v-navigation-drawer
+			v-model="drawer"
+			:clipped="$vuetify.breakpoint.lgAndUp"
+			:disable-resize-watcher="sizeResponse"
+			app
+			hide-default-footer
+		>
+			<v-list-item v-if="username">
+				<v-list-item-content>
+					<h3 class="title">Welcome, {{ username }}</h3>
+				</v-list-item-content>
+			</v-list-item>
 			<v-list dense>
 				<template v-for="item in items">
 					<v-row v-if="item.heading" :key="item.heading" align="center">
@@ -32,7 +43,7 @@
 							</v-list-item-content>
 						</v-list-item>
 					</v-list-group>
-					<v-list-item v-else :key="item.text" link>
+					<v-list-item v-else :key="item.text" link :to="item.to">
 						<v-list-item-action>
 							<v-icon>{{ item.icon }}</v-icon>
 						</v-list-item-action>
@@ -64,7 +75,7 @@
 			<!-- right content if needed -->
 			<router-link to="/signIn" class="auth-link">
 				<v-list-item link>
-					<v-list-item-icon>
+					<v-list-item-icon class="mr-2">
 						<v-icon>mdi-login</v-icon>
 					</v-list-item-icon>
 					<v-list-item-content>
@@ -74,7 +85,7 @@
 			</router-link>
 			<router-link to="/signUp" class="auth-link">
 				<v-list-item link>
-					<v-list-item-icon>
+					<v-list-item-icon class="mr-2">
 						<v-icon>mdi-account-plus</v-icon>
 					</v-list-item-icon>
 					<v-list-item-content>
@@ -109,98 +120,80 @@
 </template>
 
 <script>
-import firebase from "firebase";
+import firebase from 'firebase';
 
 export default {
 	props: {
-		source: String
+		source: String,
 	},
 	beforeCreate() {
 		firebase.auth().onAuthStateChanged(currentUser => {
 			if (currentUser) {
-				this.$store.dispatch("setUid", currentUser.uid);
-				this.$store.dispatch("setUsername", currentUser.displayName);
+				this.$store.dispatch('setUid', currentUser.uid);
+				this.$store.dispatch('setUsername', currentUser.displayName);
 			} else {
-				this.$store.commit("resetState");
+				this.$store.commit('resetState');
 			}
 		});
 	},
 
 	data: () => ({
 		dialog: false,
+		sizeResponse: true,
 		drawer: null,
 		items: [
-			{ icon: "mdi-home-outline", text: "Home", color: "blue", to: "/" },
+			{ icon: 'mdi-home-outline', text: 'Home', color: 'blue', to: '/' },
 			{
-				icon: "mdi-history",
-				text: "Your Score Cards",
-				color: "blue",
-				to: "history"
+				icon: 'mdi-history',
+				text: 'Your Score Cards',
+				color: 'blue',
+				to: '/history',
 			},
 			{
-				icon: "mdi-chevron-up",
-				"icon-alt": "mdi-chevron-down",
-				text: "Games",
+				icon: 'mdi-chevron-up',
+				'icon-alt': 'mdi-chevron-down',
+				text: 'Games',
 				model: false,
 				children: [
 					{
-						text: "Blank",
-						icon: "mdi-checkbox-blank-outline",
-						color: "blue",
-						to: ""
+						text: 'Yahtzee',
+						icon: 'mdi-dice-5-outline',
+						color: 'red',
+						to: '/yahtzee',
+					},
+					{ 
+						text: 'Quix', 
+						icon: 'mdi-dice-5-outline', 
+						color: 'green', 
+						to: '/quix' },
+					{
+						text: 'Yu-Gi-Oh!',
+						icon: 'mdi-cards-outline',
+						color: 'orange',
+						to: '/yugioh',
 					},
 					{
-						text: "Settlers",
-						icon: "mdi-dice-5-outline",
-						color: "purple",
-						to: ""
+						text: 'Oh Hell!',
+						icon: 'mdi-emoticon-devil-outline',
+						color: 'red darken-4',
+						to: '/ohhell',
 					},
 					{
-						text: "Yahtzee",
-						icon: "mdi-dice-5-outline",
-						color: "red",
-						to: "/yahtzee"
+						text: 'Nertz',
+						icon: 'mdi-cards-outline',
+						color: 'red',
+						to: '/nertz',
 					},
-					{
-						text: "Yu-Gi-Oh!",
-						icon: "mdi-cards-outline",
-						color: "orange",
-						to: "/yugioh"
-					},
-					{
-						text: "Qwixx",
-						icon: "mdi-dice-5-outline",
-						color: "green",
-						to: "/qwixx"
-					},
-					{
-						text: "Blah Blah",
-						icon: "mdi-dice-5-outline",
-						color: "orange",
-						to: ""
-					},
-					{
-						text: "Blah Blah",
-						icon: "mdi-dice-5-outline",
-						color: "orange",
-						to: ""
-					},
-					{
-						text: "Nertz",
-						icon: "mdi-cards-outline",
-						color: "red",
-						to: ""
-					}
-				]
+				],
 			},
-			{ icon: "mdi-settings", text: "Settings", color: "" }
-		]
+			{ icon: 'mdi-settings', text: 'Settings', color: 'grey', to: '' },
+		],
 	}),
 	computed: {
 		username() {
 			return this.$store.state.username;
-		}
-	}
+		},
+	},
 };
 </script>
 

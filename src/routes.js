@@ -1,11 +1,11 @@
 import Home from './components/Home';
 import SignUp from './views/SignUp';
 import SignIn from './views/SignIn';
-import Yahtzee from './components/Yahtzee';
+import Yahtzee from './views/games/Yahtzee';
 import Nertz from './views/games/Nertz';
 import YuGiOh from './views/YuGiOh';
-import Qwixx from './components/Qwixx';
-
+import OhHell from './views/games/OhHell';
+import Qwixx from '.views/games/Qwixx';
 
 /*test*/
 
@@ -16,5 +16,6 @@ export const routes = [
 	{ path: '/yahtzee', component: Yahtzee },
 	{ path: '/nertz', component: Nertz },
 	{ path: '/yugioh', component: YuGiOh },
-	{ path: '/qwixx', component: Qwixx }
+	{ path: '/ohhell', component: OhHell },
+	{ path: '/qwixx', component: Qwixx},
 ];

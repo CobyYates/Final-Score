@@ -16,6 +16,7 @@
 
             <div class="mt-4">
               <v-textarea
+								v-model="blueScore"
                 :outlined="outlined"
                 background-color="blue"
                 color="black"
@@ -23,11 +24,35 @@
               ></v-textarea>
             </div>
 
-            <v-textarea background-color="red" color="black" label="Red Score"></v-textarea>
+           <div class="mt-4">
+              <v-textarea
+								v-model="redScore"
+                :outlined="outlined"
+                background-color="red"
+                color="black"
+                label="Red Score"
+              ></v-textarea>
+            </div>
 
-            <v-textarea background-color="yellow" color="black" label="Yellow Score"></v-textarea>
+            <div class="mt-4">
+              <v-textarea
+								v-model="yellowScore"
+                :outlined="outlined"
+                background-color="yellow"
+                color="black"
+                label="Yellow Score"
+              ></v-textarea>
+            </div>
 
-            <v-textarea background-color="green" color="black" label="Green Score"></v-textarea>
+            <div class="mt-4">
+              <v-textarea
+								v-model="greenScore"
+                :outlined="outlined"
+                background-color="green"
+                color="black"
+                label="Green Score"
+              ></v-textarea>
+            </div>
           </div>
 
           <v-btn class="mr-4 white--text " color="pink"  @click="total">Get Total</v-btn>
@@ -50,6 +75,7 @@
 
             <div class="mt-4">
               <v-textarea
+								v-model="blueScore"
                 :outlined="outlined"
                 background-color="blue"
                 color="black"
@@ -57,11 +83,35 @@
               ></v-textarea>
             </div>
 
-            <v-textarea background-color="red" color="black" label="Red Score"></v-textarea>
+            <div class="mt-4">
+              <v-textarea
+								v-model="redScore"
+                :outlined="outlined"
+                background-color="red"
+                color="black"
+                label="Red Score"
+              ></v-textarea>
+            </div>
 
-            <v-textarea background-color="yellow" color="black" label="Yellow Score"></v-textarea>
+            <div class="mt-4">
+              <v-textarea
+								v-model="yellowScore"
+                :outlined="outlined"
+                background-color="yellow"
+                color="black"
+                label="Yellow Score"
+              ></v-textarea>
+            </div>
 
-            <v-textarea background-color="green" color="black" label="Green Score"></v-textarea>
+           <div class="mt-4">
+              <v-textarea
+								v-model="greenScore"
+                :outlined="outlined"
+                background-color="green"
+                color="black"
+                label="Green Score"
+              ></v-textarea>
+            </div>
           </div>
 
           <v-btn class="mr-4 white--text " color="pink"  @click="total">Get Total</v-btn>
@@ -94,11 +144,11 @@ export default {
 						return total + amount
 					});
 					sum
-				}
+				},
 
-			}
+			},
 		}; 
-	}
+	},
 }
 	
 	
