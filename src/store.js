@@ -11,6 +11,8 @@ export default new Vuex.Store({
 	state: {
 		uid: '',
 		username: null,
+		currentGameId: null,
+		currentGameName: null,
 		loginDisabled: false,
 		error: null,
 	},
@@ -89,6 +91,12 @@ export default new Vuex.Store({
 		},
 		enableLogin(context) {
 			context.commit('enableLogin');
+		},
+		error(context, errorMessage) {
+			context.commit('error', errorMessage);
+		},
+		clearError(context) {
+			context.commit('clearError');
 		},
 	},
 });
