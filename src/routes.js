@@ -17,5 +17,5 @@ export const routes = [
 	{ path: '/nertz', component: Nertz },
 	{ path: '/yugioh', component: YuGiOh },
 	{ path: '/ohhell', component: OhHell },
-	{ path: '/qwixx', component: Qwixx} ,
+	{ path: '/qwixx', component: Qwixx}  ,
 ];

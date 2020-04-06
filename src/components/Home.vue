@@ -44,7 +44,7 @@ export default {
 			{ 
 				text: 'Quix', 
 				img: require('../../src/assets/images/quix.jpg'),
-				to: '', 
+				to: '/qwixx', 
 			},
 			{
 				text: 'Yu-Gi-Oh!',
