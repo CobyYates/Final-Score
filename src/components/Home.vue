@@ -32,37 +32,37 @@ export default {
 	data: () => ({
 		items: [
 			{
-				text: "Settlers",
-				img: require("../../src/assets/images/settlers.jpg"),
-				to: ""
+				text: 'Settlers',
+				img: require('../../src/assets/images/settlers.jpg'),
+				to: '',
 			},
 			{
-				text: "Yahtzee",
-				img: require("../../src/assets/images/yahtzee.png"),
-				to: "/yahtzee"
+				text: 'Yahtzee',
+				img: require('../../src/assets/images/yahtzee.png'),
+				to: '/yahtzee',
 			},
 			{ 
-				text: "Quix", 
-				img: require("../../src/assets/images/quix.jpg"),
-				to: "" 
+				text: 'Quix', 
+				img: require('../../src/assets/images/quix.jpg'),
+				to: '', 
 			},
 			{
-				text: "Yu-Gi-Oh!",
-				img: require("../../src/assets/images/yugioh.jpg"),
-				to: ""
+				text: 'Yu-Gi-Oh!',
+				img: require('../../src/assets/images/yugioh.jpg'),
+				to: '',
 			},
 			{
-				text: "Oh Hell!",
-				img: require("../../src/assets/images/ohhell.jpg"),
-				to: "/ohhell"
+				text: 'Oh Hell!',
+				img: require('../../src/assets/images/ohhell.jpg'),
+				to: '/ohhell',
 			},
 			{
-				text: "Nertz",
-				img: require("../../src/assets/images/nertz.jpg"),
-				to: ""
-			}
-		]
-	})
+				text: 'Nertz',
+				img: require('../../src/assets/images/nertz.jpg'),
+				to: '',
+			},
+		],
+	}),
 }
 </script>
 

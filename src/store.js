@@ -1,5 +1,5 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue';
+import Vuex from 'vuex';
 import firebase from 'firebase/app';
 import 'firebase/auth'
 // import firestore from '../firebase';
@@ -32,7 +32,7 @@ export default new Vuex.Store({
 		},
 		clearError(state) {
 			state.error = null;
-		}
+		},
 	},
 	actions: {
 		createUser(context, payload) {
@@ -90,5 +90,5 @@ export default new Vuex.Store({
 		enableLogin(context) {
 			context.commit('enableLogin');
 		},
-	}
+	},
 });
