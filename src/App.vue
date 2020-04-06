@@ -162,10 +162,11 @@ export default {
 						to: '/yahtzee',
 					},
 					{ 
-						text: 'Quix', 
+						text: 'Quixx', 
 						icon: 'mdi-dice-5-outline', 
 						color: 'green', 
-						to: '/quix' },
+						to: '/quixx' ,
+					},
 					{
 						text: 'Yu-Gi-Oh!',
 						icon: 'mdi-cards-outline',
