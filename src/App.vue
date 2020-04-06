@@ -181,12 +181,6 @@ export default {
 				model: false,
 				children: [
 					{
-						text: "Blank",
-						icon: "mdi-checkbox-blank-outline",
-						color: "blue",
-						to: ""
-					},
-					{
 						text: "Yahtzee",
 						icon: "mdi-dice-5-outline",
 						color: "red",
@@ -201,19 +195,13 @@ export default {
 						text: "Yu-Gi-Oh!",
 						icon: "mdi-cards-outline",
 						color: "orange",
-						to: ""
+						to: "/yugioh"
 					},
 					{
 						text: "Oh Hell!",
 						icon: "mdi-emoticon-devil-outline",
 						color: "red darken-4",
 						to: "/ohhell"
-					},
-					{
-						text: "Blah Blah",
-						icon: "mdi-dice-5-outline",
-						color: "orange",
-						to: ""
 					},
 					{
 						text: "Nertz",
