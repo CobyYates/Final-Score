@@ -133,7 +133,9 @@ export default {
 			{ text: 'Score', value: 'score', sortable: false },
 			{ text: 'Actions', value: 'actions', sortable: false }
         ],
-        rounds: [],
+		rounds: [],
+		players: [],
+		editPlayers: -1,
         editedIndex: -1,
         editedItem: {
 			name: '',
@@ -141,14 +143,17 @@ export default {
             bid: 0,
             bidwon: false,
             score: 0
-        },
+		},
         defaultItem: {
-			name: 'Jane Doe',
+			name: 'Player',
 			numcards: 1,
             bid: 0,
             bidwon: false,
             score: 0
-        },
+		},
+		editPlayer: {
+			name: '',
+		}
     }),
 
         computed: {
@@ -168,6 +173,9 @@ export default {
         watch: {
             dialog (val) {
                 val || this.close()
+			},
+			playerDialog (val) {
+                val || this.close()
             },
         },
 
@@ -179,13 +187,14 @@ export default {
         initialize () {
             this.rounds = [
                 {
-				name: 'Jane Doe',
+				name: 'Player',
 				numcards: 1,
 				bid: 1,
 				bidwon: true,
 				score: 11
                 }
-            ]
+			],
+			this.players = ['Player']
         },
 
         editItem (item) {
@@ -203,8 +212,9 @@ export default {
 			this.dialog = false
 			this.playerDialog = false
             setTimeout(() => {
-                this.editedItem = Object.assign({}, this.defaultItem)
-                this.editedIndex = -1
+				this.editedItem = Object.assign({}, this.defaultItem)
+				this.editedIndex = -1
+				this.editPlayers = -1
             }, 300)
         },
 
@@ -215,7 +225,16 @@ export default {
                 this.rounds.push(this.editedItem)
             }
                 this.close()
-            }
+		},
+		
+		savePlayer () {
+			if (this.editPlayers > -1) {
+				Object.assign(this.players[this.editPlayers], this.editPlayer)
+			} else {
+				this.players.push(this.editedPlayer)
+			}
+				this.close()
+		}
     }
 }
 </script>
