@@ -79,54 +79,54 @@
 export default {
 	data() {
 		return {
-			max3chars: v => v.length <= 3 || "Input too long!",
+			max3chars: v => v.length <= 3 || 'Input too long!',
 			winnerCheck: false,
 			playerOneHeaders: [
 				{
-					text: "Points Lost/Gained",
-					align: "start",
+					text: 'Points Lost/Gained',
+					align: 'start',
 					sortable: false,
-					value: "name"
+					value: 'name',
 				},
-				{ text: "Score", value: "score" }
+				{ text: 'Score', value: 'score' },
 			],
 			playerOne: [
 				{
-					name: "Damage Received",
-					score: -200
+					name: 'Damage Received',
+					score: -200,
 				},
 				{
-					name: "Points Gained",
-					score: 20
+					name: 'Points Gained',
+					score: 20,
 				},
 				{
-					name: "Damage Received",
-					score: -2500
+					name: 'Damage Received',
+					score: -2500,
 				},
 				{
-					name: "Damage Received",
-					score: -300
+					name: 'Damage Received',
+					score: -300,
 				},
 				{
-					name: "Damage Received",
-					score: -1500
+					name: 'Damage Received',
+					score: -1500,
 				},
 				{
-					name: "Points Gained",
-					score: 500
+					name: 'Points Gained',
+					score: 500,
 				},
 				{
-					name: "Damage Received",
-					score: -200
-				}
-			]
+					name: 'Damage Received',
+					score: -200,
+				},
+			],
 		};
 	},
 	methods: {
 		scoreTotal(){
 			return this.playerOne.reduce((acc, playerOne) => {return acc + playerOne.score}, 0)
-		}
-	}
+		},
+	},
 };
 </script>
 

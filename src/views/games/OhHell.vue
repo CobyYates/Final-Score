@@ -119,43 +119,43 @@ export default {
 		dialog: false,
 		playerDialog: false,
 		headers: [
-			{ text: "Number Cards", align: "start", sortable: false, value: "numcards"},
-			{ text: "Bid", value: "bid", sortable: false },
-			{ text: "Bid Won?", value: "bidwon", sortable: false },
-			{ text: "Score", value: "score", sortable: false },
-			{ text: "Actions", value: "actions", sortable: false }
+			{ text: 'Number Cards', align: 'start', sortable: false, value: 'numcards'},
+			{ text: 'Bid', value: 'bid', sortable: false },
+			{ text: 'Bid Won?', value: 'bidwon', sortable: false },
+			{ text: 'Score', value: 'score', sortable: false },
+			{ text: 'Actions', value: 'actions', sortable: false },
 		],
 		rounds: [],
 		players: [],
 		editPlayers: -1,
 		editedIndex: -1,
 		editedItem: {
-			name: "",
+			name: '',
 			numcards: 1,
 			bid: 0,
 			bidwon: false,
-			score: 0
+			score: 0,
 		},
 		defaultItem: {
-			name: "Player",
+			name: 'Player',
 			numcards: 1,
 			bid: 0,
 			bidwon: false,
-			score: 0
+			score: 0,
 		},
 		editPlayer: {
-			name: ""
-		}
+			name: '',
+		},
 	}),
 
 	computed: {
 		formTitle() {
-			return this.editedIndex === -1 ? "New Round" : "Edit Round";
+			return this.editedIndex === -1 ? 'New Round' : 'Edit Round';
 		},
 
 		playerTitle() {
-			return this.editedIndex === -1 ? "New Player" : "Edit Player";
-		}
+			return this.editedIndex === -1 ? 'New Player' : 'Edit Player';
+		},
 
 		/*
 		numCards() {
@@ -170,7 +170,7 @@ export default {
 		},
 		playerDialog(val) {
 			val || this.close();
-		}
+		},
 	},
 
 	created() {
@@ -181,14 +181,14 @@ export default {
 		initialize() {
 			(this.rounds = [
 				{
-					name: "Player",
+					name: 'Player',
 					numcards: 1,
 					bid: 1,
 					bidwon: true,
-					score: 11
-				}
+					score: 11,
+				},
 			]),
-			(this.players = ["Player"]);
+			(this.players = ['Player']);
 		},
 
 		editItem(item) {
@@ -199,7 +199,7 @@ export default {
 
 		deleteItem(item) {
 			const index = this.rounds.indexOf(item);
-			confirm("Are you sure you want to delete this item?") &&
+			confirm('Are you sure you want to delete this item?') &&
 			this.rounds.splice(index, 1);
 		},
 
@@ -229,8 +229,8 @@ export default {
 				this.players.push(this.editedPlayer);
 			}
 			this.close();
-		}
-	}
+		},
+	},
 };
 </script>
 

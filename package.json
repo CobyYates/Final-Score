@@ -54,6 +54,14 @@
 				{
 					"allowIndentationTabs": true
 				}
+			],
+			"comma-dangle": [
+				2,
+				"always-multiline"
+			],
+			"quotes": [
+				2,
+				"single"
 			]
 		}
 	},
