@@ -11,26 +11,26 @@
 		<v-row>
 			<v-col>
 				<v-btn class="mx-2" color="red" dark v-for="(item, i) in 11" :key="item.i">{{ i + 2}}</v-btn>
-				<v-btn>Lock</v-btn>
+				<v-btn class="mx-2">Lock</v-btn>
 			</v-col>
 		</v-row>
 		<v-row>
 			<v-col>
 				<v-btn class="mx-2" color="blue" dark v-for="(item, i) in 11" :key="item.i">{{ i + 2}}</v-btn>
-				<v-btn>Lock</v-btn>
+				<v-btn class="mx-2">Lock</v-btn>
 			</v-col>
 		</v-row>
 
 		<v-row>
 			<v-col class="d-flex flex-row-reverse justify-end">
-				<v-btn>Lock</v-btn>
+				<v-btn class="mx-2">Lock</v-btn>
 				<v-btn class="mx-2" color="green" dark v-for="(item, i) in 11" :key="item.i">{{ i + 2}}</v-btn>
 			</v-col>
 		</v-row>
 
 		<v-row>
 			<v-col class="d-flex flex-row-reverse justify-end">
-				<v-btn>Lock</v-btn>
+				<v-btn class="mx-2">Lock</v-btn>
 				<v-btn
 					class="mx-2"
 					color="yellow darken-1"
