@@ -49,7 +49,7 @@ export default {
 			{
 				text: 'Yu-Gi-Oh!',
 				img: require('../../src/assets/images/yugioh.jpg'),
-				to: '',
+				to: '/yugioh',
 			},
 			{
 				text: 'Oh Hell!',
