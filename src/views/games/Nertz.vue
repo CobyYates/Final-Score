@@ -11,7 +11,7 @@
 								<v-card class="game-player mb-6" v-for="(player, index) in players" :key="player.id">
 									<div class="player">
 										<v-btn text fab absolute small class="delete-player" @click="deletePlayer(index)"><v-icon>mdi-delete</v-icon></v-btn>
-										<h3 v-if="!player.editName" @click="editName(player)">{{ player.name }}</h3>
+										<h3 v-if="!player.editName" @click="editName(player)" class="pr-8">{{ player.name }}</h3>
 										<v-text-field
 											v-if="player.editName"
 											label="Player Name"
@@ -72,13 +72,27 @@ export default {
 			userId: this.$store.state.uid,
 			gameId: this.$store.state.gameId || 0,
 			gameName: this.$store.state.gameName || '',
-			players: [],
+			players: [
+				{
+					id: 1,
+					name: 'New Player (Click to edit name)',
+					scores: [],
+					totalScore: 0,
+					editName: false,
+				},
+				{
+					id: 2,
+					name: 'New Player 2',
+					scores: [],
+					totalScore: 0,
+					editName: false,
+				},
+
+			],
 			newScores: [],
 			scoreRules: [
 				value => numRegex.test(value) || 'Only Numbers are Valid',
 			],
-			editingPlayer: null,
-			editingName: '',
 		};
 	},
 	computed: {
@@ -129,7 +143,7 @@ export default {
 				this.newScores = [];
 				this.sumScores();
 				document.getElementsByClassName('scoreInput').forEach((score) => {
-					score.getElementsByTagName('input')[0].value = '';
+					score.getElementsByTagName('input')[0].value = undefined;
 				});
 			} else {
 				this.$store.dispatch('error', 'You must enter a score for each player');
@@ -146,7 +160,7 @@ export default {
 	},
 	components: {
 		Error,
-	}
+	},
 }
 </script>
 
