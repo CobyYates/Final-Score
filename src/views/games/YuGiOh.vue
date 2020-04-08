@@ -94,8 +94,8 @@
 
 <script>
 var path = 'https://openclipart.org/download/282132/Die';
-var generateRandomNumber = '';
-var defineImgPath = '';
+// var generateRandomNumber = '';
+// var defineImgPath = '';
 var deferFn = '';
 var processResult = '';
 const coin = document.querySelector('#coin');
@@ -211,12 +211,12 @@ export default {
 		// return dicePath;
 		// },
 		// TODO: make this work
-		rollDice () {
-			var result = generateRandomNumber();
-			defineImgPath(result);
-			//changeDiceFace(result); //this now done in defineImgPath the path/dice face
-			return false;
-		},
+		// rollDice () {
+		// 	var result = generateRandomNumber();
+		// 	defineImgPath(result);
+		// 	//changeDiceFace(result); //this now done in defineImgPath the path/dice face
+		// 	return false;
+		// },
 	},
 };
 </script>
