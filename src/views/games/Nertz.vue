@@ -98,7 +98,7 @@ export default {
 		getGame() {
 			this.gameDocRef.onSnapshot((doc) => {
 				this.gameName = doc.data().gameName;
-				this.players = doc.data().players;
+				this.players = doc.data().gameData.players;
 			});
 
 		},
