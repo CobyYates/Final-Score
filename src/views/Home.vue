@@ -42,14 +42,14 @@ export default {
 				to: '/yahtzee',
 			},
 			{
-				text: 'Quix',
+				text: 'Qwixx',
 				img: require('../assets/images/quix.jpg'),
-				to: '',
+				to: 'qwuixx',
 			},
 			{
 				text: 'Yu-Gi-Oh!',
 				img: require('../assets/images/yugioh.jpg'),
-				to: '',
+				to: 'yugioh',
 			},
 			{
 				text: 'Oh Hell!',
