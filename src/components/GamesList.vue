@@ -20,14 +20,6 @@
 <script>
 export default {
 	name: 'GamesList',
-	data() {
-		return {
-			players: [
-				'Austin',
-				'Shae',
-			],
-		}
-	},
 	props: [
 		'gameType',
 		'games',
