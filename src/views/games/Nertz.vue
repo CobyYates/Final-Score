@@ -73,6 +73,7 @@ export default {
 		return {
 			userId: this.$store.state.uid,
 			gameName: this.$store.state.gameName || '',
+			players: [],
 			newScores: [],
 			scoreRules: [
 				value => numRegex.test(value) || 'Only Numbers are Valid',
@@ -83,18 +84,25 @@ export default {
 		gameId() {
 			return this.$route.params.gameId || null;
 		},
-		players() {
-			return []
-		},
 		error() {
 			return this.$store.state.error;
 		},
 		gameDocRef() {
-			return firestore.collection('users').doc(this.$store.state.uid).collection('nertz').doc(this.gameId) || null;
+			if (this.$store.state.uid) {
+				return firestore.collection('users').doc(this.$store.state.uid).collection('nertz').doc(this.gameId) || null;
+			}
+			return null;
 		},
 	},
 	methods: {
-		updateFirebase() {
+		getGame() {
+			this.gameDocRef.onSnapshot((doc) => {
+				this.gameName = doc.data().gameName;
+				this.players = doc.data().players;
+			});
+
+		},
+		updateFirestore() {
 			this.gameDocRef.update({
 				players: this.players,
 			});
@@ -142,7 +150,7 @@ export default {
 				this.$store.dispatch('clearError');
 				this.newScores = [];
 				this.sumScores();
-
+				this.updateFirestore();
 			} else {
 				this.$store.dispatch('error', 'You must enter a score for each player');
 				this.newScores = [];
@@ -154,7 +162,7 @@ export default {
 
 	},
 	created() {
-		this.sumScores();
+		this.getGame();
 	},
 	components: {
 		Error,

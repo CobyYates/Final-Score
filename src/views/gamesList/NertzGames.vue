@@ -27,7 +27,7 @@ export default {
 			defaultPlayers: [
 				{
 					id: 1,
-					name: 'New Player (Click to edit name)',
+					name: 'New Player (Click to edit)',
 					scores: [],
 					newScore: null,
 					totalScore: 0,
@@ -47,9 +47,11 @@ export default {
 	},
 	computed: {
 		nertzCollectionRef() {
-			return firestore.collection('users').doc(this.$store.state.uid).collection('nertz');
+			if (this.$store.state.uid) {
+				return firestore.collection('users').doc(this.$store.state.uid).collection('nertz') || null;
+			}
+			return null;
 		},
-
 	},
 	methods: {
 		newGame() {
@@ -59,22 +61,22 @@ export default {
 				players: this.defaultPlayers,
 			})
 				.then((docRef) => {
-					console.log('Document written with ID: ', docRef.id);
 					docRef.update({
 						gameId: docRef.id,
 					});
+					docRef.get().then(game => {
+						this.$store.dispatch('setGame', game.data())
+					});
 					this.$router.push('/nertz/' + docRef.id);
 				})
-				.catch((error) => {
-					console.error('Error adding document: ', error);
+				.catch((err) => {
+					console.error('Error adding document: ', err);
 				});
 		},
 		getGames() {
 			this.nertzCollectionRef.get()
 				.then((querySnapshot) => {
 					querySnapshot.forEach((doc) => {
-						// doc.data() is never undefined for query doc snapshots
-						console.log(doc.id, ' => ', doc.data());
 						this.games.push(doc.data());
 					});
 				})

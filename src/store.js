@@ -17,11 +17,24 @@ export default new Vuex.Store({
 		error: null,
 	},
 	mutations: {
+		initializeStore(state) {
+			// Check if the ID exists
+			if (localStorage.getItem('store')) {
+				// Replace the state object with the stored item
+				this.replaceState(
+					Object.assign(state, JSON.parse(localStorage.getItem('store'))),
+				);
+			}
+		},
 		setUid(state, uid) {
 			state.uid = uid;
 		},
 		setUsername(state, username) {
 			state.username = username;
+		},
+		setGame(state, game) {
+			state.currentGameId = game.gameId;
+			state.currentGameName = game.gameName;
 		},
 		disableLogin(state) {
 			state.loginDisabled = true;
@@ -85,6 +98,9 @@ export default new Vuex.Store({
 		},
 		setUsername(context, username) {
 			context.commit('setUsername', username);
+		},
+		setGame(context, game) {
+			context.commit('setGame', game);
 		},
 		disableLogin(context) {
 			context.commit('disableLogin');
