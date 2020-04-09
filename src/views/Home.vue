@@ -9,7 +9,7 @@
 			elevation="5"
 			class="mx-auto ma-4 game-card"
 			v-for="item in items"
-			:key="item"
+			:key="item.text"
 			>
 			<v-img position="top center" :src="item.img" :alt="'Image of ' + item.text" aspect-ratio="1.25"></v-img>
 			<div class="d-flex justify-space-between align-center content">
@@ -33,33 +33,33 @@ export default {
 		items: [
 			{
 				text: 'Settlers',
-				img: require('../../src/assets/images/settlers.jpg'),
+				img: require('../assets/images/settlers.jpg'),
 				to: '',
 			},
 			{
 				text: 'Yahtzee',
-				img: require('../../src/assets/images/yahtzee.png'),
+				img: require('../assets/images/yahtzee.png'),
 				to: '/yahtzee',
 			},
-			{ 
-				text: 'Quix', 
-				img: require('../../src/assets/images/quix.jpg'),
-				to: '', 
+			{
+				text: 'Quix',
+				img: require('../assets/images/quix.jpg'),
+				to: '',
 			},
 			{
 				text: 'Yu-Gi-Oh!',
-				img: require('../../src/assets/images/yugioh.jpg'),
+				img: require('../assets/images/yugioh.jpg'),
 				to: '',
 			},
 			{
 				text: 'Oh Hell!',
-				img: require('../../src/assets/images/ohhell.jpg'),
+				img: require('../assets/images/ohhell.jpg'),
 				to: '/ohhell',
 			},
 			{
 				text: 'Nertz',
-				img: require('../../src/assets/images/nertz.jpg'),
-				to: '',
+				img: require('../assets/images/nertz.jpg'),
+				to: '/nertz',
 			},
 		],
 	}),
@@ -77,7 +77,7 @@ export default {
 		padding: 10px 20px;
 	}
 
-	
+
 	@media only screen and (min-width: 768px) {
 		.game-card {
 			width: 48%;

@@ -39,6 +39,7 @@
 											pattern="[0-9]*"
 											lazy-validation="true"
 											class="scoreInput"
+											v-model="player.newScore"
 										></v-text-field>
 									</div>
 								</v-card>
@@ -62,6 +63,7 @@
 </template>
 
 <script>
+import firestore from '../../firebase';
 import Error from '../../components/Error.vue';
 
 const numRegex = /(^$|^[0-9]*$|null)/; // checks to make sure it's a number
@@ -70,25 +72,7 @@ export default {
 	data() {
 		return {
 			userId: this.$store.state.uid,
-			gameId: this.$store.state.gameId || 0,
 			gameName: this.$store.state.gameName || '',
-			players: [
-				{
-					id: 1,
-					name: 'New Player (Click to edit name)',
-					scores: [],
-					totalScore: 0,
-					editName: false,
-				},
-				{
-					id: 2,
-					name: 'New Player 2',
-					scores: [],
-					totalScore: 0,
-					editName: false,
-				},
-
-			],
 			newScores: [],
 			scoreRules: [
 				value => numRegex.test(value) || 'Only Numbers are Valid',
@@ -96,11 +80,25 @@ export default {
 		};
 	},
 	computed: {
+		gameId() {
+			return this.$route.params.gameId || null;
+		},
+		players() {
+			return []
+		},
 		error() {
 			return this.$store.state.error;
 		},
+		gameDocRef() {
+			return firestore.collection('users').doc(this.$store.state.uid).collection('nertz').doc(this.gameId) || null;
+		},
 	},
 	methods: {
+		updateFirebase() {
+			this.gameDocRef.update({
+				players: this.players,
+			});
+		},
 		addPlayer() {
 			let nextId = 1;
 			if (this.players.length > 0) {
@@ -110,6 +108,7 @@ export default {
 				id: nextId,
 				name: 'New Player',
 				scores: [],
+				newScore: null,
 				totalScore: 0,
 				editName: true,
 			});
@@ -129,22 +128,21 @@ export default {
 			}
 		},
 		endRound() {
-			document.getElementsByClassName('scoreInput').forEach((score) => {
-				if (score.getElementsByTagName('input')[0].value != '') {
-					const value = parseInt(score.getElementsByTagName('input')[0].value);
+			this.players.forEach(player => { // Make an array of all new scores to check the length and make sure all players have a score
+				if (player.newScore != null && player.newScore != '') {
+					const value = parseInt(player.newScore);
 					this.newScores.push(value);
 				}
 			});
 			if (this.newScores.length === this.players.length) {
-				for (let i = 0; i < this.newScores.length; i++) {
-					this.players[i].scores.push(this.newScores[i]);
-				}
+				this.players.forEach(player => {
+					player.scores.push(parseInt(player.newScore));
+					player.newScore = null;
+				});
 				this.$store.dispatch('clearError');
 				this.newScores = [];
 				this.sumScores();
-				document.getElementsByClassName('scoreInput').forEach((score) => {
-					score.getElementsByTagName('input')[0].value = undefined;
-				});
+
 			} else {
 				this.$store.dispatch('error', 'You must enter a score for each player');
 				this.newScores = [];
