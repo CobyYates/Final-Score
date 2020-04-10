@@ -66,7 +66,7 @@
 import firestore from '../../firebase';
 import Error from '../../components/Error.vue';
 
-const numRegex = /(^$|^[0-9]*$|null)/; // checks to make sure it's a number
+const numRegex = /(^$|^-?[0-9]*$|null)/; // checks to make sure it's a number
 
 export default {
 	data() {
