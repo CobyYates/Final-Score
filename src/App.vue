@@ -187,10 +187,10 @@ export default {
 						color: 'red',
 						to: '/yahtzee',
 					},
-					{ 
-						text: 'Quix', 
-						icon: 'mdi-dice-5-outline', 
-						color: 'green', 
+					{
+						text: 'Quix',
+						icon: 'mdi-dice-5-outline',
+						color: 'green',
 						to: '/quix' },
 					{
 						text: 'Yu-Gi-Oh!',
@@ -206,7 +206,7 @@ export default {
 					},
 					{
 						text: 'Nertz',
-						icon: 'mdi-cards-outline',
+						icon: 'mdi-cards-playing-outline',
 						color: 'red',
 						to: '/nertz',
 					},

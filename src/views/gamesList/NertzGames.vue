@@ -2,14 +2,14 @@
 	<v-container>
 		<v-row>
 			<v-col>
-				<v-form @submit.prevent="newGame">
+				<v-form @submit.prevent="newGame" :disabled="submitDisabled">
 					<v-text-field v-model="gameName" label="Game Name"></v-text-field>
-					<v-btn type="submit" color="primary">Start a New Game</v-btn>
+					<v-btn type="submit" color="primary" :disabled="submitDisabled">Start a New Game</v-btn>
 				</v-form>
 			</v-col>
 		</v-row>
-		<v-row>
-			<games-list :games="games" :gameType="'nertz'" />
+		<v-row v-if="userId">
+			<games-list :games="games" :gameType="'nertz'" v-if="games.length > 0"/>
 		</v-row>
 	</v-container>
 </template>
@@ -22,12 +22,13 @@ export default {
 	name: 'NertzGames.vue',
 	data() {
 		return {
+			userId: this.$store.state.uid,
 			players: [],
 			gameName: null,
 			defaultPlayers: [
 				{
 					id: 1,
-					name: 'New Player (Click to edit name)',
+					name: 'New Player (Click to edit)',
 					scores: [],
 					newScore: null,
 					totalScore: 0,
@@ -43,38 +44,45 @@ export default {
 				},
 			],
 			games: [],
+			submitDisabled: false,
 		}
 	},
 	computed: {
 		nertzCollectionRef() {
-			return firestore.collection('users').doc(this.$store.state.uid).collection('nertz');
+			if (this.$store.state.uid) {
+				return firestore.collection('users').doc(this.$store.state.uid).collection('nertz') || null;
+			}
+			return null;
 		},
-
 	},
 	methods: {
 		newGame() {
+			this.submitDisabled = true;
 			this.nertzCollectionRef.add({
 				gameId: '',
 				gameName: this.gameName,
-				players: this.defaultPlayers,
+				gameData: {
+					players: this.defaultPlayers,
+				},
 			})
 				.then((docRef) => {
-					console.log('Document written with ID: ', docRef.id);
 					docRef.update({
 						gameId: docRef.id,
 					});
+					docRef.get().then(game => {
+						this.$store.dispatch('setGame', game.data())
+					});
 					this.$router.push('/nertz/' + docRef.id);
 				})
-				.catch((error) => {
-					console.error('Error adding document: ', error);
+				.catch((err) => {
+					console.error('Error adding document: ', err);
+					this.submitDisabled = false;
 				});
 		},
 		getGames() {
 			this.nertzCollectionRef.get()
 				.then((querySnapshot) => {
 					querySnapshot.forEach((doc) => {
-						// doc.data() is never undefined for query doc snapshots
-						console.log(doc.id, ' => ', doc.data());
 						this.games.push(doc.data());
 					});
 				})
@@ -87,7 +95,11 @@ export default {
 		GamesList,
 	},
 	created() {
-		this.getGames();
+		if (this.$store.state.uid) {
+			this.getGames();
+		} else {
+			this.$router.push('/');
+		}
 	},
 }
 </script>
