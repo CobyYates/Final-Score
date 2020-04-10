@@ -49,6 +49,45 @@
 			</v-col>
 		</v-row>
 
+			<v-row class="mb-6" no-gutters>
+			<v-col lg="1">
+				<v-btn id="2" class="red" dark>2</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn>3</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn>4</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn>5</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn>6</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn>7</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn>8</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn>9</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn>10</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn>11</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn>12</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn>LOCK</v-btn>
+			</v-col>
+		</v-row>
+
 		<v-row>
 			<v-col>
 				<p>Penalties</p>
