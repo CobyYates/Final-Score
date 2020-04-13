@@ -48,160 +48,37 @@
 				>{{ i + 2}}</v-btn>
 			</v-col>
 		</v-row>-->
-		<v-row id="redRow" class="mb-6" no-gutters>
-			<v-col lg="1">
-				<v-btn id="r2" class="red" value="1" dark>2</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="r3" class="red" value="1" dark>3</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="r4" class="red" value="1" dark>4</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="r5" class="red" value="1" dark>5</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="r6" class="red" value="1" dark>6</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="r7" class="red" value="1" dark>7</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="r8" class="red" value="1" dark>8</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="r9" class="red" value="1" dark>9</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="r10" class="red" value="1" dark>10</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="r11" class="red" value="11" dark>11</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="r12" class="red" value="1" dark>12</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="lockRed" class="grey">LOCK</v-btn>
-			</v-col>
+		<!--red row-->
+		<v-row class="mb-6">
+			<div class="redBtns mr-3 mb-2" v-for="redBtn in redBtns" :key="redBtn.id">
+				<v-btn class="red mark" dark v-on:click="redBtn.marked = !redBtn.marked">
+					<i v-bind:class="[{ 'white' : redBtn.marked }, 'material-icons']">{{redBtn.name}}</i>
+				</v-btn>
+			</div>
 		</v-row>
-<!--begin yellow row-->
-		<v-row id="yellowRow" class="mb-6" no-gutters>
-			<v-col lg="1">
-				<v-btn id="y2" class="yellow" value="1" dark>2</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="y3" class="yellow" value="1" dark>3</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="y4" class="yellow" value="1" dark>4</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="y5" class="yellow" value="1" dark>5</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="y6" class="yellow" value="1" dark>6</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="y7" class="yellow" value="1" dark>7</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="y8" class="yellow" value="1" dark>8</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="y9" class="yellow" value="1" dark>9</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="y10" class="yellow" value="1" dark>10</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="y11" class="yellow" value="1" dark>11</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="y12" class="yellow" value="1" dark>12</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="lockYellow">LOCK</v-btn>
-			</v-col>
+		<!--yellow row-->
+		<v-row class="mb-6">
+			<div class="yellowBtns mr-3 mb-2" v-for="yellowBtn in yellowBtns" :key="yellowBtn.id">
+				<v-btn class="yellow mark" dark v-on:click="yellowBtn.marked = !yellowBtn.marked">
+					<i v-bind:class="[{ 'white' : yellowBtn.marked }, 'material-icons']">{{yellowBtn.name}}</i>
+				</v-btn>
+			</div>
 		</v-row>
-
-		<v-row class="mb-6" no-gutters>
-			<v-col lg="1">
-				<v-btn id="g2" class="green" value="1" dark>2</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="g3" class="green" value="1" dark>3</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="g4" class="green" value="1" dark>4</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="g5" class="green" value="1" dark>5</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="g6" class="green" value="1" dark>6</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="g7" class="green" value="1" dark>7</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="g8" class="green" value="1" dark>8</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="g9" class="green" value="1" dark>9</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="g10" class="green" value="1" dark>10</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="g11" class="green" value="1" dark>11</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="g12" class="green" value="1" dark>12</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="lockGreen">LOCK</v-btn>
-			</v-col>
+		<!--green row-->
+		<v-row class="mb-6">
+			<div class="greenBtns mr-3 mb-2" v-for="greenBtn in greenBtns" :key="greenBtn.id">
+				<v-btn class="green mark" dark v-on:click="greenBtn.marked = !greenBtn.marked">
+					<i v-bind:class="[{ 'white' : greenBtn.marked }, 'material-icons']">{{greenBtn.name}}</i>
+				</v-btn>
+			</div>
 		</v-row>
-
-		<v-row class="mb-6" no-gutters>
-			<v-col lg="1">
-				<v-btn id="b2" class="blue" value="1" dark>2</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="b3" class="blue" value="1" dark>3</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="b4" class="blue" value="1" dark>4</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="b5" class="blue" value="1" dark>5</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="b6" class="blue" value="1" dark>6</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="b7" class="blue" value="1" dark>7</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="b8" class="blue" value="1" dark>8</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="b9" class="blue" value="1" dark>9</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="b10" class="blue" value="1" dark>10</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="b11" class="blue" value="1" dark>11</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn d="b12" class="blue" value="1" dark>12</v-btn>
-			</v-col>
-			<v-col lg="1">
-				<v-btn id="lockBlue">LOCK</v-btn>
-			</v-col>
+		<!--blue row-->
+		<v-row class="mb-6">
+			<div class="blueBtns mr-3 mb-2" v-for="blueBtn in blueBtns" :key="blueBtn.id">
+				<v-btn class="blue mark" dark v-on:click="blueBtn.marked = !blueBtn.marked">
+					<i v-bind:class="[{ 'white' : blueBtn.marked }, 'material-icons']">{{blueBtn.name}}</i>
+				</v-btn>
+			</div>
 		</v-row>
 
 		<v-row>
@@ -252,10 +129,10 @@ export default {
 			redScore: 0,
 			blueScore: 0,
 			yellowScore: 0,
-			greenScore: true,
+			greenScore: 0,
 			totalScore: 0,
 			rowName: null,
-
+			isDisabled: false,
 			points: [{ e: false, v: 1 }],
 			penalties: [
 				{ e: false, v: -5 },
@@ -263,19 +140,69 @@ export default {
 				{ e: false, v: -5 },
 				{ e: false, v: -5 },
 			],
+			redBtns: [
+				{ id: 1, marked: false, name: '2'},
+				{ id: 1, marked: false, name: '3' },
+				{ id: 1, marked: false, name: '4' },
+				{ id: 1, marked: false, name: '5' },
+				{ id: 1, marked: false, name: '6' },
+				{ id: 1, marked: false, name: '7' },
+				{ id: 1, marked: false, name: '8' },
+				{ id: 1, marked: false, name: '9'},
+				{ id: 1, marked: false, name: '10' },
+				{ id: 1, marked: false, name: '11' },
+				{ id: 1, marked: false, name: '12'},
+				{ id: 1, marked: false, name: 'LOCK'},
+			],
+			yellowBtns: [
+				{ id: 1, marked: false, name: '2' },
+				{ id: 1, marked: false, name: '3'},
+				{ id: 1, marked: false, name: '4' },
+				{ id: 1, marked: false, name: '5' },
+				{ id: 1, marked: false, name: '6'},
+				{ id: 1, marked: false, name: '7'},
+				{ id: 1, marked: false, name: '8' },
+				{ id: 1, marked: false, name: '9' },
+				{ id: 1, marked: false, name: '10' },
+				{ id: 1, marked: false, name: '11' },
+				{ id: 1, marked: false, name: '12' },
+				{ id: 1, marked: false, name: 'LOCK' },
+			],
+			greenBtns: [
+				{ id: 1, marked: false, name: '12' },
+				{ id: 1, marked: false, name: '11' },
+				{ id: 1, marked: false, name: '10' },
+				{ id: 1, marked: false, name: '9' },
+				{ id: 1, marked: false, name: '8' },
+				{ id: 1, marked: false, name: '7' },
+				{ id: 1, marked: false, name: '6' },
+				{ id: 1, marked: false, name: '5' },
+				{ id: 1, marked: false, name: '4' },
+				{ id: 1, marked: false, name: '3' },
+				{ id: 1, marked: false, name: '2' },
+				{ id: 1, marked: false, name: 'LOCK' },
+			],
+			blueBtns: [
+				{ id: 1, marked: false, name: '12' },
+				{ id: 1, marked: false, name: '11' },
+				{ id: 1, marked: false, name: '10' },
+				{ id: 1, marked: false, name: '9' },
+				{ id: 1, marked: false, name: '8' },
+				{ id: 1, marked: false, name: '7' },
+				{ id: 1, marked: false, name: '6' },
+				{ id: 1, marked: false, name: '5' },
+				{ id: 1, marked: false, name: '4' },
+				{ id: 1, marked: false, name: '3' },
+				{ id: 1, marked: false, name: '2' },
+				{ id: 1, marked: false, name: 'LOCK' },
+			],
 		};
 	},
 	methods: {
-		upperTotal(section) {
-			return section.reduce((acc, section) => {
-				return acc + parseInt(section.score);
-			}, 0);
-		},
-		isDisable(bonus, i) {
-			console.log(bonus, i);
-		},
+		
 		//method for adding points when clicking colored buttons
 		add(value, totalScore) {
+			this.value;
 			console.log(totalScore);
 			totalScore = totalScore + value;
 		},
@@ -285,11 +212,7 @@ export default {
 			return this.totalScore - this.value;
 		},
 		//click event for lock button
-		lockRow(rowName) {
-			console.log(rowName);
-
-			alert('red row blocked');
-		},
+		
 	},
 };
 </script>
