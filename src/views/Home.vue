@@ -28,7 +28,6 @@
 <script>
 export default {
 	name: 'Home',
-
 	data: () => ({
 		items: [
 			{
@@ -41,10 +40,10 @@ export default {
 				img: require('../assets/images/yahtzee.png'),
 				to: '/yahtzee',
 			},
-			{ 
-				text: 'Quixx', 
-				img: require('../../src/assets/images/quix.jpg'),
-				to: '/qwixx', 
+			{
+				text: 'Qwixx',
+				img: require('../assets/images/quix.jpg'),
+				to: '/qwixx',
 			},
 			{
 				text: 'Yu-Gi-Oh!',
@@ -72,24 +71,19 @@ export default {
 		width: 98%;
 		margin: 10px 1% !important;
 	}
-
 	.game-card .content {
 		padding: 10px 20px;
 	}
-
-
 	@media only screen and (min-width: 768px) {
 		.game-card {
 			width: 48%;
 		}
 	}
-
 	@media only screen and (min-width: 1200px) {
 		.game-card {
 			width: 31.33%;
 		}
 	}
-
 	@media only screen and (min-width: 1400px) {
 		.game-card {
 			width: 23%;

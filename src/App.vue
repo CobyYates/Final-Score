@@ -14,14 +14,16 @@
 			</v-list-item>
 			<v-list dense>
 				<template v-for="item in items">
-					<v-row v-if="item.heading" :key="item.heading" align="center" :to="item.to">
+					<v-row
+						v-if="item.heading"
+						:key="item.heading"
+						align="center"
+						:to="item.to"
+					>
 						<v-col cols="6">
 							<v-subheader v-if="item.heading">
 								{{ item.heading }}
 							</v-subheader>
-						</v-col>
-						<v-col cols="6" class="text-center">
-							<a href="#!" class="body-2 black--text">EDIT</a>
 						</v-col>
 					</v-row>
 					<v-list-group
@@ -38,38 +40,49 @@
 								</v-list-item-title>
 							</v-list-item-content>
 						</template>
-						<v-list-item 
-							v-for="(child, i) in item.children" 
-							:key="i"  
+						<v-list-item
+							v-for="(child, i) in item.children"
+							:key="i"
 							:to="child.to"
-							link>
+							link
+						>
 							<v-list-item-action v-if="child.icon">
 								<v-icon :color="child.color">{{ child.icon }}</v-icon>
 							</v-list-item-action>
 							<v-list-item-content>
-								<v-list-item-title>{{ child.text }}</v-list-item-title>
+								<v-list-item-title>
+									{{ child.text }}
+								</v-list-item-title>
 							</v-list-item-content>
 						</v-list-item>
 					</v-list-group>
 					<v-list-item v-else :key="item.text" link :to="item.to">
 						<v-list-item-action>
-							<v-icon>{{ item.icon }}</v-icon>
+							<v-icon :color="item.color">{{ item.icon }}</v-icon>
 						</v-list-item-action>
 						<v-list-item-content>
-							<v-list-item-title>{{ item.text }}</v-list-item-title>
+							<v-list-item-title>
+								{{ item.text }}
+							</v-list-item-title>
 						</v-list-item-content>
 					</v-list-item>
 				</template>
 			</v-list>
 		</v-navigation-drawer>
 
-		<v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="blue darken-3" dark dense>
+		<v-app-bar
+			:clipped-left="$vuetify.breakpoint.lgAndUp"
+			app
+			color="blue darken-3"
+			dark
+			dense
+		>
 			<v-app-bar-nav-icon @click.stop="drawer = !drawer" />
 			<v-toolbar-title style="width: 300px" class="ml-0 pl-4">
 				<v-icon>mdi-chess-rook</v-icon>
 				<span class="hidden-sm-and-down ml-3">
-					<span class="font-weight-thin">FINAL</span> SCORE
-				</span>
+					<span class="font-weight-thin">FINAL</span> SCORE</span
+				>
 			</v-toolbar-title>
 			<v-text-field
 				flat
@@ -112,9 +125,13 @@
 		</v-btn>
 		<v-dialog v-model="dialog" width="800px">
 			<v-card>
-				<v-card-title class="grey darken-2">Create contact</v-card-title>
+				<v-card-title class="grey darken-2">
+					Create contact
+				</v-card-title>
 				<v-container>
-					<v-row class="mx-2">content</v-row>
+					<v-row class="mx-2">
+						content
+					</v-row>
 				</v-container>
 				<v-card-actions>
 					<v-btn text color="primary">More</v-btn>
@@ -130,13 +147,12 @@
 <script>
 import firebase from 'firebase/app';
 import 'firebase/auth';
-
 export default {
 	props: {
 		source: String,
 	},
 	beforeCreate() {
-		firebase.auth().onAuthStateChanged(currentUser => {
+		firebase.auth().onAuthStateChanged((currentUser) => {
 			if (currentUser) {
 				this.$store.dispatch('setUid', currentUser.uid);
 				this.$store.dispatch('setUsername', currentUser.displayName);
@@ -145,7 +161,6 @@ export default {
 			}
 		});
 	},
-
 	data: () => ({
 		dialog: false,
 		sizeResponse: true,
@@ -170,10 +185,10 @@ export default {
 						color: 'red',
 						to: '/yahtzee',
 					},
-					{ 
-						text: 'Quixx', 
-						icon: 'mdi-dice-5-outline', 
-						color: 'green', 
+					{
+						text: 'Quix',
+						icon: 'mdi-dice-5-outline',
+						color: 'green',
 						to: '/qwixx' ,
 					},
 					{
