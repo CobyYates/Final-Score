@@ -14,7 +14,7 @@
 			</v-list-item>
 			<v-list dense>
 				<template v-for="item in items">
-					<v-row v-if="item.heading" :key="item.heading" align="center">
+					<v-row v-if="item.heading" :key="item.heading" align="center" :to="item.to">
 						<v-col cols="6">
 							<v-subheader v-if="item.heading">{{ item.heading }}</v-subheader>
 						</v-col>
