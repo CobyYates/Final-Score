@@ -136,135 +136,135 @@ export default {
 			data: {
 				upperNew: [
 					{
-						icon: "mdi-dice-1",
+						icon: 'mdi-dice-1',
 						button: true,
 						input: false,
 						default: 0,
 						enabled: false,
 						extra: false,
-						values: [1, 2, 3, 4, 5, 6]
+						values: [1, 2, 3, 4, 5, 6],
 					},
 					{
-						icon: "mdi-dice-2",
+						icon: 'mdi-dice-2',
 						button: true,
 						input: false,
 						default: 0,
 						enabled: false,
 						extra: false,
-						values: [2, 4, 6, 8, 10, 12]
+						values: [2, 4, 6, 8, 10, 12],
 					},
 					{
-						icon: "mdi-dice-3",
+						icon: 'mdi-dice-3',
 						button: true,
 						input: false,
 						default: 0,
 						enabled: false,
 						extra: false,
-						values: [3, 6, 9, 12, 15, 18]
+						values: [3, 6, 9, 12, 15, 18],
 					},
 					{
-						icon: "mdi-dice-4",
+						icon: 'mdi-dice-4',
 						button: true,
 						input: false,
 						default: 0,
 						enabled: false,
 						extra: false,
-						values: [4, 8, 12, 16, 20, 24]
+						values: [4, 8, 12, 16, 20, 24],
 					},
 					{
-						icon: "mdi-dice-5",
+						icon: 'mdi-dice-5',
 						button: true,
 						input: false,
 						default: 0,
 						enabled: false,
 						extra: false,
-						values: [5, 10, 15, 20, 25, 30]
+						values: [5, 10, 15, 20, 25, 30],
 					},
 					{
-						icon: "mdi-dice-6",
+						icon: 'mdi-dice-6',
 						button: true,
 						input: false,
 						default: 0,
 						enabled: false,
 						extra: false,
-						values: [6, 12, 18, 24, 30, 36]
+						values: [6, 12, 18, 24, 30, 36],
 					},
 					{
-						text: "Bonus",
+						text: 'Bonus',
 						button: false,
 						input: false,
 						default: 0,
 						enabled: false,
 						extra: true,
-						values: [35]
-					}
+						values: [35],
+					},
 				],
 				lowerNew: [
 					{
-						text: "3 of kind",
+						text: '3 of kind',
 						button: false,
 						input: true,
 						default: 0,
 						enabled: false,
-						values: null
+						values: null,
 					},
 					{
-						text: "4 of kind",
+						text: '4 of kind',
 						button: false,
 						input: true,
 						default: 0,
 						enabled: false,
-						values: null
+						values: null,
 					},
 					{
-						text: "Full House",
+						text: 'Full House',
 						button: true,
 						input: false,
 						default: 0,
 						enabled: false,
-						values: [25]
+						values: [25],
 					},
 					{
-						text: "Sm. Straight",
+						text: 'Sm. Straight',
 						button: true,
 						input: false,
 						default: 0,
 						enabled: false,
-						values: [30]
+						values: [30],
 					},
 					{
-						text: "Lg. Straight",
+						text: 'Lg. Straight',
 						button: true,
 						input: false,
 						default: 0,
 						enabled: false,
-						values: [40]
+						values: [40],
 					},
 					{
-						text: "YAHTZEE",
+						text: 'YAHTZEE',
 						button: true,
 						input: false,
 						yahtzee: true,
 						default: 0,
 						enabled: false,
-						values: [50]
+						values: [50],
 					},
 					{
-						text: "Chance",
+						text: 'Chance',
 						button: false,
 						input: true,
 						default: 0,
 						enabled: false,
-						values: null
-					}
-				]
+						values: null,
+					},
+				],
 			},
 			yahtzeeBonus: [
 				{ e: false, v: 100 },
 				{ e: false, v: 100 },
 				{ e: false, v: 100 },
-				{ e: false, v: 100 }
-			]
+				{ e: false, v: 100 },
+			],
 		};
 	},
 	methods: {
@@ -289,8 +289,8 @@ export default {
 			if (this.upperScore >= 63) {
 				this.totalScore += 63;
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 

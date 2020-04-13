@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import Error from '../components/Error.vue';
+
 const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 export default {
@@ -87,6 +89,10 @@ export default {
 			}
 		},
 	},
+	components: {
+		Error,
+	},
+
 	watch: {
 		user(value) {
 			if (value !== null && value !== undefined) {
