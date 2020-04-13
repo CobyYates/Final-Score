@@ -106,18 +106,19 @@
               v-for="(bonus, i) in yahtzeeBonus"
               :key="i"
             >{{bonus.v}}</v-btn>
+			
           </v-col>
         </v-row>
       </v-col>
-	
     </v-row>
-        <v-card
-          class="display-1 mx-auto d-flex justify-center align-center elevation-4"
-          height="100"
-          color="red"
-          width="300"
-          dark
-        >Total: {{this.totalScore}}</v-card>
+    <v-card
+      class="display-1 mx-auto d-flex justify-center align-center elevation-4"
+      height="100"
+      color="red"
+      width="300"
+      dark
+    >Total: {{this.totalScore}}</v-card>
+	<v-btn @click="test = true">Test</v-btn>
   </div>
 </template>
 
@@ -128,6 +129,7 @@ export default {
 			rolls: 0,
 			dialog: false,
 			upperScore: 0,
+			test: false,
 			lowerScore: 0,
 			yahtzee: true,
 			totalScore: 0,
@@ -306,6 +308,6 @@ export default {
   margin-top: 12px;
 }
 #container {
-	/* background-color: grey; */
+  /* background-color: grey; */
 }
 </style>
