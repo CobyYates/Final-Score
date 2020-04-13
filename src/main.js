@@ -18,9 +18,17 @@ const router = new VueRouter({
 	mode: 'history',
 });
 
-new Vue({ 
+store.subscribe((mutation, state) => {
+	// Store the state object as a JSON string
+	localStorage.setItem('store', JSON.stringify(state));
+});
+
+new Vue({
 	vuetify,
 	router: router,
 	store,
+	beforeCreate() {
+		this.$store.commit('initializeStore');
+	},
 	render: h => h(App),
 }).$mount('#app');

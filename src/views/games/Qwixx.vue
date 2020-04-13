@@ -7,14 +7,14 @@
 			<input class="mx-4 my-4" v-model="name" placeholder="Put name here" />
 			<v-btn small color="white">Submit</v-btn>
 		</v-row>
-		
-		<v-row>
+
+		<!-- <v-row>
 			<v-col>
 				<v-btn class="mx-2" color="red" id="redRow" dark v-for="(item, i) in 11" :key="item.i">{{ i + 2}}</v-btn>
 				<v-btn class="mx-2" @onclick="lockRow(rowName)">Lock</v-btn>
 			</v-col>
-		</v-row>
-		<v-row>
+		</v-row>-->
+		<!-- <v-row>
 			<v-col>
 				<v-btn
 					class="mx-2"
@@ -26,16 +26,16 @@
 				>{{ i + 2}}</v-btn>
 				<v-btn class="mx-2">Lock</v-btn>
 			</v-col>
-		</v-row>
+		</v-row>-->
 
-		<v-row>
+		<!-- <v-row>
 			<v-col class="d-flex flex-row-reverse justify-end">
 				<v-btn class="mx-2">Lock</v-btn>
 				<v-btn class="mx-2" color="green" dark v-for="(item, i) in 11" :key="item.i">{{ i + 2}}</v-btn>
 			</v-col>
-		</v-row>
+		</v-row>-->
 
-		<v-row>
+		<!-- <v-row>
 			<v-col class="d-flex flex-row-reverse justify-end">
 				<v-btn class="mx-2">Lock</v-btn>
 				<v-btn
@@ -47,44 +47,160 @@
 					:key="item.i"
 				>{{ i + 2}}</v-btn>
 			</v-col>
+		</v-row>-->
+		<v-row id="redRow" class="mb-6" no-gutters>
+			<v-col lg="1">
+				<v-btn id="r2" class="red" value="1" dark>2</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="r3" class="red" value="1" dark>3</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="r4" class="red" value="1" dark>4</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="r5" class="red" value="1" dark>5</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="r6" class="red" value="1" dark>6</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="r7" class="red" value="1" dark>7</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="r8" class="red" value="1" dark>8</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="r9" class="red" value="1" dark>9</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="r10" class="red" value="1" dark>10</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="r11" class="red" value="11" dark>11</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="r12" class="red" value="1" dark>12</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="lockRed" class="grey">LOCK</v-btn>
+			</v-col>
+		</v-row>
+<!--begin yellow row-->
+		<v-row id="yellowRow" class="mb-6" no-gutters>
+			<v-col lg="1">
+				<v-btn id="y2" class="yellow" value="1" dark>2</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="y3" class="yellow" value="1" dark>3</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="y4" class="yellow" value="1" dark>4</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="y5" class="yellow" value="1" dark>5</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="y6" class="yellow" value="1" dark>6</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="y7" class="yellow" value="1" dark>7</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="y8" class="yellow" value="1" dark>8</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="y9" class="yellow" value="1" dark>9</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="y10" class="yellow" value="1" dark>10</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="y11" class="yellow" value="1" dark>11</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="y12" class="yellow" value="1" dark>12</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="lockYellow">LOCK</v-btn>
+			</v-col>
 		</v-row>
 
-			<v-row class="mb-6" no-gutters>
+		<v-row class="mb-6" no-gutters>
 			<v-col lg="1">
-				<v-btn id="2" class="red" dark>2</v-btn>
+				<v-btn id="g2" class="green" value="1" dark>2</v-btn>
 			</v-col>
 			<v-col lg="1">
-				<v-btn>3</v-btn>
+				<v-btn id="g3" class="green" value="1" dark>3</v-btn>
 			</v-col>
 			<v-col lg="1">
-				<v-btn>4</v-btn>
+				<v-btn id="g4" class="green" value="1" dark>4</v-btn>
 			</v-col>
 			<v-col lg="1">
-				<v-btn>5</v-btn>
+				<v-btn d="g5" class="green" value="1" dark>5</v-btn>
 			</v-col>
 			<v-col lg="1">
-				<v-btn>6</v-btn>
+				<v-btn d="g6" class="green" value="1" dark>6</v-btn>
 			</v-col>
 			<v-col lg="1">
-				<v-btn>7</v-btn>
+				<v-btn d="g7" class="green" value="1" dark>7</v-btn>
 			</v-col>
 			<v-col lg="1">
-				<v-btn>8</v-btn>
+				<v-btn d="g8" class="green" value="1" dark>8</v-btn>
 			</v-col>
 			<v-col lg="1">
-				<v-btn>9</v-btn>
+				<v-btn d="g9" class="green" value="1" dark>9</v-btn>
 			</v-col>
 			<v-col lg="1">
-				<v-btn>10</v-btn>
+				<v-btn d="g10" class="green" value="1" dark>10</v-btn>
 			</v-col>
 			<v-col lg="1">
-				<v-btn>11</v-btn>
+				<v-btn d="g11" class="green" value="1" dark>11</v-btn>
 			</v-col>
 			<v-col lg="1">
-				<v-btn>12</v-btn>
+				<v-btn d="g12" class="green" value="1" dark>12</v-btn>
 			</v-col>
 			<v-col lg="1">
-				<v-btn>LOCK</v-btn>
+				<v-btn id="lockGreen">LOCK</v-btn>
+			</v-col>
+		</v-row>
+
+		<v-row class="mb-6" no-gutters>
+			<v-col lg="1">
+				<v-btn id="b2" class="blue" value="1" dark>2</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn d="b3" class="blue" value="1" dark>3</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn d="b4" class="blue" value="1" dark>4</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn d="b5" class="blue" value="1" dark>5</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn d="b6" class="blue" value="1" dark>6</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn d="b7" class="blue" value="1" dark>7</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn d="b8" class="blue" value="1" dark>8</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn d="b9" class="blue" value="1" dark>9</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn d="b10" class="blue" value="1" dark>10</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn d="b11" class="blue" value="1" dark>11</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn d="b12" class="blue" value="1" dark>12</v-btn>
+			</v-col>
+			<v-col lg="1">
+				<v-btn id="lockBlue">LOCK</v-btn>
 			</v-col>
 		</v-row>
 
@@ -122,7 +238,7 @@
 			</v-col>
 			<v-col lg="2">
 				<h4>FINAL SCORE</h4>
-				<p class="purple--text title" id ="finalFinal">hello</p>
+				<p class="purple--text title" id="finalFinal">hello</p>
 			</v-col>
 		</v-row>
 	</v-container>
@@ -159,7 +275,7 @@ export default {
 			console.log(bonus, i);
 		},
 		//method for adding points when clicking colored buttons
-		add(value, totalScore){
+		add(value, totalScore) {
 			console.log(totalScore);
 			totalScore = totalScore + value;
 		},
@@ -170,8 +286,8 @@ export default {
 		},
 		//click event for lock button
 		lockRow(rowName) {
-			console.log(rowName)
-			
+			console.log(rowName);
+
 			alert('red row blocked');
 		},
 	},

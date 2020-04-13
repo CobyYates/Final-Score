@@ -4,7 +4,7 @@
 		<v-row>
 			<v-col>
 				<v-list>
-					<v-list-item v-for="game in games" :key="game.id" link :to="'/' + gameType + '/' + game.gameId">
+					<v-list-item v-for="game in games" :key="game.id" link @click="goToGame(game)">
 						<v-list-item-content>
 							<v-list-item-title>
 								{{game.gameName}}
@@ -24,6 +24,12 @@ export default {
 		'gameType',
 		'games',
 	],
+	methods: {
+		goToGame(game) {
+			this.$store.dispatch('setGame', game);
+			this.$router.push(`/${this.gameType}/${game.gameId}`);
+		},
+	},
 }
 </script>
 

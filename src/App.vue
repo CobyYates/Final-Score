@@ -182,7 +182,7 @@ export default {
 					},
 					{
 						text: 'Nertz',
-						icon: 'mdi-cards-outline',
+						icon: 'mdi-cards-playing-outline',
 						color: 'red',
 						to: '/nertz',
 					},
