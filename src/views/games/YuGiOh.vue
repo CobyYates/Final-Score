@@ -1,40 +1,65 @@
 <template>
 	<div>
-		<v-row class="mx-12">
-			<v-col cols="12" sm="6" md="5" lg="4" xl="4" class="ml-auto">
-				<p class="text-center title">PLAYER ONE</p>
-				<v-data-table
-					:headers="playerOneHeaders"
-					:items="playerOne"
-					hide-default-footer
-					dark
-					class="mb-12"
-				>
-					<template v-slot:item.score="props">
-						<v-edit-dialog :return-value.sync="props.item.score">
-							{{ props.item.score }}
-							<template v-slot:input>
-								<v-text-field
-									v-model="props.item.score"
-									:rules="[max3chars]"
-									label="Add Score"
-									single-line
-									counter
-								></v-text-field>
-							</template>
-						</v-edit-dialog>
-					</template>
-				</v-data-table>
-				<p>TOTAL SCORE: {{scoreTotal()}}</p>
-                <br>
-                <p>Player One recived -200 damage</p>
-                <v-button>GIVE DAMAGE</v-button>
-                <br>
-                <v-button>GIVE POINTS</v-button>
-                <p v-show="playerTwoWinner">Player One Lost All Points</p>
-                <p v-show="playerOneWinner">Player One Kicked Player Two's Trash</p>
-                <p v-show=true>Player One Lost All Points</p>
-                <p v-show=false>Player One Kicked Player Two's Trash</p>
+		<v-container>
+		<v-row>
+			<v-col>
+				<h2>{{ gameName }}</h2>
+				<v-container>
+					<v-row>
+						<v-col>
+							<div class="game-players-list d-flex flex-wrap">
+								<v-card class="game-player mb-6" v-for="(player, index) in players" :key="player.id">
+									<div class="player">
+										<v-btn text fab absolute small class="delete-player" @click="deletePlayer(index)"><v-icon>mdi-delete</v-icon></v-btn>
+										<h3 v-if="!player.editName" @click="editName(player)" class="pr-8">{{ player.name }}</h3>
+										<v-text-field
+											v-if="player.editName"
+											label="Player Name"
+											:clearable="true"
+											class="editNameInput"
+											v-model="player.name"
+											@blur="endEditName(player)"
+											autofocus
+											ref="playerName"
+											aria-autocomplete="off"
+										></v-text-field>
+										<ul>
+											<li
+												class="round-score"
+												v-for="(score, index) in player.scores"
+												:key="index"
+												@click="editScore(index)"
+											>Round {{index+1}} Score: {{ score }}</li>
+										</ul>
+										<p class="sum">Total: {{ player.totalScore }}</p>
+										<v-text-field
+											type="tel"
+											label="New Score"
+											:rules="scoreRules"
+											pattern="[0-9]*"
+											lazy-validation="true"
+											class="scoreInput"
+											v-model="player.newScore"
+										></v-text-field>
+									</div>
+								</v-card>
+								<div class="add-player-card mb-6">
+									<v-btn color="pink" dark @click="addPlayer">
+										<v-icon>mdi-plus</v-icon>
+										<span>Add Player</span>
+									</v-btn>
+								</div>
+							</div>
+						</v-col>
+					</v-row>
+				</v-container>
+				<div class="end-round-container">
+					<v-btn @click="endRound" color="primary">End Game</v-btn>
+				</div>
+			</v-col>
+		</v-row>
+	</v-container>
+		<!-- Die Roll -->
 				<div class="container col-sm-12 main-content">
 					<div class="block-container">
 						<button type="button" :onclick="rollDice" class="btn btn-primary diceButton">Roll the dice</button>
@@ -43,41 +68,7 @@
 						<img id="dice" class="dice" :src="path">
 					</div>
 				</div>
-			</v-col>
-            <v-col cols="12" sm="6" md="5" lg="4" xl="4" class="mr-auto">
-				<p class="text-center title">PLAYER TWO</p>
-				<v-data-table
-					:headers="playerOneHeaders"
-					:items="playerOne"
-					hide-default-footer
-					dark
-					class="mb-12"
-				>
-					<template v-slot:item.score="props">
-						<v-edit-dialog :return-value.sync="props.item.score">
-							{{ props.item.score }}
-							<template v-slot:input>
-								<v-text-field
-									v-model="props.item.score"
-									:rules="[max3chars]"
-									label="Add Score"
-									single-line
-									counter
-								></v-text-field>
-							</template>
-						</v-edit-dialog>
-					</template>
-				</v-data-table>
-				<p>TOTAL SCORE: {{scoreTotal()}}</p>
-                <br>
-                <p>Player One recived -1500 damage</p>
-                <v-button>GIVE DAMAGE</v-button>
-                <br>
-                <v-button>GIVE POINTS</v-button>
-                <p v-show="playerOneWinner">Player Two Lost All Points</p>
-                <p v-show="playerTwoWinner">Player Two Kicked Player One's Trash</p>
-                <p v-show=false>Player Two Lost All Points</p>
-                <p v-show=true>Player Two Kicked Player One's Trash</p>
+		<!-- Coin Flip	 -->
 				<div class='container'>
 					<div id="coin" class=''>
 						<div id="heads" class="heads"></div>
@@ -87,141 +78,137 @@
 					<p>Heads: <span id="headsCount">0</span> Tails: <span id="tailsCount">0</span></p>
 					<p><span id="status"></span></p>
 				</div>
-			</v-col>
-		</v-row>
+
 	</div>
 </template>
 
 <script>
-var path = 'https://openclipart.org/download/282132/Die';
+import firestore from '../../firebase';
+
+const numRegex = /(^$|^-?[0-9]*$|null)/; // used to validate number
+
+// var path = 'https://openclipart.org/download/282132/Die';
 // var generateRandomNumber = '';
 // var defineImgPath = '';
-var deferFn = '';
-var processResult = '';
-const coin = document.querySelector('#coin');
-const status = document.querySelector('#status');
-const heads = document.querySelector('#headsCount');
-const tails = document.querySelector('#tailsCount');
-let headsCount = 0;
-let tailsCount = 0;
+// var deferFn = '';
+// var processResult = '';
+// const coin = document.querySelector('#coin');
+// const status = document.querySelector('#status');
+// const heads = document.querySelector('#headsCount');
+// const tails = document.querySelector('#tailsCount');
+// let headsCount = 0;
+// let tailsCount = 0;
+
 export default {
 	data() {
 		return {
-			max3chars: v => v.length <= 3 || 'Input too long!',
-			winnerCheck: false,
-			path: 'https://openclipart.org/download/282132/Die',
-			playerOneHeaders: [
-				{
-					text: 'Points Lost/Gained',
-					align: 'start',
-					sortable: false,
-					value: 'name',
-				},
-				{ text: 'Score', value: 'score' },
-			],
-			playerOne: [
-				{
-					name: 'Damage Received',
-					score: -200,
-				},
-				{
-					name: 'Points Gained',
-					score: 20,
-				},
-				{
-					name: 'Damage Received',
-					score: -2500,
-				},
-				{
-					name: 'Damage Received',
-					score: -300,
-				},
-				{
-					name: 'Damage Received',
-					score: -1500,
-				},
-				{
-					name: 'Points Gained',
-					score: 500,
-				},
-				{
-					name: 'Damage Received',
-					score: -200,
-				},
+			userId: this.$store.state.uid,
+			gameName: this.$store.state.gameName || '',
+			players: [],
+			newScores: [],
+			scoreRules: [
+				value => numRegex.test(value) || 'Only Numbers are Valid',
 			],
 		};
 	},
-	methods: {
-		scoreTotal(){
-			return this.playerOne.reduce((acc, playerOne) => {return acc + playerOne.score}, 0)
-		},
-		deferFn(callback, ms) {
-			setTimeout(callback, ms); 
-		},
-		processResult(result) {
-			if (result === 'heads') {
-				headsCount++;
-				heads.innerText = headsCount;
-			} else {
-				tailsCount++;
-				tails.innerText = tailsCount;
-			}
-			status.innerText = result.toUpperCase();
-		},
-		// TODO: make this work
-		flipCoin() {
-			coin.setAttribute('class', '');
-			const random = Math.random();
-			const result = random < 0.5 ? 'heads' : 'tails';
-			deferFn(function() {
-				coin.setAttribute('class', 'animate-' + result);
-				deferFn(processResult.bind(null, result), 2900);
-			}, 100);
-		},
-	},
-
 	computed: {
-		generateRandomNumber () {
-			return Math.floor(Math.random() * 6) + 1;
+		gameId() {
+			return this.$route.params.gameId || null;
 		},
-		defineImgPath: function (result) {
-			if (result == 1) {
-				path = 'https://openclipart.org/download/282127/Die';
+		gameDocRef() {
+			if (this.$store.state.uid) {
+				return firestore.collection('users').doc(this.$store.state.uid).collection('nertz').doc(this.gameId) || null;
 			}
-			if (result == 2) {
-				path = 'https://openclipart.org/download/282128/Die';
-			}
-			if (result == 3) {
-				path = 'https://openclipart.org/download/282129/Die';
-			}
-			if (result == 4) {
-				path = 'https://openclipart.org/download/282130/Die';
-			}
-			if (result == 5) {
-				path = 'https://openclipart.org/download/282131/Die';
-			}
-			if (result == 6) {
-				path = 'https://openclipart.org/download/282127/Die';
-			}
-			return path;
+			return null;
 		},
-		// changeDiceFace (result) {
-		// var dice = document.querySelector('#dice');
-		// dicePath = dice.setAttribute('src', path + result + '.svg');
-		// return dicePath;
-		// },
-		// TODO: make this work
-		// rollDice () {
-		// 	var result = generateRandomNumber();
-		// 	defineImgPath(result);
-		// 	//changeDiceFace(result); //this now done in defineImgPath the path/dice face
-		// 	return false;
-		// },
 	},
-};
+	methods: {
+		getGame() {
+			this.gameDocRef.onSnapshot((doc) => {
+				this.gameName = doc.data().gameName;
+				this.players = doc.data().gameData.players;
+			});
+
+		},
+		updateFirestore() {
+			this.gameDocRef.update({
+				players: this.players,
+			});
+		},
+		addPlayer() {
+			let nextId = 1;
+			if (this.players.length > 0) {
+				nextId = this.players[this.players.length - 1].id + 1;
+			}
+			this.players.push({
+				id: nextId,
+				name: 'New Player',
+				scores: [],
+				newScore: null,
+				totalScore: 0,
+				editName: true,
+			});
+		},
+		editName(player) {
+			player.editName = true;
+		},
+		endEditName(player) {
+			player.editName = false;
+		},
+		deletePlayer(index) {
+			this.players.splice(index, 1);
+		},
+		sumScores() {
+			for (let player of this.players) {
+				player.totalScore = player.scores.reduce((a, b) => a + b, 0);
+			}
+		},
+		editScore(index) {
+			console.log(index);
+		},
+
+	},
+	created() {
+		this.getGame();
+	},
+}
+
+
 </script>
 
 <style scoped>
+.game-players-list {
+	justify-content: space-around;
+}
+.player {
+	padding: 1rem;
+	position: relative;
+	ul {
+		list-style: none;
+		padding: 0;
+	}
+}
+.delete-player {
+	top: .5rem;
+	right: .5rem;
+}
+.sum {
+	font-weight: 900;
+}
+.round-score {
+	transition: background-color 0.5s;
+}
+.add-player-card {
+	display: flex;
+	align-items: center;
+}
+
+.end-round-container {
+	display: flex;
+	justify-content: center;
+	margin-top: 2rem;
+}
+
 .main-content {
 	padding: 0;
 	margin-top: 10px;
