@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import { routes } from './routes';
+// require('dotenv').config()
 
 // import VueFire from 'vuefire'
 
