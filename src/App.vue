@@ -145,8 +145,8 @@
 </template>
 
 <script>
-import firebase from 'firebase';
-
+import firebase from 'firebase/app';
+import 'firebase/auth';
 export default {
 	props: {
 		source: String,
@@ -161,7 +161,6 @@ export default {
 			}
 		});
 	},
-
 	data: () => ({
 		dialog: false,
 		sizeResponse: true,
@@ -186,11 +185,12 @@ export default {
 						color: 'red',
 						to: '/yahtzee',
 					},
-					{ 
-						text: 'Quix', 
-						icon: 'mdi-dice-5-outline', 
-						color: 'green', 
-						to: '/quix' },
+					{
+						text: 'Quix',
+						icon: 'mdi-dice-5-outline',
+						color: 'green',
+						to: '/qwixx' ,
+					},
 					{
 						text: 'Yu-Gi-Oh!',
 						icon: 'mdi-cards-outline',
@@ -205,7 +205,7 @@ export default {
 					},
 					{
 						text: 'Nertz',
-						icon: 'mdi-cards-outline',
+						icon: 'mdi-cards-playing-outline',
 						color: 'red',
 						to: '/nertz',
 					},

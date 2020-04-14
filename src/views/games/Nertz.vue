@@ -11,7 +11,7 @@
 								<v-card class="game-player mb-6" v-for="(player, index) in players" :key="player.id">
 									<div class="player">
 										<v-btn text fab absolute small class="delete-player" @click="deletePlayer(index)"><v-icon>mdi-delete</v-icon></v-btn>
-										<h3 v-if="!player.editName" @click="editName(player)">{{ player.name }}</h3>
+										<h3 v-if="!player.editName" @click="editName(player)" class="pr-8">{{ player.name }}</h3>
 										<v-text-field
 											v-if="player.editName"
 											label="Player Name"
@@ -39,6 +39,7 @@
 											pattern="[0-9]*"
 											lazy-validation="true"
 											class="scoreInput"
+											v-model="player.newScore"
 										></v-text-field>
 									</div>
 								</v-card>
@@ -62,31 +63,50 @@
 </template>
 
 <script>
+import firestore from '../../firebase';
 import Error from '../../components/Error.vue';
 
-const numRegex = /(^$|^[0-9]*$|null)/; // checks to make sure it's a number
+const numRegex = /(^$|^-?[0-9]*$|null)/; // checks to make sure it's a number
 
 export default {
 	data() {
 		return {
 			userId: this.$store.state.uid,
-			gameId: this.$store.state.gameId || 0,
 			gameName: this.$store.state.gameName || '',
 			players: [],
 			newScores: [],
 			scoreRules: [
 				value => numRegex.test(value) || 'Only Numbers are Valid',
 			],
-			editingPlayer: null,
-			editingName: '',
 		};
 	},
 	computed: {
+		gameId() {
+			return this.$route.params.gameId || null;
+		},
 		error() {
 			return this.$store.state.error;
 		},
+		gameDocRef() {
+			if (this.$store.state.uid) {
+				return firestore.collection('users').doc(this.$store.state.uid).collection('nertz').doc(this.gameId) || null;
+			}
+			return null;
+		},
 	},
 	methods: {
+		getGame() {
+			this.gameDocRef.onSnapshot((doc) => {
+				this.gameName = doc.data().gameName;
+				this.players = doc.data().gameData.players;
+			});
+
+		},
+		updateFirestore() {
+			this.gameDocRef.update({
+				players: this.players,
+			});
+		},
 		addPlayer() {
 			let nextId = 1;
 			if (this.players.length > 0) {
@@ -96,6 +116,7 @@ export default {
 				id: nextId,
 				name: 'New Player',
 				scores: [],
+				newScore: null,
 				totalScore: 0,
 				editName: true,
 			});
@@ -115,22 +136,21 @@ export default {
 			}
 		},
 		endRound() {
-			document.getElementsByClassName('scoreInput').forEach((score) => {
-				if (score.getElementsByTagName('input')[0].value != '') {
-					const value = parseInt(score.getElementsByTagName('input')[0].value);
+			this.players.forEach(player => { // Make an array of all new scores to check the length and make sure all players have a score
+				if (player.newScore != null && player.newScore != '') {
+					const value = parseInt(player.newScore);
 					this.newScores.push(value);
 				}
 			});
 			if (this.newScores.length === this.players.length) {
-				for (let i = 0; i < this.newScores.length; i++) {
-					this.players[i].scores.push(this.newScores[i]);
-				}
+				this.players.forEach(player => {
+					player.scores.push(parseInt(player.newScore));
+					player.newScore = null;
+				});
 				this.$store.dispatch('clearError');
 				this.newScores = [];
 				this.sumScores();
-				document.getElementsByClassName('scoreInput').forEach((score) => {
-					score.getElementsByTagName('input')[0].value = '';
-				});
+				this.updateFirestore();
 			} else {
 				this.$store.dispatch('error', 'You must enter a score for each player');
 				this.newScores = [];
@@ -142,11 +162,11 @@ export default {
 
 	},
 	created() {
-		this.sumScores();
+		this.getGame();
 	},
 	components: {
 		Error,
-	}
+	},
 }
 </script>
 
