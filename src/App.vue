@@ -147,7 +147,6 @@
 <script>
 import firebase from 'firebase/app';
 import 'firebase/auth';
-
 export default {
 	props: {
 		source: String,
@@ -162,7 +161,6 @@ export default {
 			}
 		});
 	},
-
 	data: () => ({
 		dialog: false,
 		sizeResponse: true,
@@ -191,7 +189,8 @@ export default {
 						text: 'Quix',
 						icon: 'mdi-dice-5-outline',
 						color: 'green',
-						to: '/quix' },
+						to: '/qwixx' ,
+					},
 					{
 						text: 'Yu-Gi-Oh!',
 						icon: 'mdi-cards-outline',
