@@ -21,7 +21,8 @@
 											@blur="endEditName(player)"
 											autofocus
 											ref="playerName"
-											aria-autocomplete="off"
+											aria-autocomplete="none"
+											autocomplete="false"
 										></v-text-field>
 										<ul>
 											<li
@@ -40,6 +41,8 @@
 											lazy-validation="true"
 											class="scoreInput"
 											v-model="player.newScore"
+											aria-autocomplete="none"
+											autocomplete="false"
 										></v-text-field>
 									</div>
 								</v-card>
@@ -137,7 +140,7 @@ export default {
 		},
 		endRound() {
 			this.players.forEach(player => { // Make an array of all new scores to check the length and make sure all players have a score
-				if (player.newScore != null && player.newScore != '') {
+				if (player.newScore != null && player.newScore !== '') {
 					const value = parseInt(player.newScore);
 					this.newScores.push(value);
 				}
