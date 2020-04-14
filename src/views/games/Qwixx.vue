@@ -2,22 +2,20 @@
 	<v-container>
 		<v-row class="mx-4 my-4">
 			<h2 class="display-3 font-weight-black underlined">Qwixx</h2>
+			<v-col cols="4"><Rules :game="this.gameTitle" /></v-col>
 		</v-row>
-		<v-row>
-			<input class="mx-4 my-4" v-model="name" placeholder="Put name here" />
-			<v-btn small color="white">Submit</v-btn>
-		</v-row>
+		
 
 		
-		<v-row class="mb-6">
-			<div class="redBtns mr-3 mb-2" v-for="redBtn in redBtns" :key="redBtn.id">
+		<v-row class="mb-6 mx-4">
+			<div class="redBtns mr-3 mb-2" v-for="(redBtn, i) in redBtns" :key="i">
 				<v-btn class="red mark" dark v-on:click="redBtn.marked = !redBtn.marked, redRow++, calculate()">
 					<i v-bind:class="[{ 'white' : redBtn.marked }, 'material-icons']">{{redBtn.name}}</i>
 				</v-btn>
 			</div>
 		</v-row>
 		<!--yellow row-->
-		<v-row class="mb-6">
+		<v-row class="mb-6 mx-4">
 			<div class="yellowBtns mr-3 mb-2" v-for="yellowBtn in yellowBtns" :key="yellowBtn.id">
 				<v-btn class="yellow mark" dark v-on:click="yellowBtn.marked = !yellowBtn.marked, yellowRow++">
 					<i v-bind:class="[{ 'white' : yellowBtn.marked }, 'material-icons']">{{yellowBtn.name}}</i>
@@ -25,7 +23,7 @@
 			</div>
 		</v-row>
 		<!--green row-->
-		<v-row class="mb-6">
+		<v-row class="mb-6 mx-4">
 			<div class="greenBtns mr-3 mb-2" v-for="greenBtn in greenBtns" :key="greenBtn.id">
 				<v-btn class="green mark" dark v-on:click="greenBtn.marked = !greenBtn.marked, greenRow++">
 					<i v-bind:class="[{ 'white' : greenBtn.marked }, 'material-icons']">{{greenBtn.name}}</i>
@@ -33,16 +31,16 @@
 			</div>
 		</v-row>
 		<!--blue row-->
-		<v-row class="mb-6">
+		<v-row class="mb-6 mx-4">
 			<div class="blueBtns mr-3 mb-2" v-for="blueBtn in blueBtns" :key="blueBtn.id">
 				<v-btn class="blue mark" dark v-on:click="blueBtn.marked = !blueBtn.marked, blueRow++">
 					<i v-bind:class="[{ 'white' : blueBtn.marked }, 'material-icons']">{{blueBtn.name}}</i>
 				</v-btn>
 			</div>
 		</v-row>
-
-		<v-row>
-			<v-col>
+		<!-- penalties -->
+		<v-row class="mx-4 mb-3">
+			<v-col >
 				<p>Penalties</p>
 				<v-btn
 					class="mx-2"
@@ -56,7 +54,7 @@
 			</v-col>
 		</v-row>
 
-		<v-row class="mb-6" justify="flex-start" no-gutters>
+		<v-row class="mb-6 mx-4" justify="flex-start" no-gutters>
 			<v-col lg="2">
 				<h4 class="red--text">Final</h4>
 				<p id="redFinal">{{this.redScore}}</p>
@@ -74,17 +72,22 @@
 				<p id="greenFinal"></p>
 			</v-col>
 			<v-col lg="2">
-				<h4>FINAL SCORE</h4>
-				<p class="purple--text title" id="finalFinal">hello</p>
+				<h4>TOTAL SCORE</h4>
+				<p class="purple--text title" id="finalFinal">{{ this.redScore + this.blueScore + this.greenScore + this.yellowScore }}</p>
 			</v-col>
 		</v-row>
 	</v-container>
 </template>
 
 <script>
+import Rules from '../../components/Rules';
 export default {
+	components: {
+		Rules,
+	},
 	data() {
 		return {
+			gameTitle: 'qwixx',
 			name: null,
 			redScore: 0,
 			redRow: 0,
@@ -162,7 +165,11 @@ export default {
 	},
 	methods: {
 		show(){
-			console.log(this.redRow);
+			// if(this.redBtns[0] != this.marked || this.redBtns[10] != this.marked){
+			// 	this.redBtns[11].disabled;
+			// 	console.log(this.redBtns[11]);
+			// }
+			console.log(this.redBtns[11].name);
 		},
 		calculate(){
 			if(this.redRow === 1){
