@@ -4,7 +4,7 @@ import SignIn from './views/SignIn';
 import Yahtzee from './views/games/Yahtzee';
 import Nertz from './views/games/Nertz';
 import YuGiOh from './views/YuGiOh';
-import OhHell from './views/games/OhHell';
+import Clue from './views/games/Clue';
 
 /*test*/
 
@@ -15,5 +15,5 @@ export const routes = [
 	{ path: '/yahtzee', component: Yahtzee },
 	{ path: '/nertz', component: Nertz },
 	{ path: '/yugioh', component: YuGiOh },
-	{ path: '/ohhell', component: OhHell },
+	{ path: '/clue', component: Clue },
 ];
