@@ -9,31 +9,31 @@
 		
 		<v-row class="mb-6 mx-4">
 			<div class="redBtns mr-3 mb-2" v-for="(redBtn, i) in redBtns" :key="i">
-				<v-btn class="red mark" dark v-on:click="redBtn.marked = !redBtn.marked, redRow++, calculate()">
+				<v-btn class="red mark" dark v-on:click="redRow++, redBtn.marked = !redBtn.marked, showRed()">
 					<i v-bind:class="[{ 'white' : redBtn.marked }, 'material-icons']">{{redBtn.name}}</i>
 				</v-btn>
 			</div>
 		</v-row>
 		<!--yellow row-->
 		<v-row class="mb-6 mx-4">
-			<div class="yellowBtns mr-3 mb-2" v-for="yellowBtn in yellowBtns" :key="yellowBtn.id">
-				<v-btn class="yellow mark" dark v-on:click="yellowBtn.marked = !yellowBtn.marked, yellowRow++">
+			<div class="yellowBtns mr-3 mb-2" v-for="(yellowBtn, i) in yellowBtns" :key="i">
+				<v-btn class="yellow mark" dark v-on:click="yellowRow++, yellowBtn.marked = !yellowBtn.marked">
 					<i v-bind:class="[{ 'white' : yellowBtn.marked }, 'material-icons']">{{yellowBtn.name}}</i>
 				</v-btn>
 			</div>
 		</v-row>
 		<!--green row-->
 		<v-row class="mb-6 mx-4">
-			<div class="greenBtns mr-3 mb-2" v-for="greenBtn in greenBtns" :key="greenBtn.id">
-				<v-btn class="green mark" dark v-on:click="greenBtn.marked = !greenBtn.marked, greenRow++">
+			<div class="greenBtns mr-3 mb-2" v-for="(greenBtn, i) in greenBtns" :key="i">
+				<v-btn class="green mark" dark v-on:click="greenRow++, greenBtn.marked = !greenBtn.marked">
 					<i v-bind:class="[{ 'white' : greenBtn.marked }, 'material-icons']">{{greenBtn.name}}</i>
 				</v-btn>
 			</div>
 		</v-row>
 		<!--blue row-->
 		<v-row class="mb-6 mx-4">
-			<div class="blueBtns mr-3 mb-2" v-for="blueBtn in blueBtns" :key="blueBtn.id">
-				<v-btn class="blue mark" dark v-on:click="blueBtn.marked = !blueBtn.marked, blueRow++">
+			<div class="blueBtns mr-3 mb-2" v-for="(blueBtn, i) in blueBtns" :key="i">
+				<v-btn class="blue mark" dark v-on:click="blueRow++, blueBtn.marked = !blueBtn.marked">
 					<i v-bind:class="[{ 'white' : blueBtn.marked }, 'material-icons']">{{blueBtn.name}}</i>
 				</v-btn>
 			</div>
@@ -57,23 +57,23 @@
 		<v-row class="mb-6 mx-4" justify="flex-start" no-gutters>
 			<v-col lg="2">
 				<h4 class="red--text">Final</h4>
-				<p id="redFinal">{{this.redScore}}</p>
-			</v-col>
-			<v-col lg="2">
-				<h4 class="blue--text">Final</h4>
-				<p id="blueFinal"></p>
+				<p id="redFinal">{{this.calculate(redRow)}}</p>
 			</v-col>
 			<v-col lg="2">
 				<h4 class="yellow--text">Final</h4>
-				<p id="yellowFinal"></p>
+				<p id="yellowFinal">{{this.calculate(yellowRow)}}</p>
 			</v-col>
 			<v-col lg="2">
 				<h4 class="green--text">Final</h4>
-				<p id="greenFinal"></p>
+				<p id="greenFinal">{{this.calculate(greenRow)}}</p>
+			</v-col>
+			<v-col lg="2">
+				<h4 class="blue--text">Final</h4>
+				<p id="blueFinal">{{this.calculate(blueRow)}}</p>
 			</v-col>
 			<v-col lg="2">
 				<h4>TOTAL SCORE</h4>
-				<p class="purple--text title" id="finalFinal">{{ this.redScore + this.blueScore + this.greenScore + this.yellowScore }}</p>
+				<p class="purple--text title" id="finalFinal">{{  }}</p>
 			</v-col>
 		</v-row>
 	</v-container>
@@ -88,6 +88,7 @@ export default {
 	data() {
 		return {
 			gameTitle: 'qwixx',
+			dialog: true,
 			name: null,
 			redScore: 0,
 			redRow: 0,
@@ -164,31 +165,52 @@ export default {
 		};
 	},
 	methods: {
-		show(){
+		showRed(){
 			// if(this.redBtns[0] != this.marked || this.redBtns[10] != this.marked){
 			// 	this.redBtns[11].disabled;
 			// 	console.log(this.redBtns[11]);
 			// }
-			console.log(this.redBtns[11].name);
+			console.log(this.redRow);
 		},
-		calculate(){
-			if(this.redRow === 1){
-				this.redScore = 1;
+		calculate(row){
+			if(row === 0){
+				return 0;
 			}
-			else if(this.redScore === 2){
-				this.redScore = 3;
+			else if(row === 1){
+				return 1;
 			}
-			else if(this.redScore === 3){
-				this.redScore = 6;
+			else if(row === 2){
+				return 3;
 			}
-			else if(this.redScore === 4){
-				this.redScore = 10;
+			else if(row === 3){
+				return 6;
 			}
-			else if(this.redScore === 5){
-				this.redScore = 15;
+			else if(row === 4){
+				return 10;
 			}
-			else if(this.redScore === 6){
-				this.redScore = 21;
+			else if(row === 5){
+				return 15;
+			}
+			else if(row === 6){
+				return 21;
+			}
+			else if(row === 7){
+				return 28;
+			}
+			else if(row === 8){
+				return 36;
+			}
+			else if(row === 9){
+				return 45;
+			}
+			else if(row === 10){
+				return 55;
+			}
+			else if(row === 11){
+				return 66;
+			}
+			else if(row === 12){
+				return 78;
 			}
 		},
 		//method for adding points when clicking colored buttons
