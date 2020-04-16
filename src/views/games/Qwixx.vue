@@ -8,11 +8,12 @@
 
 		
 		<v-row class="mb-6 mx-4">
-			<div class="redBtns mr-3 mb-2" v-for="(redBtn, i) in redBtns" :key="i">
-				<v-btn class="red mark" dark v-on:click="redRow++, redBtn.marked = !redBtn.marked, showRed()">
+			<div class="redBtns mr-3 mb-2" id="redButtons" v-for="(redBtn, i) in redBtns" :key="i">
+				<v-btn class="red mark" dark v-on:click="redRow++, redBtn.marked = !redBtn.marked">
 					<i v-bind:class="[{ 'white' : redBtn.marked }, 'material-icons']">{{redBtn.name}}</i>
 				</v-btn>
 			</div>
+			<v-btn>Lock</v-btn>
 		</v-row>
 		<!--yellow row-->
 		<v-row class="mb-6 mx-4">
@@ -42,11 +43,12 @@
 		<v-row class="mx-4 mb-3">
 			<v-col >
 				<p>Penalties</p>
+				
 				<v-btn
 					class="mx-2"
 					color="black"
 					dark
-					@click="subtract(pen.v, pen.e = true)"
+					@click="subtract(pen.v, totalScore), (pen.e = true)"
 					:disabled="pen.e"
 					v-for="(pen, i) in penalties"
 					:key="i"
@@ -57,23 +59,23 @@
 		<v-row class="mb-6 mx-4" justify="flex-start" no-gutters>
 			<v-col lg="2">
 				<h4 class="red--text">Final</h4>
-				<p id="redFinal">{{this.calculate(redRow)}}</p>
+				<p id="redFinal">{{redScore = this.calculate(redRow)}}</p>
 			</v-col>
 			<v-col lg="2">
 				<h4 class="yellow--text">Final</h4>
-				<p id="yellowFinal">{{this.calculate(yellowRow)}}</p>
+				<p id="yellowFinal">{{yellowScore = this.calculate(yellowRow)}}</p>
 			</v-col>
 			<v-col lg="2">
 				<h4 class="green--text">Final</h4>
-				<p id="greenFinal">{{this.calculate(greenRow)}}</p>
+				<p id="greenFinal">{{greenScore = this.calculate(greenRow)}}</p>
 			</v-col>
 			<v-col lg="2">
 				<h4 class="blue--text">Final</h4>
-				<p id="blueFinal">{{this.calculate(blueRow)}}</p>
+				<p id="blueFinal">{{blueScore = this.calculate(blueRow)}}</p>
 			</v-col>
 			<v-col lg="2">
 				<h4>TOTAL SCORE</h4>
-				<p class="purple--text title" id="finalFinal">{{  }}</p>
+				<p class="purple--text title" id="finalFinal">{{ totalScore = blueScore + redScore + greenScore + yellowScore + penaltyScore}}</p>
 			</v-col>
 		</v-row>
 	</v-container>
@@ -99,6 +101,10 @@ export default {
 			greenScore: 0,
 			greenRow:0,
 			totalScore: 0,
+			penaltyScore:0,
+			state:{
+				isClicked:false,
+			},
 			points: [{ e: false, v: 1 }],
 			penalties: [
 				{ e: false, v: -5 },
@@ -118,7 +124,7 @@ export default {
 				{ id: 10, marked: false, name: '10' },
 				{ id: 11, marked: false, name: '11' },
 				{ id: 12, marked: false, name: '12'},
-				{ id: 13, marked: false, name: 'LOCK'},
+				
 			],
 			yellowBtns: [
 				{ id: 1, marked: false, name: '2' },
@@ -165,13 +171,7 @@ export default {
 		};
 	},
 	methods: {
-		showRed(){
-			// if(this.redBtns[0] != this.marked || this.redBtns[10] != this.marked){
-			// 	this.redBtns[11].disabled;
-			// 	console.log(this.redBtns[11]);
-			// }
-			console.log(this.redRow);
-		},
+		
 		calculate(row){
 			if(row === 0){
 				return 0;
@@ -213,6 +213,7 @@ export default {
 				return 78;
 			}
 		},
+		
 		//method for adding points when clicking colored buttons
 		add(value, totalScore) {
 			this.value;
@@ -221,8 +222,11 @@ export default {
 		},
 		//method for subtracting penalties
 		subtract(value, totalScore) {
+			console.log(value);
 			console.log(totalScore);
-			return this.totalScore - this.value;
+			// return this.totalScore = totalScore - this.value;
+			this.penaltyScore = this.totalScore - this.value;
+			console.log(this.penaltyScore)
 		},
 		//click event for lock button
 		
