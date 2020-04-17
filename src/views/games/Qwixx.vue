@@ -241,8 +241,8 @@ export default {
 			console.log(value);
 			console.log(penScore);
 			console.log(notAdd);
-
-			penScore === 0 ? (this.penScore += value): (this.penScore += value);
+			this.penScore += value;
+			
 			
 			this.penaltyScore += value;
 			console.log(this.penaltyScore);
