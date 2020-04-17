@@ -48,7 +48,7 @@
 					class="mx-2"
 					color="black"
 					dark
-					@click="subtract(pen.v, totalScore), (pen.e = true)"
+					@click="subtract(pen.v, totalScore, false), (pen.e = true)"
 					:disabled="pen.e"
 					v-for="(pen, i) in penalties"
 					:key="i"
@@ -78,6 +78,22 @@
 				<p class="purple--text title" id="finalFinal">{{ totalScore = blueScore + redScore + greenScore + yellowScore + penaltyScore}}</p>
 			</v-col>
 		</v-row>
+		<!--pull this up when 2 rows are locked-->
+		<v-dialog v-model="dialog" persistent max-width="290">
+              <v-card>
+                <v-card-title class="headline">Game Over</v-card-title>
+                <v-card-text>Congratulations! You have finished the game. Would you like to save your score?</v-card-text>
+                <p
+                  class="display-1 text-center mx-auto d-flex justify-center align-center"
+                >Your Score: {{this.totalScore}}</p>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="green darken-1" text @click="dialog = false">No</v-btn>
+                  <v-btn color="green darken-1" text @click="dialog = false">Yes</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+
 	</v-container>
 </template>
 
@@ -90,7 +106,7 @@ export default {
 	data() {
 		return {
 			gameTitle: 'qwixx',
-			dialog: true,
+			dialog: false,
 			name: null,
 			redScore: 0,
 			redRow: 0,
@@ -221,12 +237,17 @@ export default {
 			totalScore = totalScore + value;
 		},
 		//method for subtracting penalties
-		subtract(value, totalScore) {
+		subtract(value, penScore, notAdd) {
 			console.log(value);
-			console.log(totalScore);
-			// return this.totalScore = totalScore - this.value;
-			this.penaltyScore = this.totalScore - this.value;
-			console.log(this.penaltyScore)
+			console.log(penScore);
+			console.log(notAdd);
+
+			penScore === 0 ? (this.penScore += value): (this.penScore += value);
+			
+			this.penaltyScore += value;
+			console.log(this.penaltyScore);
+
+			return this.penaltyScore;
 		},
 		//click event for lock button
 		
