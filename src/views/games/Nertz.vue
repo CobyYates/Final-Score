@@ -107,7 +107,9 @@ export default {
 		},
 		updateFirestore() {
 			this.gameDocRef.update({
-				players: this.players,
+				gameData: {
+					players: this.players,
+				},
 			});
 		},
 		addPlayer() {

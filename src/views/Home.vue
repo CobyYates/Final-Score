@@ -10,14 +10,13 @@
 			class="mx-auto ma-4 game-card"
 			v-for="item in items"
 			:key="item.text"
+			:to="item.to"
+			link
 			>
 			<v-img position="top center" :src="item.img" :alt="'Image of ' + item.text" aspect-ratio="1.25"></v-img>
 			<div class="d-flex justify-space-between align-center content">
 				<v-card-title>{{ item.text }}</v-card-title>
-				<v-btn
-					:to="item.to"
-					icon
-				><v-icon color="grey">mdi-arrow-right-thick</v-icon></v-btn>
+				<v-icon color="grey">mdi-arrow-right-thick</v-icon>
 			</div>
 			</v-card>
 		</v-col>
