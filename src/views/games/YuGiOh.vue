@@ -118,7 +118,7 @@ export default {
 				id: nextId,
 				name: playersName,
 				scores: [],
-				newScore: '8,000',
+				newScore: '8000',
 				totalScore: 0,
 				editName: true,
 			});
