@@ -106,7 +106,7 @@ export default {
 		if (this.$store.state.uid) {
 			this.getGames();
 		} else {
-			this.$router.push('/');
+			// this.$router.push('/');
 		}
 	},
 }
