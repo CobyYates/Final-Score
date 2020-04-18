@@ -48,21 +48,21 @@
 					</v-row>
 				</v-container>
 				<div class="end-round-container">
-					<v-btn @click="endRound" color="red">End Game</v-btn>
+					<v-btn color="red">End Game</v-btn>
 				</div>
 			</v-col>
 		</v-row>
-	</v-container>
 		<!-- Die Roll -->
 				<div class="container">
 					<div>
 						<img id="dice" class="dice" :src="path">
+						<!-- <img id="dice" class="dice" :src="this.path"> -->
 					</div>
 					<div>
-						<v-btn type="button" :onclick="rollDice" class="btn btn-primary diceButton">Roll the dice</v-btn>
+						<v-btn type="button" @click="rollDice" class="btn diceButton">Roll the dice</v-btn>
 					</div>
 				</div>
-		<!-- Coin Flip	 -->
+		<!-- Coin Flip -->
 				<div class='container'>
 					<div id="coin" class=''>
 						<div id="heads" class="heads"></div>
@@ -72,7 +72,7 @@
 					<p>Heads: <span id="headsCount">0</span> Tails: <span id="tailsCount">0</span></p>
 					<p><span id="status"></span></p>
 				</div>
-
+	</v-container>
 	</div>
 </template>
 
@@ -81,9 +81,7 @@ import firestore from '../../firebase';
 
 const numRegex = /(^$|^-?[0-9]*$|null)/; // used to validate number
 
-// var path = 'https://openclipart.org/download/282132/Die';
-// var generateRandomNumber = '';
-// var defineImgPath = '';
+var path = 'https://openclipart.org/download/282131/Die';
 // var deferFn = '';
 // var processResult = '';
 // const coin = document.querySelector('#coin');
@@ -96,6 +94,7 @@ const numRegex = /(^$|^-?[0-9]*$|null)/; // used to validate number
 export default {
 	data() {
 		return {
+			path: 'https://openclipart.org/download/282131/Die',
 			userId: this.$store.state.uid,
 			gameName: this.$store.state.gameName || '',
 			players: [],
@@ -115,6 +114,7 @@ export default {
 			}
 			return null;
 		},
+		
 	},
 	methods: {
 		getGame() {
@@ -163,7 +163,35 @@ export default {
 		editScore(index) {
 			console.log(index);
 		},
-
+		rollDice() {
+			//radomNumberGenerator
+			var result = Math.floor(Math.random() * 6) + 1;
+			
+			// defineImgPath;
+			switch (result) {
+				case 1:
+					path = 'https://openclipart.org/download/282127/Die';
+					break;
+				case 2:
+					path = 'https://openclipart.org/download/282128/Die';
+					break;
+				case 3:
+					path = 'https://openclipart.org/download/282129/Die';
+					break;
+				case 4:
+					path = 'https://openclipart.org/download/282130/Die';
+					break;
+				case 5:
+					path = 'https://openclipart.org/download/282131/Die';
+					break;
+				case 6:
+					path = 'https://openclipart.org/download/282132/Die';
+					break;
+			}
+			// changeDiceFace
+			document.getElementById('dice').src = path;
+		},
+		
 	},
 	created() {
 		this.getGame();
@@ -218,10 +246,9 @@ export default {
 
 .dice {
 	display: inline-block;
-	padding: 10px 0 0 20px;
+	padding-bottom: 20px;
 	border-radius: 10px;
 	width:50px;
-	height:50px;
 }
 
 .diceButton {
