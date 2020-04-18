@@ -1,6 +1,11 @@
 <template>
 	<v-container>
 		<v-row>
+			<v-col cols="4"></v-col>
+			<v-col cols="4"><p class="display-2 text-center">YAHTZEE</p></v-col>
+			<v-col cols="4"><Rules :game="this.gameTitle" /></v-col>
+		</v-row>
+		<v-row>
 			<v-col>
 				<h2>{{ gameName }}</h2>
 				<v-container>
@@ -67,14 +72,20 @@
 
 <script>
 import firestore from '../../firebase';
-import Error from '../../components/Error.vue';
+import Error from '../../components/Error';
+import Rules from '../../components/Rules';
 
 const numRegex = /(^$|^-?[0-9]*$|null)/; // checks to make sure it's a number
 
 export default {
+	components: {
+		Error,
+		Rules,
+	},
 	data() {
 		return {
 			userId: this.$store.state.uid,
+			gameTitle: 'Nertz',
 			gameName: this.$store.state.gameName || '',
 			players: [],
 			newScores: [],
@@ -168,9 +179,6 @@ export default {
 	},
 	created() {
 		this.getGame();
-	},
-	components: {
-		Error,
 	},
 }
 </script>

@@ -30,11 +30,6 @@ export default {
 	data: () => ({
 		items: [
 			{
-				text: 'Settlers',
-				img: require('../assets/images/settlers.jpg'),
-				to: '',
-			},
-			{
 				text: 'Yahtzee',
 				img: require('../assets/images/yahtzee.png'),
 				to: '/yahtzee',
