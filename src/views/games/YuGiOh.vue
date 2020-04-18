@@ -6,11 +6,19 @@
 				<h2>{{ gameName }}</h2>
 				<v-container>
 					<v-row>
+						<div class="add-player-card mb-6">
+							<v-btn color="orange" dark @click="addPlayer">
+								<v-icon>mdi-plus</v-icon>
+								<span>Add Player</span>
+							</v-btn>
+						</div>
+					</v-row>
+					<v-row>
 						<v-col>
 							<div class="game-players-list d-flex flex-wrap">
 								<v-card class="game-player mb-6" v-for="(player, index) in players" :key="player.id">
 									<div class="player">
-										<v-btn text fab absolute small class="delete-player" @click="deletePlayer(index)"><v-icon>mdi-delete</v-icon></v-btn>
+										<v-btn text fab absolute small class="delete-player" @click="deletePlayer(index)"><v-icon style=" padding-bottom: 12px;">mdi-delete</v-icon></v-btn>
 										<h3 v-if="!player.editName" @click="editName(player)" class="pr-8">{{ player.name }}</h3>
 										<v-text-field
 											v-if="player.editName"
@@ -23,18 +31,9 @@
 											ref="playerName"
 											aria-autocomplete="off"
 										></v-text-field>
-										<ul>
-											<li
-												class="round-score"
-												v-for="(score, index) in player.scores"
-												:key="index"
-												@click="editScore(index)"
-											>Round {{index+1}} Score: {{ score }}</li>
-										</ul>
-										<p class="sum">Total: {{ player.totalScore }}</p>
 										<v-text-field
 											type="tel"
-											label="New Score"
+											label="Life Points"
 											:rules="scoreRules"
 											pattern="[0-9]*"
 											lazy-validation="true"
@@ -43,29 +42,24 @@
 										></v-text-field>
 									</div>
 								</v-card>
-								<div class="add-player-card mb-6">
-									<v-btn color="pink" dark @click="addPlayer">
-										<v-icon>mdi-plus</v-icon>
-										<span>Add Player</span>
-									</v-btn>
-								</div>
+								
 							</div>
 						</v-col>
 					</v-row>
 				</v-container>
 				<div class="end-round-container">
-					<v-btn @click="endRound" color="primary">End Game</v-btn>
+					<v-btn @click="endRound" color="red">End Game</v-btn>
 				</div>
 			</v-col>
 		</v-row>
 	</v-container>
 		<!-- Die Roll -->
-				<div class="container col-sm-12 main-content">
-					<div class="block-container">
-						<button type="button" :onclick="rollDice" class="btn btn-primary diceButton">Roll the dice</button>
-					</div>
-					<div class="block-container">
+				<div class="container">
+					<div>
 						<img id="dice" class="dice" :src="path">
+					</div>
+					<div>
+						<v-btn type="button" :onclick="rollDice" class="btn btn-primary diceButton">Roll the dice</v-btn>
 					</div>
 				</div>
 		<!-- Coin Flip	 -->
@@ -74,7 +68,7 @@
 						<div id="heads" class="heads"></div>
 						<div id="tails" class="tails"></div>
 					</div>
-					<button id="flip" :onclick="flipCoin">Flip Coin</button>
+					<v-btn id="flip" :onclick="flipCoin">Flip Coin</v-btn>
 					<p>Heads: <span id="headsCount">0</span> Tails: <span id="tailsCount">0</span></p>
 					<p><span id="status"></span></p>
 				</div>
@@ -117,7 +111,7 @@ export default {
 		},
 		gameDocRef() {
 			if (this.$store.state.uid) {
-				return firestore.collection('users').doc(this.$store.state.uid).collection('nertz').doc(this.gameId) || null;
+				return firestore.collection('users').doc(this.$store.state.uid).collection('yugioh').doc(this.gameId) || null;
 			}
 			return null;
 		},
@@ -137,14 +131,17 @@ export default {
 		},
 		addPlayer() {
 			let nextId = 1;
+			let playersName = 'Player 1';
 			if (this.players.length > 0) {
 				nextId = this.players[this.players.length - 1].id + 1;
 			}
+			//to prevent duplicate names in game if players don't want to type in names
+			playersName = 'Player' + nextId;
 			this.players.push({
 				id: nextId,
-				name: 'New Player',
+				name: playersName,
 				scores: [],
-				newScore: null,
+				newScore: '8,000',
 				totalScore: 0,
 				editName: true,
 			});
