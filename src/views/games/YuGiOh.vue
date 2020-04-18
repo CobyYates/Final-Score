@@ -113,7 +113,7 @@ export default {
 				nextId = this.players[this.players.length - 1].id + 1;
 			}
 			//to prevent duplicate names in game if players don't want to type in names
-			playersName = 'Player' + nextId;
+			playersName = 'Player ' + nextId;
 			this.players.push({
 				id: nextId,
 				name: playersName,
