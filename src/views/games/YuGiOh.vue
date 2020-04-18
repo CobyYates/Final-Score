@@ -64,12 +64,13 @@
 				</div>
 		<!-- Coin Flip -->
 				<div class='container'>
-					<div id="coin" class=''>
-						<div id="heads" class="heads"></div>
-						<div id="tails" class="tails"></div>
+					<div>
+						<img id="coin" class="coin" :src="coinPath">
 					</div>
-					<v-btn id="flip" :onclick="flipCoin">Flip Coin</v-btn>
-					<p>Heads: <span id="headsCount">0</span> Tails: <span id="tailsCount">0</span></p>
+					<div>
+					<v-btn type="button" @click="flipCoin" class="btn coinButton">Flip Coin</v-btn>
+					</div>
+					<p>Heads: <span id="headsCount">{{this.headCount}}</span> Tails: <span id="tailsCount">{{this.tailCount}}</span></p>
 					<p><span id="status"></span></p>
 				</div>
 	</v-container>
@@ -82,19 +83,20 @@ import firestore from '../../firebase';
 const numRegex = /(^$|^-?[0-9]*$|null)/; // used to validate number
 
 var path = 'https://openclipart.org/download/282131/Die';
-// var deferFn = '';
-// var processResult = '';
-// const coin = document.querySelector('#coin');
-// const status = document.querySelector('#status');
-// const heads = document.querySelector('#headsCount');
-// const tails = document.querySelector('#tailsCount');
-// let headsCount = 0;
-// let tailsCount = 0;
+var coinPath = 'https://en.numista.com/catalogue/photos/tokens/89965-original.jpg';
+var headCount = 0;
+var tailCount = 0;
+// var headTail = 'Heads';
+
 
 export default {
 	data() {
 		return {
 			path: 'https://openclipart.org/download/282131/Die',
+			coinPath: 'https://en.numista.com/catalogue/photos/tokens/89965-original.jpg',
+			headCount: 0,
+			tailCount: 0,
+			// headTail: 'Heads',
 			userId: this.$store.state.uid,
 			gameName: this.$store.state.gameName || '',
 			players: [],
@@ -191,7 +193,31 @@ export default {
 			// changeDiceFace
 			document.getElementById('dice').src = path;
 		},
-		
+		flipCoin() {
+			//radomNumberGenerator
+			var result = Math.floor(Math.random() * 2) + 1;
+			
+			// defineImgPath;
+			switch (result) {
+				case 1:
+					coinPath = 'https://en.numista.com/catalogue/photos/tokens/89965-original.jpg';
+					// headsTails = 'Tails';
+					this.tailCount = tailCount + 1;
+					break;
+				case 2:
+					coinPath = 'https://en.numista.com/catalogue/photos/tokens/127867-original.jpg';
+					// headsTails = 'Heads';
+					this.headCount = headCount +1;
+					break;
+			}
+			// set new count for next switch
+			headCount = this.headCount;
+			tailCount = this.tailCount;
+
+
+			// changeCoinFace
+			document.getElementById('coin').src = coinPath;
+		},
 	},
 	created() {
 		this.getGame();
@@ -255,6 +281,10 @@ export default {
 	vertical-align: top;
 	padding-top: 20px;
 }
+.coinButton {
+	vertical-align: top;
+	padding-top: 10px;
+}
 
 h2 {
   margin: .25rem;
@@ -276,56 +306,7 @@ button {
   position: relative;
   width: 5rem;
   height: 5rem;
-  margin: 2rem 0rem;
-  transform-style: preserve-3d;
-
+  margin: .5rem 0 1rem 0;
 }
-
-#coin div {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  backface-visibility: hidden;
-  background-size: contain;
-  position: absolute;
-}
-
-.heads {
-    background-image: url("https://en.numista.com/catalogue/photos/tokens/127867-original.jpg");
-}
-
-.animate-heads {
-  animation: flipHeads 3s;
-  animation-fill-mode: forwards;
-}
-
-@keyframes flipHeads {
-  from {
-    transform: rotateY(0deg);
-  }
-  to {
-    transform: rotateY(1800deg);
-  }
-}
-
-.tails {
-    background-image: url("https://en.numista.com/catalogue/photos/tokens/89965-original.jpg");
-  transform: rotateY(-180deg);
-}
-
-.animate-tails {
-  animation: flipTails 3s;
-  animation-fill-mode: forwards;
-}
-
-@keyframes flipTails {
-  from {
-    transform: rotateY(0deg);
-  }
-  to {
-    transform: rotateY(1620deg);
-  }
-}
-
 
 </style>
