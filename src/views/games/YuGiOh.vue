@@ -3,7 +3,6 @@
 		<v-container>
 		<v-row>
 			<v-col>
-				<h2>{{ gameName }}</h2>
 				<v-container>
 					<v-row>
 						<div class="add-player-card mb-6">
@@ -47,8 +46,8 @@
 						</v-col>
 					</v-row>
 				</v-container>
-				<div class="end-round-container">
-					<v-btn color="red">End Game</v-btn>
+				<div v-if="this.players.length > 0" class="end-round-container">
+					<v-btn color="primary" @click="newGame()">New Game</v-btn>
 				</div>
 			</v-col>
 		</v-row>
@@ -78,7 +77,6 @@
 </template>
 
 <script>
-import firestore from '../../firebase';
 
 const numRegex = /(^$|^-?[0-9]*$|null)/; // used to validate number
 
@@ -86,7 +84,6 @@ var path = 'https://openclipart.org/download/282131/Die';
 var coinPath = 'https://en.numista.com/catalogue/photos/tokens/89965-original.jpg';
 var headCount = 0;
 var tailCount = 0;
-// var headTail = 'Heads';
 
 
 export default {
@@ -96,7 +93,6 @@ export default {
 			coinPath: 'https://en.numista.com/catalogue/photos/tokens/89965-original.jpg',
 			headCount: 0,
 			tailCount: 0,
-			// headTail: 'Heads',
 			userId: this.$store.state.uid,
 			gameName: this.$store.state.gameName || '',
 			players: [],
@@ -106,30 +102,9 @@ export default {
 			],
 		};
 	},
-	computed: {
-		gameId() {
-			return this.$route.params.gameId || null;
-		},
-		gameDocRef() {
-			if (this.$store.state.uid) {
-				return firestore.collection('users').doc(this.$store.state.uid).collection('yugioh').doc(this.gameId) || null;
-			}
-			return null;
-		},
-		
-	},
 	methods: {
-		getGame() {
-			this.gameDocRef.onSnapshot((doc) => {
-				this.gameName = doc.data().gameName;
-				this.players = doc.data().gameData.players;
-			});
-
-		},
-		updateFirestore() {
-			this.gameDocRef.update({
-				players: this.players,
-			});
+		newGame() {
+			this.players = [];
 		},
 		addPlayer() {
 			let nextId = 1;
@@ -219,9 +194,6 @@ export default {
 			document.getElementById('coin').src = coinPath;
 		},
 	},
-	created() {
-		this.getGame();
-	},
 }
 
 
@@ -257,7 +229,7 @@ export default {
 .end-round-container {
 	display: flex;
 	justify-content: center;
-	margin-top: 2rem;
+	margin-bottom: 2rem;
 }
 
 .main-content {
