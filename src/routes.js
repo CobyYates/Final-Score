@@ -4,8 +4,8 @@ import SignIn from './views/SignIn';
 import Yahtzee from './views/games/Yahtzee';
 import NertzGames from './views/gamesList/NertzGames';
 import Nertz from './views/games/Nertz';
-import YuGiOh from './views/YuGiOh';
 import OhHell from './views/games/OhHell';
+import YuGiOh from './views/games/YuGiOh';
 import Qwixx from './views/games/Qwixx';
 
 export const routes = [
