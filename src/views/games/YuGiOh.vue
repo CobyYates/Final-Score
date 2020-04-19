@@ -41,7 +41,7 @@
 										></v-text-field>
 									</div>
 								</v-card>
-								
+
 							</div>
 						</v-col>
 					</v-row>
@@ -94,7 +94,7 @@ export default {
 			headCount: 0,
 			tailCount: 0,
 			userId: this.$store.state.uid,
-			gameName: this.$store.state.gameName || '',
+			gameName: this.$store.state.game.gameName || '',
 			players: [],
 			newScores: [],
 			scoreRules: [
@@ -143,7 +143,7 @@ export default {
 		rollDice() {
 			//radomNumberGenerator
 			var result = Math.floor(Math.random() * 6) + 1;
-			
+
 			// defineImgPath;
 			switch (result) {
 				case 1:
@@ -171,7 +171,7 @@ export default {
 		flipCoin() {
 			//radomNumberGenerator
 			var result = Math.floor(Math.random() * 2) + 1;
-			
+
 			// defineImgPath;
 			switch (result) {
 				case 1:
