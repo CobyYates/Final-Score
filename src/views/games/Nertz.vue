@@ -74,6 +74,8 @@
 import firestore from '../../firebase';
 import Error from '../../components/Error';
 import Rules from '../../components/Rules';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 const numRegex = /(^$|^-?[0-9]*$|null)/; // checks to make sure it's a number
 
@@ -118,6 +120,7 @@ export default {
 		},
 		updateFirestore() {
 			this.gameDocRef.update({
+				updated: firebase.firestore.Timestamp.now(),
 				gameData: {
 					players: this.players,
 				},
