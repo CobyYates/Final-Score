@@ -1,6 +1,11 @@
 <template>
 	<v-container>
 		<v-row>
+			<v-col cols="4"></v-col>
+			<v-col cols="4"><p class="display-2 text-center">NERTZ</p></v-col>
+			<v-col cols="4"><Rules :game="this.gameTitle" /></v-col>
+		</v-row>
+		<v-row>
 			<v-col>
 				<h2>{{ gameName }}</h2>
 				<v-container>
@@ -21,7 +26,8 @@
 											@blur="endEditName(player)"
 											autofocus
 											ref="playerName"
-											aria-autocomplete="off"
+											aria-autocomplete="none"
+											autocomplete="false"
 										></v-text-field>
 										<ul>
 											<li
@@ -40,6 +46,8 @@
 											lazy-validation="true"
 											class="scoreInput"
 											v-model="player.newScore"
+											aria-autocomplete="none"
+											autocomplete="false"
 										></v-text-field>
 									</div>
 								</v-card>
@@ -64,14 +72,20 @@
 
 <script>
 import firestore from '../../firebase';
-import Error from '../../components/Error.vue';
+import Error from '../../components/Error';
+import Rules from '../../components/Rules';
 
 const numRegex = /(^$|^-?[0-9]*$|null)/; // checks to make sure it's a number
 
 export default {
+	components: {
+		Error,
+		Rules,
+	},
 	data() {
 		return {
 			userId: this.$store.state.uid,
+			gameTitle: 'Nertz',
 			gameName: this.$store.state.gameName || '',
 			players: [],
 			newScores: [],
@@ -104,7 +118,9 @@ export default {
 		},
 		updateFirestore() {
 			this.gameDocRef.update({
-				players: this.players,
+				gameData: {
+					players: this.players,
+				},
 			});
 		},
 		addPlayer() {
@@ -137,7 +153,7 @@ export default {
 		},
 		endRound() {
 			this.players.forEach(player => { // Make an array of all new scores to check the length and make sure all players have a score
-				if (player.newScore != null && player.newScore != '') {
+				if (player.newScore != null && player.newScore !== '') {
 					const value = parseInt(player.newScore);
 					this.newScores.push(value);
 				}
@@ -163,9 +179,6 @@ export default {
 	},
 	created() {
 		this.getGame();
-	},
-	components: {
-		Error,
 	},
 }
 </script>

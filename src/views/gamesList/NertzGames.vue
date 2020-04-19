@@ -1,6 +1,11 @@
 <template>
 	<v-container>
 		<v-row>
+			<v-col cols="4"></v-col>
+			<v-col cols="4"><p class="display-2 text-center">NERTZ</p></v-col>
+			<v-col cols="4"><Rules :game="this.gameTitle" /></v-col>
+		</v-row>
+		<v-row>
 			<v-col>
 				<v-form @submit.prevent="newGame" :disabled="submitDisabled">
 					<v-text-field v-model="gameName" label="Game Name"></v-text-field>
@@ -17,12 +22,18 @@
 <script>
 import firestore from '../../firebase';
 import GamesList from '../../components/GamesList';
+import Rules from '../../components/Rules';
 
 export default {
 	name: 'NertzGames.vue',
+	components: {
+		GamesList,
+		Rules,
+	},
 	data() {
 		return {
 			userId: this.$store.state.uid,
+			gameTitle: 'Nertz',
 			players: [],
 			gameName: null,
 			defaultPlayers: [
@@ -91,14 +102,11 @@ export default {
 				});
 		},
 	},
-	components: {
-		GamesList,
-	},
 	created() {
 		if (this.$store.state.uid) {
 			this.getGames();
 		} else {
-			this.$router.push('/');
+			// this.$router.push('/');
 		}
 	},
 }

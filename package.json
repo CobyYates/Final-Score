@@ -11,7 +11,7 @@
 		"axios": "^0.19.2",
 		"core-js": "^3.6.4",
 		"dotenv": "^8.2.0",
-		"firebase": "^7.11.0",
+		"firebase": "^7.14.1",
 		"vue": "^2.6.11",
 		"vue-router": "^3.1.6",
 		"vuefire": "^2.2.1",
