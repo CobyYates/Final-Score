@@ -14,7 +14,7 @@
 			</v-col>
 		</v-row>
 		<v-row v-if="userId">
-			<games-list :gameTitle="this.gameTitle"/>
+			<GamesList :gameTitle="this.gameTitle"/>
 		</v-row>
 	</v-container>
 </template>
@@ -36,7 +36,6 @@ export default {
 		return {
 			userId: this.$store.state.uid,
 			gameTitle: 'Nertz',
-			players: [],
 			gameName: null,
 			defaultPlayers: [
 				{
@@ -98,7 +97,3 @@ export default {
 	},
 }
 </script>
-
-<style scoped>
-
-</style>

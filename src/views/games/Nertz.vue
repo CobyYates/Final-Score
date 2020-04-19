@@ -88,7 +88,7 @@ export default {
 		return {
 			userId: this.$store.state.uid,
 			gameTitle: 'Nertz',
-			gameName: this.$store.state.gameName || '',
+			gameName: this.$store.state.game.gameName || '',
 			players: [],
 			newScores: [],
 			scoreRules: [
