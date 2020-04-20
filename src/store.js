@@ -1,5 +1,5 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue';
+import Vuex from 'vuex';
 import firebase from 'firebase/app';
 import 'firebase/auth'
 // import firestore from '../firebase';
@@ -11,15 +11,29 @@ export default new Vuex.Store({
 	state: {
 		uid: '',
 		username: null,
+		gameId: null,
+		game: {},
 		loginDisabled: false,
 		error: null,
 	},
 	mutations: {
+		initializeStore(state) {
+			// Check if the ID exists
+			if (localStorage.getItem('store')) {
+				// Replace the state object with the stored item
+				this.replaceState(
+					Object.assign(state, JSON.parse(localStorage.getItem('store'))),
+				);
+			}
+		},
 		setUid(state, uid) {
 			state.uid = uid;
 		},
 		setUsername(state, username) {
 			state.username = username;
+		},
+		setGame(state, game) {
+			state.game = game;
 		},
 		disableLogin(state) {
 			state.loginDisabled = true;
@@ -32,7 +46,7 @@ export default new Vuex.Store({
 		},
 		clearError(state) {
 			state.error = null;
-		}
+		},
 	},
 	actions: {
 		createUser(context, payload) {
@@ -84,11 +98,20 @@ export default new Vuex.Store({
 		setUsername(context, username) {
 			context.commit('setUsername', username);
 		},
+		setGame(context, game) {
+			context.commit('setGame', game);
+		},
 		disableLogin(context) {
 			context.commit('disableLogin');
 		},
 		enableLogin(context) {
 			context.commit('enableLogin');
 		},
-	}
+		error(context, errorMessage) {
+			context.commit('error', errorMessage);
+		},
+		clearError(context) {
+			context.commit('clearError');
+		},
+	},
 });

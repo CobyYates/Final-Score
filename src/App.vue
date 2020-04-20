@@ -118,38 +118,15 @@
 		<v-content>
 			<router-view />
 		</v-content>
-
-		<!-- Bottom right button {+} -->
-		<v-btn bottom color="pink" dark fab fixed right @click="dialog = !dialog">
-			<v-icon>mdi-plus</v-icon>
-		</v-btn>
-		<v-dialog v-model="dialog" width="800px">
-			<v-card>
-				<v-card-title class="grey darken-2">
-					Create contact
-				</v-card-title>
-				<v-container>
-					<v-row class="mx-2">
-						content
-					</v-row>
-				</v-container>
-				<v-card-actions>
-					<v-btn text color="primary">More</v-btn>
-					<v-spacer />
-					<v-btn text color="primary" @click="dialog = false">Cancel</v-btn>
-					<v-btn text @click="dialog = false">Save</v-btn>
-				</v-card-actions>
-			</v-card>
-		</v-dialog>
 	</v-app>
 </template>
 
 <script>
-import firebase from 'firebase';
-
+import firebase from 'firebase/app';
+import 'firebase/auth';
 export default {
 	props: {
-		source: String
+		source: String,
 	},
 	beforeCreate() {
 		firebase.auth().onAuthStateChanged((currentUser) => {
@@ -161,57 +138,57 @@ export default {
 			}
 		});
 	},
-
 	data: () => ({
 		dialog: false,
 		sizeResponse: true,
 		drawer: null,
 		items: [
-			{ icon: "mdi-home-outline", text: "Home", color: "blue", to: "/" },
+			{ icon: 'mdi-home-outline', text: 'Home', color: 'blue', to: '/' },
 			{
-				icon: "mdi-history",
-				text: "Your Score Cards",
-				color: "blue",
-				to: "/history"
+				icon: 'mdi-history',
+				text: 'Your Score Cards',
+				color: 'blue',
+				to: '/history',
 			},
 			{
-				icon: "mdi-chevron-up",
-				"icon-alt": "mdi-chevron-down",
-				text: "Games",
+				icon: 'mdi-chevron-up',
+				'icon-alt': 'mdi-chevron-down',
+				text: 'Games',
 				model: false,
 				children: [
 					{
-						text: "Yahtzee",
-						icon: "mdi-dice-5-outline",
-						color: "red",
-						to: "/yahtzee"
-					},
-					{ 
-						text: "Quix", 
-						icon: "mdi-dice-5-outline", 
-						color: "green", 
-						to: "/quix" },
-					{
-						text: "Yu-Gi-Oh!",
-						icon: "mdi-cards-outline",
-						color: "orange",
-						to: "/yugioh"
+						text: 'Yahtzee',
+						icon: 'mdi-dice-5-outline',
+						color: 'red',
+						to: '/yahtzee',
 					},
 					{
-						text: "CLUE",
-						icon: "mdi-incognito",
-						color: "#0D47A1",
-						to: "/clue"
+						text: 'Quix',
+						icon: 'mdi-dice-5-outline',
+						color: 'green',
+						to: '/qwixx' ,
 					},
 					{
-						text: "Nertz",
-						icon: "mdi-cards-outline",
-						color: "red",
-						to: "/nertz"
-					}
-				]
+						text: 'Yu-Gi-Oh!',
+						icon: 'mdi-cards-outline',
+						color: 'orange',
+						to: '/yugioh',
+					},
+					{
+						text: 'CLUE',
+						icon: 'mdi-incognito',
+						color: '#0D47A1',
+						to: '/clue',
+					},
+					{
+						text: 'Nertz',
+						icon: 'mdi-cards-playing-outline',
+						color: 'red',
+						to: '/nertz',
+					},
+				],
 			},
-			{ icon: "mdi-settings", text: "Settings", color: "grey", to: "" }
+			{ icon: 'mdi-settings', text: 'Settings', color: 'grey', to: '' },
 		],
 	}),
 	computed: {
