@@ -100,9 +100,6 @@ export default {
 		};
 	},
 	computed: {
-		// gameId() {
-		// 	return this.$route.params.gameId || null;
-		// },
 		error() {
 			return this.$store.state.error;
 		},
