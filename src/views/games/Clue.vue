@@ -107,7 +107,11 @@
 						<div class="buttons" v-for="suspect in suspects" :key="suspect">
 							<p>{{ suspect.value }}</p>
 							<div v-for="num in boxes" :key="num" class="mb-3 mr-2 button-container">
-								<v-btn class="button-icon" @click="buttonPress"><v-icon>{{ buttonPressed[counter].icon }}</v-icon></v-btn>
+								<v-btn v-model="buttonPressed" 
+								class="button-icon"
+								:color="buttonPressed[counter].bg"
+								@click="buttonPress"><v-icon>{{ buttonPressed[counter].icon }}</v-icon>
+								</v-btn>
 							</div>
 						</div>
 						</div>
@@ -115,8 +119,30 @@
 							<h3>Weapons</h3>
 							<div class="buttons" v-for="weapon in weapons" :key="weapon">
 								<p>{{ weapon.value }}</p>
-								<div v-for="num in boxes" :key="num" class="mb-3 mr-2 button-container">
-									<v-btn class="button-icon" @click="buttonPress"><v-icon>{{ buttonPressed[counter].icon }}</v-icon></v-btn>
+								<div class="mb-3 mr-2 button-container">
+									<v-btn v-model="weapon.id" 
+									class="button-icon"
+									:color="weapons[weapon.id].bg"
+									@click="buttonPress(weapon.id)">{{ weapon.id }}<v-icon>{{ weapon.icon }}</v-icon>
+									</v-btn>
+
+									<v-btn v-model="weapon.id" 
+									class="button-icon"
+									:color="weapons[weapon.id].bg"
+									@click="buttonPress(weapon.id)">{{ weapon.id }} {{ weapon.selected }}<v-icon>{{ weapon.icon }}</v-icon>
+									</v-btn>
+
+									<v-btn v-model="weapon.id" 
+									class="button-icon"
+									:color="weapons[weapon.id].bg"
+									@click="buttonPress(weapon.id)">{{ weapon.id }}<v-icon>{{ weapon.icon }}</v-icon>
+									</v-btn>
+
+									<v-btn v-model="weapon.id" 
+									class="button-icon"
+									:color="weapons[weapon.id].bg"
+									@click="buttonPress(weapon.id)">{{ weapon.id }}<v-icon>{{ weapon.icon }}</v-icon>
+									</v-btn>
 								</div>
 							</div>
 						</div>
@@ -125,7 +151,11 @@
 							<div class="buttons" v-for="room in rooms" :key="room">
 								<p>{{ room.value }}</p>
 								<div v-for="num in boxes" :key="num" class="mb-3 mr-2 button-container">
-									<v-btn class="button-icon" @click="buttonPress"><v-icon>{{ buttonPressed[counter].icon }}</v-icon></v-btn>
+									<v-btn v-model="buttonPressed" 
+									class="button-icon"
+									:color="buttonPressed[counter].bg"
+									@click="buttonPress"><v-icon>{{ buttonPressed[counter].icon }}</v-icon>
+									</v-btn>
 								</div>
 							</div>
 						</div>
@@ -195,6 +225,21 @@
 						</v-data-table>
 					</v-card>
 				</template>
+
+				<div class="selected">
+					<h2>Weapons selected:</h2>
+					<p>
+						<span v-for="item in weapons"
+						:key="item.selected">
+						<span
+						v-if="item.selected"
+						>
+						{{ item.value }},
+						</span>
+						<span v-else></span>
+						</span>
+					</p>
+				</div>
 			</div>
 		</v-row>
 	</v-container>
@@ -220,7 +265,6 @@ export default {
 
 		name: "Player",
 		counter: 0,
-		boxes: 4,
 		charSelect: 0,
 		characters: [
 			{
@@ -252,46 +296,73 @@ export default {
 		buttonPressed: [
 			{
 				value: null,
-				icon: "mdi-help"
+				icon: "mdi-help",
+				bg: "#eee"
 			},
 			{ 
 				value: true,
-				icon: "mdi-check-bold"
+				icon: "mdi-check-bold",
+				bg: "#9eb579"
 			},
 			{
 				value: false,
-				icon: "mdi-close-thick"
+				icon: "mdi-close-thick",
+				bg: "#bd7373"
 			}
 		],
 		weapons: [
 			{
 				image: require("../../assets/images/clue/knife.jpg"),
 				value: "Knife",
+				num: 4,
+				id: 0,
+				icon: "mdi-help",
+				bg: "#eee",
 				selected: false
 			},
 			{
 				image: require("../../assets/images/clue/candlestick.jpg"),
 				value: "Candlestick",
+				num: 4,
+				id: 1,
+				icon: "mdi-help",
+				bg: "#eee",
 				selected: false
 			},
 			{
 				image: require("../../assets/images/clue/revolver.jpg"),
 				value: "Revolver",
+				num: 4,
+				id: 2,
+				icon: "mdi-help",
+				bg: "#eee",
 				selected: false
 			},
 			{
 				image: require("../../assets/images/clue/rope.jpg"),
 				value: "Rope",
+				num: 4,
+				id: 3,
+				icon: "mdi-help",
+				bg: "#eee",
 				selected: false
 			},
 			{
 				image: require("../../assets/images/clue/lead-pipe.jpg"),
 				value: "Lead Pipe",
+				num: 4,
+				id: 4,
+				icon: "mdi-help",
+				bg: "#eee",
 				selected: false
 			},
 			{
 				image: require("../../assets/images/clue/wrench.jpg"),
 				value: "Wrench",
+				num: 4,
+				id: 5,
+				icon: "mdi-help",
+				bg: "#eee",
 				selected: false
 			}
 		],
@@ -423,11 +494,23 @@ export default {
 			this.charSelect = charSelect;
 			this.dialog = false;
 		},
-		editNotes(note) {
-			this.notes.push(note);
-		},
-		buttonPress() {
-
+		buttonPress(id) {
+			console.log(id);
+			if(this.counter === 0 || this.counter === 1 || this.counter === 2) {
+				this.counter = this.counter + 1;
+				console.log('Counting: ' + this.counter);
+			}
+			if(this.counter === 1) {
+				this.weapons[id].selected = true;
+			}
+			if(this.counter === 2) {
+				this.weapons[id].selected = false;
+			}
+			if(this.counter === 3) {
+				this.counter = 0;
+				this.weapons[id].selected = false;
+				console.log('Counting: ' + this.counter);
+			}
 		}
 	}
 };
@@ -435,6 +518,17 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Kanit:400,700,900&display=swap');
+.v-btn--active:before {
+    background: inherit;
+}
+.theme--light.v-btn--active:hover::before, .theme--light.v-btn--active::before {
+    background: inherit;
+}
+.v-btn:hover:before {
+    opacity: 0.08;
+}
+
+
 .clue-font {
 	font-family: 'Kanit', sans-serif;
 	font-weight: 900;
@@ -523,7 +617,6 @@ div.clue-content {
 
 .buttons-list .button-container button.button-icon {
 	margin: 5px 1.25%;
-	color: #aaa;
 }
 
 .notes {
