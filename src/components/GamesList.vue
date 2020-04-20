@@ -39,7 +39,7 @@
 													hide-details
 													solo-inverted
 													:items="keys"
-													prepend-inner-icon="mdi-magnify"
+													prepend-inner-icon="mdi-sort"
 													label="Sort by"
 											></v-select>
 										</v-col>
@@ -184,9 +184,6 @@ export default {
 		};
 	},
 	computed: {
-		filteredKeys () {
-			return this.keys.filter(key => key !== 'Name')
-		},
 		gamesCollectionRef() {
 			if (this.$store.state.uid) {
 				return firestore.collection('users').doc(this.$store.state.uid).collection(this.gameTitle.toLowerCase()) || null;
@@ -207,7 +204,6 @@ export default {
 				});
 		},
 		goToGame(game) {
-			console.log('goToGame:', game);
 			this.$store.dispatch('setGame', game);
 			this.$router.push(`/${this.gameTitle}/${game.gameId}`);
 		},
@@ -217,7 +213,6 @@ export default {
 		},
 		removeGameFromGamesArray() {
 			const gameIndex = this.games.findIndex(game => game.gameId === this.gameToDelete.gameId)
-			console.log('gameIndex:', gameIndex);
 			this.games.splice(gameIndex, 1);
 			this.gameToDelete = null;
 			this.deleteDialog = false;
@@ -247,7 +242,3 @@ export default {
 	},
 }
 </script>
-
-<style scoped>
-
-</style>
