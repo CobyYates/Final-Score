@@ -101,65 +101,59 @@
 				</v-row>
 
 				<v-row class="buttons-list">
-					<v-container>
-						<div class="suspects">
-						<h3>Suspects</h3>
-						<div class="buttons" v-for="suspect in suspects" :key="suspect">
-							<p>{{ suspect.value }}</p>
-							<div v-for="num in boxes" :key="num" class="mb-3 mr-2 button-container">
-								<v-btn v-model="buttonPressed" 
-								class="button-icon"
-								:color="buttonPressed[counter].bg"
-								@click="buttonPress"><v-icon>{{ buttonPressed[counter].icon }}</v-icon>
-								</v-btn>
-							</div>
-						</div>
-						</div>
-						<div class="weapons">
-							<h3>Weapons</h3>
-							<div class="buttons" v-for="weapon in weapons" :key="weapon">
-								<p>{{ weapon.value }}</p>
-								<div class="mb-3 mr-2 button-container">
-									<v-btn v-model="weapon.id" 
-									class="button-icon"
-									:color="weapons[weapon.id].bg"
-									@click="buttonPress(weapon.id)">{{ weapon.id }}<v-icon>{{ weapon.icon }}</v-icon>
-									</v-btn>
+					<v-tabs fixed-tabs>
+						<v-tab><h3>Suspects</h3></v-tab>
+						<v-tab><h3>Weapons</h3></v-tab>
+						<v-tab><h3>Rooms</h3></v-tab>
 
-									<v-btn v-model="weapon.id" 
-									class="button-icon"
-									:color="weapons[weapon.id].bg"
-									@click="buttonPress(weapon.id)">{{ weapon.id }} {{ weapon.selected }}<v-icon>{{ weapon.icon }}</v-icon>
-									</v-btn>
-
-									<v-btn v-model="weapon.id" 
-									class="button-icon"
-									:color="weapons[weapon.id].bg"
-									@click="buttonPress(weapon.id)">{{ weapon.id }}<v-icon>{{ weapon.icon }}</v-icon>
-									</v-btn>
-
-									<v-btn v-model="weapon.id" 
-									class="button-icon"
-									:color="weapons[weapon.id].bg"
-									@click="buttonPress(weapon.id)">{{ weapon.id }}<v-icon>{{ weapon.icon }}</v-icon>
-									</v-btn>
+						<v-tab-item class="pt-8">
+							<div class="suspects">
+								<div class="buttons" v-for="suspect in suspects" :key="suspect">
+									<p>{{ suspect.value }}</p>
+									<div class="mb-3 mr-2 button-container">
+										<v-btn v-model="suspect.status" 
+										class="button-icon"
+										:class="suspect.status"
+										:color="suspects[suspect.id].bg"
+										@click="suspectButtonPress(suspect.id)"><v-icon>{{ suspect.icon }}</v-icon>
+										</v-btn>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="rooms">
-							<h3>Rooms</h3>
-							<div class="buttons" v-for="room in rooms" :key="room">
-								<p>{{ room.value }}</p>
-								<div v-for="num in boxes" :key="num" class="mb-3 mr-2 button-container">
-									<v-btn v-model="buttonPressed" 
-									class="button-icon"
-									:color="buttonPressed[counter].bg"
-									@click="buttonPress"><v-icon>{{ buttonPressed[counter].icon }}</v-icon>
-									</v-btn>
+						</v-tab-item>
+
+						<v-tab-item class="pt-8">
+							<div class="weapons">
+								<div class="buttons" v-for="weapon in weapons" :key="weapon">
+									<p>{{ weapon.value }}</p>
+									<div class="mb-3 mr-2 button-container">
+										<v-btn v-model="weapon.status" 
+										class="button-icon"
+										:class="weapon.status"
+										:color="weapons[weapon.id].bg"
+										@click="weaponButtonPress(weapon.id)"><v-icon>{{ weapon.icon }}</v-icon>
+										</v-btn>
+									</div>
 								</div>
 							</div>
-						</div>
-					</v-container>
+						</v-tab-item>
+
+						<v-tab-item class="pt-8">
+							<div class="rooms">
+								<div class="buttons" v-for="room in rooms" :key="room">
+									<p>{{ room.value }}</p>
+									<div class="mb-3 mr-2 button-container">
+										<v-btn v-model="room.status" 
+										class="button-icon"
+										:class="room.status"
+										:color="rooms[room.id].bg"
+										@click="roomButtonPress(room.id)"><v-icon>{{ room.icon }}</v-icon>
+										</v-btn>
+									</div>
+								</div>
+							</div>
+						</v-tab-item>
+					</v-tabs>
 				</v-row>
 			</v-card>
 
@@ -198,10 +192,7 @@
 						:headers="headers"
 						:items="notes"
 						>
-						<!-- CRUD BUTTONS BROKEN - NEED TO FIX -->
-							<template slot="items" slot-scope="props">
-								<td>{{ props.item.note }}</td>
-								<td class="justify-center layout px-0">
+							<template #item.action="props">
 								<v-btn
 								small
 								class="mr-2"
@@ -217,28 +208,56 @@
 								>
 									<v-icon>mdi-trash-can-outline</v-icon>
 								</v-btn>
-								</td>
 							</template>
-							<template v-slot:no-data>
-								<v-btn color="#eee" @click="initialize">Reset</v-btn>
+							<template #no-data>
+								No Data
 							</template>
 						</v-data-table>
 					</v-card>
 				</template>
 
-				<div class="selected">
-					<h2>Weapons selected:</h2>
-					<p>
-						<span v-for="item in weapons"
-						:key="item.selected">
-						<span
-						v-if="item.selected"
-						>
-						{{ item.value }},
-						</span>
-						<span v-else></span>
-						</span>
-					</p>
+				<div class="selected pt-12">
+					<v-row>
+						<div class="selected-section">
+							<h3 class="pb-4">Suspects(s) selected:</h3>
+							<div 
+							v-for="item in suspects"
+							:key="item.status">
+								<div v-if="item.status === 'yes'">
+									<div class="elevation-4 mb-4" color="white">
+										<v-img :src="item.image" :alt="'Image of ' + item.value" class="selected-image" />
+									</div>
+								</div>
+								<div v-else></div>
+							</div>
+						</div>
+						<div class="selected-section">
+							<h3 class="pb-4">Weapon(s) selected:</h3>
+							<div 
+							v-for="item in weapons"
+							:key="item.status">
+								<div v-if="item.status === 'yes'">
+									<div class="elevation-4 mb-4" color="white">
+										<v-img :src="item.image" :alt="'Image of ' + item.value" class="selected-image" />
+									</div>
+								</div>
+								<div v-else></div>
+							</div>
+						</div>
+						<div class="selected-section">
+							<h3 class="pb-4">Room(s) selected:</h3>
+							<div 
+							v-for="item in rooms"
+							:key="item.status">
+								<div v-if="item.status === 'yes'">
+									<div class="elevation-4 mb-4" color="white">
+										<v-img :src="item.image" :alt="'Image of ' + item.value" class="selected-image" />
+									</div>
+								</div>
+								<div v-else></div>
+							</div>
+						</div>
+					</v-row>
 				</div>
 			</div>
 		</v-row>
@@ -251,210 +270,231 @@ export default {
 		dialog: false,
 		noteDialog: false,
 		headers: [
-			{ text: "Note", sortable: false, value: "note" },
-			{ text: "Actions", align: "right", sortable: false, value: "actions" }
+			{ text: 'Note', sortable: false, value: 'note' },
+			{ text: 'Actions', align: 'right', sortable: false, value: 'action' },
 		],
 		notes: [],
 		editedIndex: -1,
 		editedItem: {
-			note: ''
+			note: '',
 		},
 		defaultItem: {
-			note: ''
+			note: '',
 		},
-
-		name: "Player",
+		name: 'Player',
 		counter: 0,
 		charSelect: 0,
 		characters: [
 			{
-				name: "Red",
-				image: require("../../assets/images/clue/red-player.jpg")
+				name: 'Red',
+				image: require('../../assets/images/clue/red-player.jpg'),
 			},
 			{
-				name: "Yellow",
-				image: require("../../assets/images/clue/yellow-player.jpg")
+				name: 'Yellow',
+				image: require('../../assets/images/clue/yellow-player.jpg'),
 			},
 			{
-				name: "Green",
-				image: require("../../assets/images/clue/green-player.jpg")
+				name: 'Green',
+				image: require('../../assets/images/clue/green-player.jpg'),
 			},
 			{
-				name: "Blue",
-				image: require("../../assets/images/clue/blue-player.jpg")
+				name: 'Blue',
+				image: require('../../assets/images/clue/blue-player.jpg'),
 			},
 			{
-				name: "Purple",
-				image: require("../../assets/images/clue/purple-player.jpg")
+				name: 'Purple',
+				image: require('../../assets/images/clue/purple-player.jpg'),
 			},
 			{
-				name: "White",
-				image: require("../../assets/images/clue/white-player.jpg")
-			}
+				name: 'White',
+				image: require('../../assets/images/clue/white-player.jpg'),
+			},
 		],
-		blank: require("../../assets/images/clue/blank.jpg"),
-		buttonPressed: [
-			{
-				value: null,
-				icon: "mdi-help",
-				bg: "#eee"
-			},
-			{ 
-				value: true,
-				icon: "mdi-check-bold",
-				bg: "#9eb579"
-			},
-			{
-				value: false,
-				icon: "mdi-close-thick",
-				bg: "#bd7373"
-			}
-		],
+		blank: require('../../assets/images/clue/blank.jpg'),
 		weapons: [
 			{
-				image: require("../../assets/images/clue/knife.jpg"),
-				value: "Knife",
-				num: 4,
+				image: require('../../assets/images/clue/knife.jpg'),
+				value: 'Knife',
 				id: 0,
-				icon: "mdi-help",
-				bg: "#eee",
-				selected: false
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/candlestick.jpg"),
-				value: "Candlestick",
-				num: 4,
+				image: require('../../assets/images/clue/candlestick.jpg'),
+				value: 'Candlestick',
 				id: 1,
-				icon: "mdi-help",
-				bg: "#eee",
-				selected: false
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/revolver.jpg"),
-				value: "Revolver",
-				num: 4,
+				image: require('../../assets/images/clue/revolver.jpg'),
+				value: 'Revolver',
 				id: 2,
-				icon: "mdi-help",
-				bg: "#eee",
-				selected: false
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/rope.jpg"),
-				value: "Rope",
-				num: 4,
+				image: require('../../assets/images/clue/rope.jpg'),
+				value: 'Rope',
 				id: 3,
-				icon: "mdi-help",
-				bg: "#eee",
-				selected: false
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/lead-pipe.jpg"),
-				value: "Lead Pipe",
-				num: 4,
+				image: require('../../assets/images/clue/lead-pipe.jpg'),
+				value: 'Lead Pipe',
 				id: 4,
-				icon: "mdi-help",
-				bg: "#eee",
-				selected: false
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/wrench.jpg"),
-				value: "Wrench",
-				num: 4,
+				image: require('../../assets/images/clue/wrench.jpg'),
+				value: 'Wrench',
 				id: 5,
-				icon: "mdi-help",
-				bg: "#eee",
-				selected: false
-			}
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
+			},
 		],
 		rooms: [
 			{
-				image: require("../../assets/images/clue/hall.jpg"),
-				value: "Hall",
-				selected: false
+				image: require('../../assets/images/clue/hall.jpg'),
+				value: 'Hall',
+				id: 0,
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/lounge.jpg"),
-				value: "Lounge",
-				selected: false
+				image: require('../../assets/images/clue/lounge.jpg'),
+				value: 'Lounge',
+				id: 1,
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/dining-room.jpg"),
-				value: "Dining Room",
-				selected: false
+				image: require('../../assets/images/clue/dining-room.jpg'),
+				value: 'Dining Room',
+				id: 2,
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/kitchen.jpg"),
-				value: "Kitchen",
-				selected: false
+				image: require('../../assets/images/clue/kitchen.jpg'),
+				value: 'Kitchen',
+				id: 3,
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/ballroom.jpg"),
-				value: "Ball Room",
-				selected: false
+				image: require('../../assets/images/clue/ballroom.jpg'),
+				value: 'Ball Room',
+				id: 4,
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/conservatory.jpg"),
-				value: "Conservatory",
-				selected: false
+				image: require('../../assets/images/clue/conservatory.jpg'),
+				value: 'Conservatory',
+				id: 5,
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/billiard-room.jpg"),
-				value: "Billiards Room",
-				selected: false
+				image: require('../../assets/images/clue/billiard-room.jpg'),
+				value: 'Billiards Room',
+				id: 6,
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/library.jpg"),
-				value: "Library",
-				selected: false
+				image: require('../../assets/images/clue/library.jpg'),
+				value: 'Library',
+				id: 7,
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/study.jpg"),
-				value: "Study",
-				selected: false
-			}
+				image: require('../../assets/images/clue/study.jpg'),
+				value: 'Study',
+				id: 8,
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
+			},
 		],
 		suspects: [
 			{
-				image: require("../../assets/images/clue/colonel-mustard.jpg"),
-				value: "Colonel Mustard",
-				selected: false
+				image: require('../../assets/images/clue/colonel-mustard.jpg'),
+				value: 'Colonel Mustard',
+				id: 0,
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/miss-scarlet.jpg"),
-				value: "Miss Scarlet",
-				selected: false
+				image: require('../../assets/images/clue/miss-scarlet.jpg'),
+				value: 'Miss Scarlet',
+				id: 1,
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/mr-green.jpg"),
-				value: "Mr. Green",
-				selected: false
+				image: require('../../assets/images/clue/mr-green.jpg'),
+				value: 'Mr. Green',
+				id: 2,
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/mrs-peacock.jpg"),
-				value: "Mrs. Peacock",
-				selected: false
+				image: require('../../assets/images/clue/mrs-peacock.jpg'),
+				value: 'Mrs. Peacock',
+				id: 3,
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/mrs-white.jpg"),
-				value: "Mrs. White",
-				selected: false
+				image: require('../../assets/images/clue/mrs-white.jpg'),
+				value: 'Mrs. White',
+				id: 4,
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
 			},
 			{
-				image: require("../../assets/images/clue/professor-plum.jpg"),
-				value: "Professor Plum",
-				selected: false
-			}
-		]
+				image: require('../../assets/images/clue/professor-plum.jpg'),
+				value: 'Professor Plum',
+				id: 5,
+				icon: 'mdi-help',
+				bg: '#eee',
+				status: 'maybe',
+			},
+		],
 	}),
 	computed: {
 		formTitle () {
 			return this.editedIndex === -1 ? 'New Note' : 'Edit Note'
-		}
+		},
 	},
 	watch: {
 		noteDialog (val) {
 			val || this.close();
-		}
+		},
 	},
 	created () {
 		this.initialize();
@@ -494,25 +534,58 @@ export default {
 			this.charSelect = charSelect;
 			this.dialog = false;
 		},
-		buttonPress(id) {
-			console.log(id);
-			if(this.counter === 0 || this.counter === 1 || this.counter === 2) {
-				this.counter = this.counter + 1;
-				console.log('Counting: ' + this.counter);
+		suspectButtonPress(id) {
+			if (this.suspects[id].status === 'maybe') {
+				this.suspects[id].status = 'yes';
+				this.suspects[id].icon = 'mdi-check-bold';
+				this.suspects[id].bg = '#9eb579';
+			} else if (this.suspects[id].status === 'yes') {
+				this.suspects[id].status = 'no';
+				this.suspects[id].icon = 'mdi-close-thick';
+				this.suspects[id].bg = '#bd7373';
+			} else if (this.suspects[id].status === 'no') {
+				this.suspects[id].status = 'maybe';
+				this.suspects[id].icon = 'mdi-help';
+				this.suspects[id].bg = '#eee';
+			} else {
+				this.suspects[id].status = 'maybe';
 			}
-			if(this.counter === 1) {
-				this.weapons[id].selected = true;
+		},
+		weaponButtonPress(id) {
+			if (this.weapons[id].status === 'maybe') {
+				this.weapons[id].status = 'yes';
+				this.weapons[id].icon = 'mdi-check-bold';
+				this.weapons[id].bg = '#9eb579';
+			} else if (this.weapons[id].status === 'yes') {
+				this.weapons[id].status = 'no';
+				this.weapons[id].icon = 'mdi-close-thick';
+				this.weapons[id].bg = '#bd7373';
+			} else if (this.weapons[id].status === 'no') {
+				this.weapons[id].status = 'maybe';
+				this.weapons[id].icon = 'mdi-help';
+				this.weapons[id].bg = '#eee';
+			} else {
+				this.weapons[id].status = 'maybe';
 			}
-			if(this.counter === 2) {
-				this.weapons[id].selected = false;
+		},
+		roomButtonPress(id) {
+			if (this.rooms[id].status === 'maybe') {
+				this.rooms[id].status = 'yes';
+				this.rooms[id].icon = 'mdi-check-bold';
+				this.rooms[id].bg = '#9eb579';
+			} else if (this.rooms[id].status === 'yes') {
+				this.rooms[id].status = 'no';
+				this.rooms[id].icon = 'mdi-close-thick';
+				this.rooms[id].bg = '#bd7373';
+			} else if (this.rooms[id].status === 'no') {
+				this.rooms[id].status = 'maybe';
+				this.rooms[id].icon = 'mdi-help';
+				this.rooms[id].bg = '#eee';
+			} else {
+				this.rooms[id].status = 'maybe';
 			}
-			if(this.counter === 3) {
-				this.counter = 0;
-				this.weapons[id].selected = false;
-				console.log('Counting: ' + this.counter);
-			}
-		}
-	}
+		},
+	},
 };
 </script>
 
@@ -596,7 +669,7 @@ export default {
 
 div.clue-content {
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: flex-start;
 	flex-wrap: wrap;
 	flex-direction: row;
@@ -633,8 +706,36 @@ div.clue-content {
 	background-color: #eee;
 }
 
+.selected-image {
+	width: 200px;
+	height: 325px;
+}
+
+.selected .row {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	flex-direction: row;
+}
+
+.selected div {
+	border-radius: 8px;
+}
+
+.selected .selected-section {
+	max-width: 200px;
+	margin: 10px;
+}
+
+.selected .selected-section h3 {
+	font-size: 18px;
+}
+
 @media only screen and (min-width: 768px) {
-	
+	.player-card {
+		width: 60%;
+	}
 }
 
 @media only screen and (min-width: 1200px) {
@@ -648,13 +749,17 @@ div.clue-content {
 	}
 }
 
-@media only screen and (min-width: 1600px) {
+@media only screen and (min-width: 1900px) {
 	div.clue-content {
 		justify-content: space-evenly;
 	}
 
 	.player-card {
-		width: 40%;
+		width: 30%;
+	}
+
+	.player-card .suspects, .player-card .weapons, .player-card .rooms {
+		padding: 0 30px;
 	}
 
 	.notes {
