@@ -1,6 +1,11 @@
 <template>
 	<v-container>
 		<v-row>
+			<v-col cols="4"></v-col>
+			<v-col cols="4"><p class="display-2 text-center">NERTZ</p></v-col>
+			<v-col cols="4"><Rules :game="this.gameTitle" /></v-col>
+		</v-row>
+		<v-row>
 			<v-col>
 				<h2>{{ gameName }}</h2>
 				<v-container>
@@ -8,7 +13,7 @@
 						<v-col>
 							<error :error="error" v-if="error" class="mb-6"></error>
 							<div class="game-players-list d-flex flex-wrap">
-								<v-card class="game-player mb-6" v-for="(player, index) in players" :key="player.id">
+								<v-card class="game-player mb-6" v-for="(player, index) in gameData.players" :key="player.id">
 									<div class="player">
 										<v-btn text fab absolute small class="delete-player" @click="deletePlayer(index)"><v-icon>mdi-delete</v-icon></v-btn>
 										<h3 v-if="!player.editName" @click="editName(player)" class="pr-8">{{ player.name }}</h3>
@@ -21,7 +26,8 @@
 											@blur="endEditName(player)"
 											autofocus
 											ref="playerName"
-											aria-autocomplete="off"
+											aria-autocomplete="none"
+											autocomplete="false"
 										></v-text-field>
 										<ul>
 											<li
@@ -40,6 +46,8 @@
 											lazy-validation="true"
 											class="scoreInput"
 											v-model="player.newScore"
+											aria-autocomplete="none"
+											autocomplete="false"
 										></v-text-field>
 									</div>
 								</v-card>
@@ -64,16 +72,27 @@
 
 <script>
 import firestore from '../../firebase';
-import Error from '../../components/Error.vue';
+import Error from '../../components/Error';
+import Rules from '../../components/Rules';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 const numRegex = /(^$|^-?[0-9]*$|null)/; // checks to make sure it's a number
 
 export default {
+	components: {
+		Error,
+		Rules,
+	},
 	data() {
 		return {
 			userId: this.$store.state.uid,
-			gameName: this.$store.state.gameName || '',
-			players: [],
+			gameTitle: 'Nertz',
+			gameId: this.$route.params.gameId || null,
+			gameName: this.$store.state.game.gameName || '',
+			gameData: {
+				players: [],
+			},
 			newScores: [],
 			scoreRules: [
 				value => numRegex.test(value) || 'Only Numbers are Valid',
@@ -81,9 +100,6 @@ export default {
 		};
 	},
 	computed: {
-		gameId() {
-			return this.$route.params.gameId || null;
-		},
 		error() {
 			return this.$store.state.error;
 		},
@@ -98,21 +114,21 @@ export default {
 		getGame() {
 			this.gameDocRef.onSnapshot((doc) => {
 				this.gameName = doc.data().gameName;
-				this.players = doc.data().gameData.players;
+				this.gameData = doc.data().gameData;
 			});
-
 		},
 		updateFirestore() {
 			this.gameDocRef.update({
-				players: this.players,
+				updated: firebase.firestore.Timestamp.now(),
+				gameData: this.gameData,
 			});
 		},
 		addPlayer() {
 			let nextId = 1;
-			if (this.players.length > 0) {
-				nextId = this.players[this.players.length - 1].id + 1;
+			if (this.gameData.players.length > 0) {
+				nextId = this.gameData.players[this.gameData.players.length - 1].id + 1;
 			}
-			this.players.push({
+			this.gameData.players.push({
 				id: nextId,
 				name: 'New Player',
 				scores: [],
@@ -128,22 +144,22 @@ export default {
 			player.editName = false;
 		},
 		deletePlayer(index) {
-			this.players.splice(index, 1);
+			this.gameData.players.splice(index, 1);
 		},
 		sumScores() {
-			for (let player of this.players) {
+			for (let player of this.gameData.players) {
 				player.totalScore = player.scores.reduce((a, b) => a + b, 0);
 			}
 		},
 		endRound() {
-			this.players.forEach(player => { // Make an array of all new scores to check the length and make sure all players have a score
-				if (player.newScore != null && player.newScore != '') {
+			this.gameData.players.forEach(player => { // Make an array of all new scores to check the length and make sure all players have a score
+				if (player.newScore != null && player.newScore !== '') {
 					const value = parseInt(player.newScore);
 					this.newScores.push(value);
 				}
 			});
-			if (this.newScores.length === this.players.length) {
-				this.players.forEach(player => {
+			if (this.newScores.length === this.gameData.players.length) {
+				this.gameData.players.forEach(player => {
 					player.scores.push(parseInt(player.newScore));
 					player.newScore = null;
 				});
@@ -158,14 +174,12 @@ export default {
 		},
 		editScore(index) {
 			console.log(index);
+			// Todo: Edit scores from previous rounds
 		},
 
 	},
 	created() {
 		this.getGame();
-	},
-	components: {
-		Error,
 	},
 }
 </script>
