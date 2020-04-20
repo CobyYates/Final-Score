@@ -12,8 +12,7 @@ export default new Vuex.Store({
 		uid: '',
 		username: null,
 		gameId: null,
-		gameName: null,
-		gameData: {},
+		game: {},
 		loginDisabled: false,
 		error: null,
 	},
@@ -34,9 +33,7 @@ export default new Vuex.Store({
 			state.username = username;
 		},
 		setGame(state, game) {
-			state.gameId = game.gameId;
-			state.gameName = game.gameName;
-			state.gameData = game.gameData;
+			state.game = game;
 		},
 		disableLogin(state) {
 			state.loginDisabled = true;

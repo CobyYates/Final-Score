@@ -17,9 +17,9 @@
 				>
 					<v-tabs-slider></v-tabs-slider>
 
-					<v-tab 
-                        v-for="i in tabs" 
-                        :key="i.i" 
+					<v-tab
+                        v-for="i in tabs"
+                        :key="i.i"
                         :href="`#tab-${i}`"
                         @click="getData">
 						{{ i }}
@@ -46,14 +46,14 @@
                                     <v-container v-if="selected === true">
                                         <v-card-title class="headline" primary-title
 										>{{ results.name }}
-										<span class="title font-weight-light"
+										<span class="title font-weight-light ml-6"
 											>({{ results.primary_publisher }})</span
 										></v-card-title>
 									<v-card-text>
 										<v-row>
 											<v-col>
 												<p class="subtitle-1">Description</p>
-												<p>{{ `${results.description}` }}</p>
+												<p v-html="results.description"></p>
 											</v-col>
 										</v-row>
 										<v-row class="d-flex justify-center">
@@ -129,7 +129,7 @@ export default {
 				});
 		},
 		getData() {
-			this.selected = true 
+			this.selected = true
 			let test = []
 			test.push(this.gameTypes)
 			let id = test[0].games.filter(e => e.name === this.gameSelected)

@@ -118,29 +118,6 @@
 		<v-content class="my-0 py-10">
 			<router-view />
 		</v-content>
-
-		<!-- Bottom right button {+} -->
-		<v-btn bottom color="pink" dark fab fixed right @click="dialog = !dialog">
-			<v-icon>mdi-plus</v-icon>
-		</v-btn>
-		<v-dialog v-model="dialog" width="800px">
-			<v-card>
-				<v-card-title class="grey darken-2">
-					Create contact
-				</v-card-title>
-				<v-container>
-					<v-row class="mx-2">
-						content
-					</v-row>
-				</v-container>
-				<v-card-actions>
-					<v-btn text color="primary">More</v-btn>
-					<v-spacer />
-					<v-btn text color="primary" @click="dialog = false">Cancel</v-btn>
-					<v-btn text @click="dialog = false">Save</v-btn>
-				</v-card-actions>
-			</v-card>
-		</v-dialog>
 	</v-app>
 </template>
 
