@@ -1,13 +1,12 @@
 <template>
-	<div class="my-2" id="container">
-		<v-row>
+	<v-app class="my-2" id="container">
+		<v-row id="stripes">
 			<v-col xs="12" md="11" lg="10" xl="8" class="mx-auto">
 				<v-row>
 					<v-col cols="4"></v-col>
 					<v-col cols="4"><p class="display-2 text-center">YAHTZEE</p></v-col>
-					<v-col cols="4"><Rules :game="this.gameTitle" /></v-col>
+					<v-col cols="4"><Rules :game="this.gameTitle"/></v-col>
 				</v-row>
-				<v-divider class="mb-5"></v-divider>
 				<v-row>
 					<v-col
 						cols="12"
@@ -25,7 +24,7 @@
 								<span v-if="item.text">
 									<p id="bonus">{{ item.text }}</p>
 								</span>
-								<v-icon color="black" x-large>{{ item.icon }}</v-icon>
+								<v-icon color="white" x-large>{{ item.icon }}</v-icon>
 								<v-col v-if="item.button">
 									<v-btn
 										color="red"
@@ -159,7 +158,7 @@
 			dark
 			>Total: {{ this.totalScore }}</v-card
 		>
-	</div>
+	</v-app>
 </template>
 
 <script>
@@ -340,7 +339,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #textAlign {
 	width: 120px;
 	margin-top: 20px;
@@ -353,4 +352,32 @@ export default {
 .bonus {
 	margin-top: 12px;
 }
+
+#inspire {
+	background: none;
+}
+
+#container {
+	padding-top: 0;
+	padding-bottom: 200px;
+	margin-bottom: 0;
+	margin-top: 0;
+	background: #222222;
+	background: -webkit-linear-gradient(to right, #434343, #1b1b1b);
+	background: linear-gradient(to right, #434343, #1b1b1b);
+}
+p {
+	color: white;
+}
+
+/* #stripes {
+	color: white;
+	background: repeating-linear-gradient(
+		-55deg,
+		#222,
+		#222 100px,
+		#333 100px,
+		#333 600px
+	);
+} */
 </style>

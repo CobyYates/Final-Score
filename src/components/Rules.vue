@@ -115,13 +115,14 @@ export default {
 		gameTypes: [],
 		tabs: ['Game Version', 'Game Information'],
 		url: process.env.VUE_APP_CLIENT_ID,
+		id: 'ELR3qC7h46',
 		results: null,
 	}),
 	methods: {
 		getGames() {
 			axios
 				.get(
-					`https://www.boardgameatlas.com/api/search?name=${this.game}&client_id=${this.url}`,
+					`https://www.boardgameatlas.com/api/search?name=${this.game}&client_id=${this.id}`,
 				)
 				.then(response => {
 					this.gameTypes = response.data;

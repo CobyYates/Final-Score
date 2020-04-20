@@ -115,7 +115,7 @@
 				</v-list-item>
 			</router-link>
 		</v-app-bar>
-		<v-content>
+		<v-content class="my-0 py-10">
 			<router-view />
 		</v-content>
 
