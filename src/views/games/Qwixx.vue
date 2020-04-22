@@ -9,11 +9,14 @@
 		<!-- row can only be locked if button#2 or button#12 is clicked. When two rows are locked, call the End Game dialog-->
 		<v-row class="mb-6 mx-4">
 			<div class="redBtns mr-3 mb-2" id="redButtons" v-for="(redBtn, i) in redBtns" :key="i">
-				<v-btn class="red mark" dark v-on:click="redRow++, redBtn.marked = !redBtn.marked">
+				<v-btn class="red mark" @click="redRow++, redBtn.marked = !redBtn.marked"
+				dark >
 					<i v-bind:class="[{ 'white' : redBtn.marked }, 'material-icons']">{{redBtn.name}}</i>
 				</v-btn>
+				
 			</div>
-			<v-btn :disabled="lockRow" @click="redBtn.name == 2 || redBtn.name == 12 ? lockRedRow : lockRedRow = false">LOCK</v-btn>
+			<v-btn :disabled="check(redBtns)" v-on:click="lockRow(redBtns)">LOCK</v-btn>
+			
 		</v-row>
 		<!--yellow row-->
 		<v-row class="mb-6 mx-4">
@@ -116,12 +119,11 @@ export default {
 			yellowRow:0,
 			greenScore: 0,
 			greenRow:0,
+			// lockRow: false,
 			lockRedRow:false,
 			totalScore: 0,
 			penaltyScore:0,
-			state:{
-				isClicked:false,
-			},
+		
 			points: [{ e: false, v: 1 }],
 			penalties: [
 				{ e: false, v: -5 },
@@ -187,7 +189,27 @@ export default {
 			],
 		};
 	},
+
 	methods: {
+		check(row){
+			console.log('this is from computed' + row);
+			if(this.row[2].marked || this.row[11].marked){
+				console.log(this.row[2]);
+				return true;
+			}else{
+				return false;
+			}
+		},
+
+		lockRow(row){
+			console.log('this is from lockRow' + row);
+			
+			var i;
+			for(i = 0; i < this.redBtns.length; this.redBtns++){
+				this.redBtns.marked = true;
+				console.log('this is from lockRow ' + this.redBtns[i].name)
+			}
+		},
 		
 		calculate(row){
 			if(row === 0){
@@ -230,13 +252,11 @@ export default {
 				return 78;
 			}
 		},
+
+		
 		
 		//method for adding points when clicking colored buttons
-		add(value, totalScore) {
-			this.value;
-			console.log(totalScore);
-			totalScore = totalScore + value;
-		},
+		
 		//method for subtracting penalties
 		subtract(value, penScore, notAdd) {
 			console.log(value);
@@ -247,7 +267,8 @@ export default {
 			console.log(this.penaltyScore);
 			return this.penaltyScore;
 		},
-		//click event for lock button
+		
+		
 		
 	},
 };
