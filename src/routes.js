@@ -5,6 +5,7 @@ import Yahtzee from './views/games/Yahtzee';
 import NertzGames from './views/gamesList/NertzGames';
 import Nertz from './views/games/Nertz';
 import OhHell from './views/games/OhHell';
+import YuGiOhGames from './views/gamesList/YuGiOhGames';
 import YuGiOh from './views/games/YuGiOh';
 import Qwixx from './views/games/Qwixx';
 
@@ -15,7 +16,8 @@ export const routes = [
 	{ path: '/yahtzee', component: Yahtzee },
 	{ path: '/nertz', component: NertzGames },
 	{ path: '/nertz/:gameId', component: Nertz },
-	{ path: '/yugioh', component: YuGiOh },
+	{ path: '/yugioh', component: YuGiOhGames },
+	{ path: '/yugioh/:gameId', component: YuGiOh },
 	{ path: '/ohhell', component: OhHell },
 	{ path: '/qwixx', component: Qwixx },
 ];
