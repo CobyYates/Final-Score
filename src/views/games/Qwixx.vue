@@ -15,7 +15,7 @@
 				</v-btn>
 				
 			</div>
-			<v-btn :disabled="check" v-on:click="lockRow(redBtns)">LOCK</v-btn>
+			<v-btn :disabled="checkRed" v-on:click="lockRow(redBtns)">LOCK</v-btn>
 			
 		</v-row>
 		<!--yellow row-->
@@ -25,6 +25,8 @@
 					<i v-bind:class="[{ 'white' : yellowBtn.marked }, 'material-icons']">{{yellowBtn.name}}</i>
 				</v-btn>
 			</div>
+
+			<v-btn :disabled="checkYellow" v-on:click="lockRow(yellowBtns)">LOCK</v-btn>
 		</v-row>
 		<!--green row-->
 		<v-row class="mb-6 mx-4">
@@ -33,6 +35,8 @@
 					<i v-bind:class="[{ 'white' : greenBtn.marked }, 'material-icons']">{{greenBtn.name}}</i>
 				</v-btn>
 			</div>
+
+			<v-btn :disabled="checkGreen" v-on:click="lockRow(greenBtns)">LOCK</v-btn>
 		</v-row>
 		<!--blue row-->
 		<v-row class="mb-6 mx-4">
@@ -41,6 +45,8 @@
 					<i v-bind:class="[{ 'white' : blueBtn.marked }, 'material-icons']">{{blueBtn.name}}</i>
 				</v-btn>
 			</div>
+
+			<v-btn :disabled="checkBlue" v-on:click="lockRow(blueBtns)">LOCK</v-btn>
 		</v-row>
 		<!-- penalties -->
 		<v-row class="mx-4 mb-3">
@@ -119,8 +125,7 @@ export default {
 			yellowRow:0,
 			greenScore: 0,
 			greenRow:0,
-			// lockRow: false,
-			lockRedRow:false,
+			
 			totalScore: 0,
 			penaltyScore:0,
 		
@@ -157,7 +162,7 @@ export default {
 				{ id: 10, marked: false, name: '10' },
 				{ id: 11, marked: false, name: '11' },
 				{ id: 12, marked: false, name: '12' },
-				{ id: 13, marked: false, name: 'LOCK' },
+
 			],
 			greenBtns: [
 				{ id: 2, marked: false, name: '12' },
@@ -171,7 +176,7 @@ export default {
 				{ id: 10, marked: false, name: '4' },
 				{ id: 11, marked: false, name: '3' },
 				{ id: 12, marked: false, name: '2' },
-				{ id: 13, marked: false, name: 'LOCK' },
+
 			],
 			blueBtns: [
 				{ id: 2, marked: false, name: '12' },
@@ -185,28 +190,85 @@ export default {
 				{ id: 10, marked: false, name: '4' },
 				{ id: 11, marked: false, name: '3' },
 				{ id: 12, marked: false, name: '2' },
-				{ id: 13, marked: false, name: 'LOCK' },
 			],
 		};
 	},
 
-	methods: {
-		check(){
-			if(this.redBtns[2].marked || this.redBtns[11].marked){
-				console.log(this.redBtns[2]);
+	computed:{
+		checkRed(){
+			console.log('this is from computed ' + this.redBtns[10].name);
+			
+			if(this.redBtns[0].marked || this.redBtns[10].marked) {
+				console.log('false');
 				return false;
-			}else{
+				
+			}
+			
+			else{
+				console.log('true')
 				return true;
+			
 			}
 		},
+		checkYellow(){
+			console.log('this is from computed ' + this.yellowBtns[10].name);
+			
+			if(this.yellowBtns[0].marked || this.yellowBtns[10].marked) {
+				console.log('false');
+				return false;
+				
+			}
+			
+			else{
+				console.log('true')
+				return true;
+			
+			}
+		},
+		checkGreen(){
+			console.log('this is from computed ' + this.greenBtns[10].name);
+			
+			if(this.greenBtns[0].marked || this.greenBtns[10].marked) {
+				console.log('false');
+				return false;
+				
+			}
+			
+			else{
+				console.log('true')
+				return true;
+			
+			}
+		},
+		checkBlue(){
+			console.log('this is from computed ' + this.blueBtns[10].name);
+			
+			if(this.blueBtns[0].marked || this.blueBtns[10].marked) {
+				console.log('false');
+				return false;
+				
+			}
+			
+			else{
+				console.log('true')
+				return true;
+			
+			}
+		},
+	
+	},
+
+	methods: {
+		
 
 		lockRow(row){
-			console.log('this is from lockRow' + row);
+			console.log(row);
+			console.log('this is from lockRow' + this.redBtns);
 			
 			var i;
-			for(i = 0; i < this.redBtns.length; this.redBtns++){
-				this.redBtns.marked = true;
-				console.log('this is from lockRow ' + this.redBtns[i].name)
+			for(i = 0; i < this.row.length; this.row++){
+				this.row.marked = true;
+				console.log('this is from lockRow ' + this.row[i].name)
 			}
 		},
 		
@@ -252,10 +314,6 @@ export default {
 			}
 		},
 
-		
-		
-		//method for adding points when clicking colored buttons
-		
 		//method for subtracting penalties
 		subtract(value, penScore, notAdd) {
 			console.log(value);
@@ -268,8 +326,8 @@ export default {
 		},
 		
 		
-		
 	},
+	
 };
 </script>
 
