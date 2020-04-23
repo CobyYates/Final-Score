@@ -17,6 +17,7 @@
 
 		
 		
+		<!---beginning of the buttons---->
 
 		<!-- row can only be locked if button#2 or button#12 is clicked. When two rows are locked, call the End Game dialog-->
 		<v-row class="mb-6 mx-4">
@@ -267,10 +268,9 @@ export default {
 
 	methods: {
 		
-
 		lockRow(row){
 			console.log(row);
-			console.log('this is from lockRow' , this.redBtns);
+			console.log('this is from lockRow' , this.row);
 			
 			var i;
 			for(i = 0; i < this.row.length; this.row++){
@@ -328,7 +328,10 @@ export default {
 			console.log(notAdd);
 			this.penScore += value;
 			this.penaltyScore += value;
-			console.log(this.penaltyScore);
+			console.log('this is penalty score', this.penaltyScore);
+			if(this.penaltyScore == -20){
+				this.dialog = true;
+			}
 			return this.penaltyScore;
 		},
 		
