@@ -265,6 +265,14 @@
 </template>
 
 <script>
+/*
+import firestore from '../../firebase';
+import Error from '../../components/Error';
+import Rules from '../../components/Rules';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+*/
+
 export default {
 	data: () => ({
 		dialog: false,
