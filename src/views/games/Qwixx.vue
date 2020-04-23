@@ -3,7 +3,19 @@
 		<v-row class="mx-4 my-4">
 			<h2 class="display-3 font-weight-black underlined">Qwixx</h2>
 			<v-col cols="4"><Rules :game="this.gameTitle" /></v-col>
+			<v-col cols="4"><v-btn
+					class="mr-6"
+					large
+					tile
+					href="https://www.ultraboardgames.com/qwixx/game-rules.php"
+					target="_blank"
+					title="Open Rules in a new tab"
+					>
+						<v-icon class="mr-3" dark>mdi-book-open-variant</v-icon>Rules
+					</v-btn></v-col>
 		</v-row>
+
+		
 		
 
 		<!-- row can only be locked if button#2 or button#12 is clicked. When two rows are locked, call the End Game dialog-->
@@ -198,7 +210,7 @@ export default {
 		checkRed(){
 			console.log('this is from computed ' + this.redBtns[10].name);
 			
-			if(this.redBtns[0].marked || this.redBtns[10].marked) {
+			if((this.redBtns[0].marked || this.redBtns[10].marked) && this.redScore >=15) {
 				console.log('false');
 				return false;
 			}
@@ -212,7 +224,7 @@ export default {
 		checkYellow(){
 			console.log('this is from computed ' + this.yellowBtns[10].name);
 			
-			if(this.yellowBtns[0].marked || this.yellowBtns[10].marked) {
+			if((this.yellowBtns[0].marked || this.yellowBtns[10].marked) && this.yellowScore >= 15) {
 				console.log('false');
 				return false;
 			}
@@ -225,7 +237,7 @@ export default {
 		checkGreen(){
 			console.log('this is from computed ' + this.greenBtns[10].name);
 			
-			if(this.greenBtns[0].marked || this.greenBtns[10].marked) {
+			if((this.greenBtns[0].marked || this.greenBtns[10].marked) && this.greenScore >= 15) {
 				console.log('false');
 				return false;
 			}
@@ -239,7 +251,7 @@ export default {
 		checkBlue(){
 			console.log('this is from computed ' + this.blueBtns[10].name);
 			
-			if(this.blueBtns[0].marked || this.blueBtns[10].marked) {
+			if((this.blueBtns[0].marked || this.blueBtns[10].marked) && this.blueScore >= 15) {
 				console.log('false');
 				return false;
 			}
@@ -258,12 +270,12 @@ export default {
 
 		lockRow(row){
 			console.log(row);
-			console.log('this is from lockRow' + this.redBtns);
+			console.log('this is from lockRow' , this.redBtns);
 			
 			var i;
 			for(i = 0; i < this.row.length; this.row++){
 				this.row.marked = true;
-				console.log('this is from lockRow ' + this.row[i].name)
+				console.log('this is from lockRow ' , this.row[i].name)
 			}
 		},
 		
