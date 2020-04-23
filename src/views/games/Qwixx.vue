@@ -201,7 +201,6 @@ export default {
 			if(this.redBtns[0].marked || this.redBtns[10].marked) {
 				console.log('false');
 				return false;
-				
 			}
 			
 			else{
@@ -216,13 +215,11 @@ export default {
 			if(this.yellowBtns[0].marked || this.yellowBtns[10].marked) {
 				console.log('false');
 				return false;
-				
 			}
 			
 			else{
 				console.log('true')
 				return true;
-			
 			}
 		},
 		checkGreen(){
@@ -231,7 +228,6 @@ export default {
 			if(this.greenBtns[0].marked || this.greenBtns[10].marked) {
 				console.log('false');
 				return false;
-				
 			}
 			
 			else{
@@ -246,7 +242,6 @@ export default {
 			if(this.blueBtns[0].marked || this.blueBtns[10].marked) {
 				console.log('false');
 				return false;
-				
 			}
 			
 			else{
