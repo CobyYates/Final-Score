@@ -16,6 +16,11 @@
 		</v-row>
 
 		
+		<!-----TO DO--------->
+		<!------MARK ALL BUTTONS ON ROW WHEN LOCK BUTTON IS CLICKED----->
+		<!-----END GAME WHEN TWO LOCK BUTTONS ARE CLICKED--->
+		<!------SAVE IT TO FIREBASE....---->
+
 		
 		<!---beginning of the buttons---->
 
