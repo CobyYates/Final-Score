@@ -15,7 +15,7 @@
 				</v-btn>
 				
 			</div>
-			<v-btn :disabled="check(redBtns)" v-on:click="lockRow(redBtns)">LOCK</v-btn>
+			<v-btn :disabled="check" v-on:click="lockRow(redBtns)">LOCK</v-btn>
 			
 		</v-row>
 		<!--yellow row-->
@@ -146,58 +146,57 @@ export default {
 				
 			],
 			yellowBtns: [
-				{ id: 1, marked: false, name: '2' },
-				{ id: 1, marked: false, name: '3'},
-				{ id: 1, marked: false, name: '4' },
-				{ id: 1, marked: false, name: '5' },
-				{ id: 1, marked: false, name: '6'},
-				{ id: 1, marked: false, name: '7'},
-				{ id: 1, marked: false, name: '8' },
-				{ id: 1, marked: false, name: '9' },
-				{ id: 1, marked: false, name: '10' },
-				{ id: 1, marked: false, name: '11' },
-				{ id: 1, marked: false, name: '12' },
-				{ id: 1, marked: false, name: 'LOCK' },
+				{ id: 2, marked: false, name: '2' },
+				{ id: 3, marked: false, name: '3'},
+				{ id: 4, marked: false, name: '4' },
+				{ id: 5, marked: false, name: '5' },
+				{ id: 6, marked: false, name: '6'},
+				{ id: 7, marked: false, name: '7'},
+				{ id: 8, marked: false, name: '8' },
+				{ id: 9, marked: false, name: '9' },
+				{ id: 10, marked: false, name: '10' },
+				{ id: 11, marked: false, name: '11' },
+				{ id: 12, marked: false, name: '12' },
+				{ id: 13, marked: false, name: 'LOCK' },
 			],
 			greenBtns: [
-				{ id: 1, marked: false, name: '12' },
-				{ id: 1, marked: false, name: '11' },
-				{ id: 1, marked: false, name: '10' },
-				{ id: 1, marked: false, name: '9' },
-				{ id: 1, marked: false, name: '8' },
-				{ id: 1, marked: false, name: '7' },
-				{ id: 1, marked: false, name: '6' },
-				{ id: 1, marked: false, name: '5' },
-				{ id: 1, marked: false, name: '4' },
-				{ id: 1, marked: false, name: '3' },
-				{ id: 1, marked: false, name: '2' },
-				{ id: 1, marked: false, name: 'LOCK' },
+				{ id: 2, marked: false, name: '12' },
+				{ id: 3, marked: false, name: '11' },
+				{ id: 4, marked: false, name: '10' },
+				{ id: 5, marked: false, name: '9' },
+				{ id: 6, marked: false, name: '8' },
+				{ id: 7, marked: false, name: '7' },
+				{ id: 8, marked: false, name: '6' },
+				{ id: 9, marked: false, name: '5' },
+				{ id: 10, marked: false, name: '4' },
+				{ id: 11, marked: false, name: '3' },
+				{ id: 12, marked: false, name: '2' },
+				{ id: 13, marked: false, name: 'LOCK' },
 			],
 			blueBtns: [
-				{ id: 1, marked: false, name: '12' },
-				{ id: 1, marked: false, name: '11' },
-				{ id: 1, marked: false, name: '10' },
-				{ id: 1, marked: false, name: '9' },
-				{ id: 1, marked: false, name: '8' },
-				{ id: 1, marked: false, name: '7' },
-				{ id: 1, marked: false, name: '6' },
-				{ id: 1, marked: false, name: '5' },
-				{ id: 1, marked: false, name: '4' },
-				{ id: 1, marked: false, name: '3' },
-				{ id: 1, marked: false, name: '2' },
-				{ id: 1, marked: false, name: 'LOCK' },
+				{ id: 2, marked: false, name: '12' },
+				{ id: 3, marked: false, name: '11' },
+				{ id: 4, marked: false, name: '10' },
+				{ id: 5, marked: false, name: '9' },
+				{ id: 6, marked: false, name: '8' },
+				{ id: 7, marked: false, name: '7' },
+				{ id: 8, marked: false, name: '6' },
+				{ id: 9, marked: false, name: '5' },
+				{ id: 10, marked: false, name: '4' },
+				{ id: 11, marked: false, name: '3' },
+				{ id: 12, marked: false, name: '2' },
+				{ id: 13, marked: false, name: 'LOCK' },
 			],
 		};
 	},
 
 	methods: {
-		check(row){
-			console.log('this is from computed' + row);
-			if(this.row[2].marked || this.row[11].marked){
-				console.log(this.row[2]);
-				return true;
-			}else{
+		check(){
+			if(this.redBtns[2].marked || this.redBtns[11].marked){
+				console.log(this.redBtns[2]);
 				return false;
+			}else{
+				return true;
 			}
 		},
 
