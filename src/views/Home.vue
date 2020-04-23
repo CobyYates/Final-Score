@@ -45,9 +45,9 @@ export default {
 				to: '/yugioh',
 			},
 			{
-				text: "Clue",
-				img: require("../../src/assets/images/clue.jpg"),
-				to: "/clue"
+				text: 'Clue',
+				img: require('../../src/assets/images/clue.jpg'),
+				to: '/clue',
 			},
 			{
 				text: 'Nertz',
