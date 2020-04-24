@@ -1,5 +1,5 @@
 <template>
-	<v-app class="my-2" id="container">
+	<v-app id="container">
 		<v-row id="stripes">
 			<v-col xs="12" md="11" lg="10" xl="8" class="mx-auto">
 				<v-row>
@@ -7,7 +7,13 @@
 					<v-col cols="4"><p class="display-2 text-center">YAHTZEE</p></v-col>
 					<v-col cols="4"><Rules :game="this.gameTitle"/></v-col>
 				</v-row>
-				<v-row>
+				<v-row v-if="gameStarted == false">
+					<v-col class="mx-auto beforeGame d-flex justify-center align-center">
+						<v-btn x-large color="success" @click="startGame()">Start Game</v-btn>
+					</v-col>
+				</v-row>
+				
+				<v-row v-else-if="gameStarted">
 					<v-col
 						cols="12"
 						xs="12"
@@ -139,7 +145,7 @@
 									<v-btn color="green darken-1" text @click="endDialog = false"
 										>No</v-btn
 									>
-									<v-btn color="green darken-1" text @click="endDialog = false"
+									<v-btn color="green darken-1" text @click="endDialog = false, saveGame"
 										>Yes</v-btn
 									>
 								</v-card-actions>
@@ -151,6 +157,7 @@
 			</v-col>
 		</v-row>
 		<v-card
+		v-if="this.gameStarted"
 			class="display-1 mx-auto d-flex justify-center align-center elevation-4"
 			height="100"
 			color="red"
@@ -158,24 +165,44 @@
 			dark
 			>Total: {{ this.totalScore }}</v-card
 		>
+		<v-row v-if="userId">
+			<v-col cols="6" class="mx-auto">
+				<!-- <GamesList :gameTitle="this.gameTitle"/> -->
+			</v-col>
+		</v-row>
 	</v-app>
 </template>
 
 <script>
 import Rules from '../../components/Rules';
+import firebase from 'firebase/app';
+import firestore from '../../firebase';
+import 'firebase/firestore'
+// import GamesList from '../../components/GamesList'
 export default {
 	components: {
 		Rules,
+		// GamesList,
+	},
+	computed: {
+		yahtzeeCollectionRef() {
+			if (this.$store.state.uid) {
+				return firestore.collection('users').doc(this.$store.state.uid).collection('yahtzee') || null;
+			}
+			return null;
+		},
 	},
 	data() {
 		return {
 			rolls: 0,
 			endDialog: false,
+			gameStarted: false,
 			upperScore: 0,
 			lowerScore: 0,
 			yahtzee: true,
 			dialog: true,
 			totalScore: 0,
+			userId: this.$store.state.uid,
 			gameTitle: 'yahtzee',
 			data: {
 				upperNew: [
@@ -312,6 +339,16 @@ export default {
 		};
 	},
 	methods: {
+		startGame() {
+			this.gameStarted = true
+			console.log(this.gameStarted);
+		},
+		saveGame() {
+			this.yahtzeeCollectionRef.update({
+				updated: firebase.firestore.Timestamp.now(),
+				score: this.totalScore,
+			})
+		},
 		upperTotal(section) {
 			return section.reduce((acc, section) => {
 				return acc + parseInt(section.score);
@@ -335,6 +372,9 @@ export default {
 				this.totalScore += 63;
 			}
 		},
+	},
+	mounted() {
+		console.log(this.gameStarted);
 	},
 };
 </script>
@@ -370,14 +410,7 @@ p {
 	color: white;
 }
 
-/* #stripes {
-	color: white;
-	background: repeating-linear-gradient(
-		-55deg,
-		#222,
-		#222 100px,
-		#333 100px,
-		#333 600px
-	);
-} */
+.beforeGame {
+	height: 50vh;
+}
 </style>
