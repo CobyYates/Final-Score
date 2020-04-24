@@ -1,14 +1,21 @@
 <template>
-	<div class="my-2" id="container">
-		<v-row>
+	<v-app id="container" :key="componentKey">
+		<v-row id="stripes">
 			<v-col xs="12" md="11" lg="10" xl="8" class="mx-auto">
 				<v-row>
 					<v-col cols="4"></v-col>
 					<v-col cols="4"><p class="display-2 text-center">YAHTZEE</p></v-col>
-					<v-col cols="4"><Rules :game="this.gameTitle" /></v-col>
+					<v-col cols="4"><Rules :game="this.gameTitle"/></v-col>
 				</v-row>
-				<v-divider class="mb-5"></v-divider>
-				<v-row>
+				<v-row v-if="gameStarted == false">
+					<v-col class="mx-auto beforeGame d-flex justify-center align-center">
+						<v-btn x-large color="success" @click="startGame()"
+							>Start Game</v-btn
+						>
+					</v-col>
+				</v-row>
+
+				<v-row v-else-if="gameStarted">
 					<v-col
 						cols="12"
 						xs="12"
@@ -18,14 +25,14 @@
 					>
 						<div class="mx-auto">
 							<p
-								v-for="(item, i) in data.upperNew"
+								v-for="(item, i) in gameData.data.upperNew"
 								:key="i"
 								class="d-flex title"
 							>
 								<span v-if="item.text">
 									<p id="bonus">{{ item.text }}</p>
 								</span>
-								<v-icon color="black" x-large>{{ item.icon }}</v-icon>
+								<v-icon color="white" x-large>{{ item.icon }}</v-icon>
 								<v-col v-if="item.button">
 									<v-btn
 										color="red"
@@ -67,7 +74,7 @@
 					>
 						<div>
 							<p
-								v-for="(item, i) in data.lowerNew"
+								v-for="(item, i) in gameData.data.lowerNew"
 								:key="i"
 								wi
 								class="d-flex title"
@@ -126,21 +133,20 @@
 						<v-dialog v-model="endDialog" persistent max-width="290">
 							<v-card>
 								<v-card-title class="headline">Game Over</v-card-title>
-								<v-card-text
-									>Congratulations! You have finished the game. Would you like
-									to save your score?</v-card-text
-								>
-								<p
-									class="display-1 text-center mx-auto d-flex justify-center align-center"
-								>
+								<v-card-text class="title text-center">Congratulations! You have finished the game.</v-card-text>
+								<p class="display-1 text-center mx-auto d-flex justify-center align-center">
 									Your Score: {{ this.totalScore }}
 								</p>
+								<v-card-text class="title text-center">Start New Game?</v-card-text>
 								<v-card-actions>
 									<v-spacer></v-spacer>
 									<v-btn color="green darken-1" text @click="endDialog = false"
 										>No</v-btn
 									>
-									<v-btn color="green darken-1" text @click="endDialog = false"
+									<v-btn
+										color="green darken-1"
+										text
+										@click="(endDialog = false), saveGame"
 										>Yes</v-btn
 									>
 								</v-card-actions>
@@ -152,6 +158,7 @@
 			</v-col>
 		</v-row>
 		<v-card
+			v-if="this.gameStarted"
 			class="display-1 mx-auto d-flex justify-center align-center elevation-4"
 			height="100"
 			color="red"
@@ -159,175 +166,212 @@
 			dark
 			>Total: {{ this.totalScore }}</v-card
 		>
-	</div>
+		<v-row v-if="userId">
+			<v-col cols="6" class="mx-auto">
+				<GamesList :dark="this.dark" :gameTitle="this.gameTitle" />
+			</v-col>
+		</v-row>
+	</v-app>
 </template>
 
 <script>
 import Rules from '../../components/Rules';
+import firebase from 'firebase/app';
+import firestore from '../../firebase';
+import 'firebase/firestore';
+import GamesList from '../../components/GamesList';
 export default {
 	components: {
 		Rules,
+		GamesList,
+	},
+	computed: {
+		yahtzeeCollectionRef() {
+			if (this.$store.state.uid) {
+				return (
+					firestore
+						.collection('users')
+						.doc(this.$store.state.uid)
+						.collection('yahtzee') || null
+				);
+			}
+			return null;
+		},
 	},
 	data() {
 		return {
 			rolls: 0,
 			endDialog: false,
+			gameStarted: false,
 			upperScore: 0,
+			dark: true,
 			lowerScore: 0,
 			yahtzee: true,
 			dialog: true,
+			componentKey: 0,
 			totalScore: 0,
+			userId: this.$store.state.uid,
 			gameTitle: 'yahtzee',
-			data: {
-				upperNew: [
-					{
-						icon: 'mdi-dice-1',
-						button: true,
-						input: false,
-						default: 0,
-						enabled: false,
-						extra: false,
-						values: [1, 2, 3, 4, 5, 6],
-					},
-					{
-						icon: 'mdi-dice-2',
-						button: true,
-						input: false,
-						default: 0,
-						enabled: false,
-						extra: false,
-						values: [2, 4, 6, 8, 10, 12],
-					},
-					{
-						icon: 'mdi-dice-3',
-						button: true,
-						input: false,
-						default: 0,
-						enabled: false,
-						extra: false,
-						values: [3, 6, 9, 12, 15, 18],
-					},
-					{
-						icon: 'mdi-dice-4',
-						button: true,
-						input: false,
-						default: 0,
-						enabled: false,
-						extra: false,
-						values: [4, 8, 12, 16, 20, 24],
-					},
-					{
-						icon: 'mdi-dice-5',
-						button: true,
-						input: false,
-						default: 0,
-						enabled: false,
-						extra: false,
-						values: [5, 10, 15, 20, 25, 30],
-					},
-					{
-						icon: 'mdi-dice-6',
-						button: true,
-						input: false,
-						default: 0,
-						enabled: false,
-						extra: false,
-						values: [6, 12, 18, 24, 30, 36],
-					},
-					{
-						text: 'Bonus',
-						button: false,
-						input: false,
-						default: 0,
-						enabled: false,
-						extra: true,
-						values: [35],
-					},
-				],
-				lowerNew: [
-					{
-						text: '3 of kind',
-						button: false,
-						input: true,
-						default: 0,
-						enabled: false,
-						values: null,
-					},
-					{
-						text: '4 of kind',
-						button: false,
-						input: true,
-						default: 0,
-						enabled: false,
-						values: null,
-					},
-					{
-						text: 'Full House',
-						button: true,
-						input: false,
-						default: 0,
-						enabled: false,
-						values: [25],
-					},
-					{
-						text: 'Sm. Straight',
-						button: true,
-						input: false,
-						default: 0,
-						enabled: false,
-						values: [30],
-					},
-					{
-						text: 'Lg. Straight',
-						button: true,
-						input: false,
-						default: 0,
-						enabled: false,
-						values: [40],
-					},
-					{
-						text: 'YAHTZEE',
-						button: true,
-						input: false,
-						yahtzee: true,
-						default: 0,
-						enabled: false,
-						values: [50],
-						yahtzeeBonus: [
-							{ e: false, v: 100 },
-							{ e: false, v: 100 },
-							{ e: false, v: 100 },
-							{ e: false, v: 100 },
-						],
-					},
-					{
-						text: 'Chance',
-						button: false,
-						input: true,
-						default: 0,
-						enabled: false,
-						values: null,
-					},
-				],
+			gameName: 'Yahtzee',
+			gameData: {
+				data: {
+					upperNew: [
+						{
+							icon: 'mdi-dice-1',
+							button: true,
+							input: false,
+							default: 0,
+							enabled: false,
+							extra: false,
+							values: [1, 2, 3, 4, 5, 6],
+						},
+						{
+							icon: 'mdi-dice-2',
+							button: true,
+							input: false,
+							default: 0,
+							enabled: false,
+							extra: false,
+							values: [2, 4, 6, 8, 10, 12],
+						},
+						{
+							icon: 'mdi-dice-3',
+							button: true,
+							input: false,
+							default: 0,
+							enabled: false,
+							extra: false,
+							values: [3, 6, 9, 12, 15, 18],
+						},
+						{
+							icon: 'mdi-dice-4',
+							button: true,
+							input: false,
+							default: 0,
+							enabled: false,
+							extra: false,
+							values: [4, 8, 12, 16, 20, 24],
+						},
+						{
+							icon: 'mdi-dice-5',
+							button: true,
+							input: false,
+							default: 0,
+							enabled: false,
+							extra: false,
+							values: [5, 10, 15, 20, 25, 30],
+						},
+						{
+							icon: 'mdi-dice-6',
+							button: true,
+							input: false,
+							default: 0,
+							enabled: false,
+							extra: false,
+							values: [6, 12, 18, 24, 30, 36],
+						},
+						{
+							text: 'Bonus',
+							button: false,
+							input: false,
+							default: 0,
+							enabled: false,
+							extra: true,
+							values: [35],
+						},
+					],
+					lowerNew: [
+						{
+							text: '3 of kind',
+							button: false,
+							input: true,
+							default: 0,
+							enabled: false,
+							values: null,
+						},
+						{
+							text: '4 of kind',
+							button: false,
+							input: true,
+							default: 0,
+							enabled: false,
+							values: null,
+						},
+						{
+							text: 'Full House',
+							button: true,
+							input: false,
+							default: 0,
+							enabled: false,
+							values: [25],
+						},
+						{
+							text: 'Sm. Straight',
+							button: true,
+							input: false,
+							default: 0,
+							enabled: false,
+							values: [30],
+						},
+						{
+							text: 'Lg. Straight',
+							button: true,
+							input: false,
+							default: 0,
+							enabled: false,
+							values: [40],
+						},
+						{
+							text: 'YAHTZEE',
+							button: true,
+							input: false,
+							yahtzee: true,
+							default: 0,
+							enabled: false,
+							values: [50],
+							yahtzeeBonus: [
+								{ e: false, v: 100 },
+								{ e: false, v: 100 },
+								{ e: false, v: 100 },
+								{ e: false, v: 100 },
+							],
+						},
+						{
+							text: 'Chance',
+							button: false,
+							input: true,
+							default: 0,
+							enabled: false,
+							values: null,
+						},
+					],
+				},
 			},
 		};
 	},
 	methods: {
+		updateFirestore() {
+			this.gameDocRef.update({
+				updated: firebase.firestore.Timestamp.now(),
+				gameData: this.gameData,
+			});
+			this.restartGame()
+		},
+		startGame() {
+			this.gameStarted = true;
+		},
+		restartGame(){
+			this.$router.go(0);
+		},
 		upperTotal(section) {
 			return section.reduce((acc, section) => {
 				return acc + parseInt(section.score);
 			}, 0);
 		},
 		add(value, section, notAdd) {
-			console.log(value);
-
 			notAdd == false ? this.rolls : this.rolls++;
-
 			section === 0 ? (this.upperScore += value) : (this.lowerScore += value);
-
 			this.totalScore += value;
-
-			this.rolls === 13 ? (this.endDialog = true) : (this.endDialog = false);
 
 			if (section == true) {
 				this.yahtzee = false;
@@ -335,12 +379,38 @@ export default {
 			if (this.upperScore >= 63) {
 				this.totalScore += 63;
 			}
+			
+			if (this.rolls === 13) {
+				this.endDialog = true
+				this.yahtzeeCollectionRef.add({
+					created: firebase.firestore.Timestamp.now(),
+					updated: firebase.firestore.Timestamp.now(),
+					gameId: '',
+					gameName: `Score: ${this.totalScore}`,
+					gameData: this.gameData.data,
+				})
+					.then((docRef) => {
+						docRef.update({
+							gameId: docRef.id,
+						})
+						docRef.get().then(game => {
+							this.$store.dispatch('setGame', game.data())
+						})
+					})
+					.catch((err) => {
+						console.error('Error adding document: ', err)
+					})
+			}
+			else {this.endDialog = false}
+		},
+		saveGame() {
+			this.updateFirestore();
 		},
 	},
 };
 </script>
 
-<style>
+<style scoped>
 #textAlign {
 	width: 120px;
 	margin-top: 20px;
@@ -352,5 +422,26 @@ export default {
 }
 .bonus {
 	margin-top: 12px;
+}
+
+#inspire {
+	background: none;
+}
+
+#container {
+	padding-top: 0;
+	padding-bottom: 200px;
+	margin-bottom: 0;
+	margin-top: 0;
+	background: #222222;
+	background: -webkit-linear-gradient(to right, #434343, #1b1b1b);
+	background: linear-gradient(to right, #434343, #1b1b1b);
+}
+p {
+	color: white;
+}
+
+.beforeGame {
+	height: 50vh;
 }
 </style>
