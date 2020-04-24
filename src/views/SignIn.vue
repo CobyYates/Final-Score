@@ -1,7 +1,7 @@
 <template>
 	<v-container>
-		<v-row>
-			<v-col>
+		<v-row class="d-flex justify-center mt-12">
+			<v-col cols="12" xs="8" sm="6" xl="4">
 				<form @submit.prevent="signIn">
 					<v-text-field
 						type="email"
@@ -25,7 +25,7 @@
 			</v-col>
 		</v-row>
 		<v-row>
-			<v-col>
+			<v-col class="d-flex justify-center">
 				<v-card class="text-center d-inline-flex">
 					<v-card-title class="d-block">
 						New to Final Score?

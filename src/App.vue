@@ -84,14 +84,7 @@
 					<span class="font-weight-thin">FINAL</span> SCORE</span
 				>
 			</v-toolbar-title>
-			<v-text-field
-				flat
-				solo-inverted
-				hide-details
-				prepend-inner-icon="mdi-magnify"
-				label="Search"
-				class="hidden-sm-and-down"
-			/>
+			
 			<v-spacer />
 			<!-- right content if needed -->
 			<router-link to="/signIn" class="auth-link" v-if="!loggedIn">
@@ -125,7 +118,7 @@
 				</v-list-item>
 			</a>
 		</v-app-bar>
-		<v-content>
+		<v-content class="my-0 ">
 			<router-view />
 		</v-content>
 	</v-app>
