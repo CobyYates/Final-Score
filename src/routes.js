@@ -12,7 +12,7 @@ export const routes = [
 	{ path: '/', component: Home },
 	{ path: '/signUp', component: SignUp },
 	{ path: '/signIn', component: SignIn },
-	{ path: '/yahtzee/', component: Yahtzee },
+	{ path: '/yahtzee', component: Yahtzee },
 	{ path: '/nertz', component: NertzGames },
 	{ path: '/nertz/:gameId', component: Nertz },
 	{ path: '/yugioh', component: YuGiOh },

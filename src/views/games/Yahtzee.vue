@@ -365,7 +365,6 @@ export default {
 		},
 		startGame() {
 			this.gameStarted = true;
-			console.log(this.gameStarted);
 		},
 		restartGame(){
 			this.$router.go(0);
@@ -376,15 +375,9 @@ export default {
 			}, 0);
 		},
 		add(value, section, notAdd) {
-			console.log(value);
-
 			notAdd == false ? this.rolls : this.rolls++;
-
 			section === 0 ? (this.upperScore += value) : (this.lowerScore += value);
-
 			this.totalScore += value;
-
-			
 
 			if (section == true) {
 				this.yahtzee = false;
@@ -419,9 +412,6 @@ export default {
 		saveGame() {
 			this.updateFirestore();
 		},
-	},
-	mounted() {
-		console.log(this.gameStarted);
 	},
 	created() {
 		this.getGame()
