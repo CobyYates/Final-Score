@@ -11,8 +11,11 @@
 					target="_blank"
 					title="Open Rules in a new tab"
 					>
-						<v-icon class="mr-3" dark>mdi-book-open-variant</v-icon>Rules
-					</v-btn></v-col>
+					<v-icon class="mr-3" dark>mdi-book-open-variant</v-icon>Rules
+					</v-btn>
+			</v-col>
+			
+			
 		</v-row>
 
 		
@@ -272,15 +275,11 @@ export default {
 	},
 
 	methods: {
-		
 		lockRow(row){
-			console.log(row);
-			console.log('this is from lockRow' , this.row);
-			
+			this.row = row;
 			var i;
-			for(i = 0; i < this.row.length; this.row++){
-				this.row.marked = true;
-				console.log('this is from lockRow ' , this.row[i].name)
+			for(i = 0; i < row.length; i++){
+				row[i].marked = true;
 			}
 		},
 		
@@ -328,12 +327,12 @@ export default {
 
 		//method for subtracting penalties
 		subtract(value, penScore, notAdd) {
-			console.log(value);
-			console.log(penScore);
-			console.log(notAdd);
+			this.value = value;
+			this.penScore = penScore;
+			this.notAdd = notAdd;
 			this.penScore += value;
 			this.penaltyScore += value;
-			console.log('this is penalty score', this.penaltyScore);
+			
 			if(this.penaltyScore == -20){
 				this.dialog = true;
 			}
