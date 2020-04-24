@@ -20,7 +20,6 @@
 
 		
 		<!-----TO DO--------->
-		<!------MARK ALL BUTTONS ON ROW WHEN LOCK BUTTON IS CLICKED----->
 		<!-----END GAME WHEN TWO LOCK BUTTONS ARE CLICKED--->
 		<!------SAVE IT TO FIREBASE....---->
 
@@ -220,56 +219,32 @@ export default {
 			console.log('this is from computed ' + this.redBtns[10].name);
 			
 			if((this.redBtns[0].marked || this.redBtns[10].marked) && this.redScore >=15) {
-				console.log('false');
 				return false;
-			}
-			
-			else{
-				console.log('true')
-				return true;
-			
-			}
+			}return true;
 		},
 		checkYellow(){
 			console.log('this is from computed ' + this.yellowBtns[10].name);
 			
 			if((this.yellowBtns[0].marked || this.yellowBtns[10].marked) && this.yellowScore >= 15) {
-				console.log('false');
 				return false;
-			}
+			}return true;
 			
-			else{
-				console.log('true')
-				return true;
-			}
 		},
 		checkGreen(){
 			console.log('this is from computed ' + this.greenBtns[10].name);
 			
 			if((this.greenBtns[0].marked || this.greenBtns[10].marked) && this.greenScore >= 15) {
-				console.log('false');
 				return false;
-			}
+			}return true;
 			
-			else{
-				console.log('true')
-				return true;
-			
-			}
 		},
 		checkBlue(){
 			console.log('this is from computed ' + this.blueBtns[10].name);
 			
 			if((this.blueBtns[0].marked || this.blueBtns[10].marked) && this.blueScore >= 15) {
-				console.log('false');
 				return false;
-			}
+			}return true;
 			
-			else{
-				console.log('true')
-				return true;
-			
-			}
 		},
 	
 	},
