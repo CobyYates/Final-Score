@@ -3,17 +3,38 @@
 		<v-row class="mx-4 my-4">
 			<h2 class="display-3 font-weight-black underlined">Qwixx</h2>
 			<v-col cols="4"><Rules :game="this.gameTitle" /></v-col>
+			<v-col cols="4"><v-btn
+					class="mr-6"
+					large
+					tile
+					href="https://www.ultraboardgames.com/qwixx/game-rules.php"
+					target="_blank"
+					title="Open Rules in a new tab"
+					>
+						<v-icon class="mr-3" dark>mdi-book-open-variant</v-icon>Rules
+					</v-btn></v-col>
 		</v-row>
-		
 
 		
+		<!-----TO DO--------->
+		<!------MARK ALL BUTTONS ON ROW WHEN LOCK BUTTON IS CLICKED----->
+		<!-----END GAME WHEN TWO LOCK BUTTONS ARE CLICKED--->
+		<!------SAVE IT TO FIREBASE....---->
+
+		
+		<!---beginning of the buttons---->
+
+		<!-- row can only be locked if button#2 or button#12 is clicked. When two rows are locked, call the End Game dialog-->
 		<v-row class="mb-6 mx-4">
 			<div class="redBtns mr-3 mb-2" id="redButtons" v-for="(redBtn, i) in redBtns" :key="i">
-				<v-btn class="red mark" dark v-on:click="redRow++, redBtn.marked = !redBtn.marked">
+				<v-btn class="red mark" @click="redRow++, redBtn.marked = !redBtn.marked"
+				dark >
 					<i v-bind:class="[{ 'white' : redBtn.marked }, 'material-icons']">{{redBtn.name}}</i>
 				</v-btn>
+				
 			</div>
-			<v-btn>Lock</v-btn>
+			<v-btn :disabled="checkRed" v-on:click="lockRow(redBtns)">LOCK</v-btn>
+			
 		</v-row>
 		<!--yellow row-->
 		<v-row class="mb-6 mx-4">
@@ -22,6 +43,8 @@
 					<i v-bind:class="[{ 'white' : yellowBtn.marked }, 'material-icons']">{{yellowBtn.name}}</i>
 				</v-btn>
 			</div>
+
+			<v-btn :disabled="checkYellow" v-on:click="lockRow(yellowBtns)">LOCK</v-btn>
 		</v-row>
 		<!--green row-->
 		<v-row class="mb-6 mx-4">
@@ -30,6 +53,8 @@
 					<i v-bind:class="[{ 'white' : greenBtn.marked }, 'material-icons']">{{greenBtn.name}}</i>
 				</v-btn>
 			</div>
+
+			<v-btn :disabled="checkGreen" v-on:click="lockRow(greenBtns)">LOCK</v-btn>
 		</v-row>
 		<!--blue row-->
 		<v-row class="mb-6 mx-4">
@@ -38,6 +63,8 @@
 					<i v-bind:class="[{ 'white' : blueBtn.marked }, 'material-icons']">{{blueBtn.name}}</i>
 				</v-btn>
 			</div>
+
+			<v-btn :disabled="checkBlue" v-on:click="lockRow(blueBtns)">LOCK</v-btn>
 		</v-row>
 		<!-- penalties -->
 		<v-row class="mx-4 mb-3">
@@ -48,7 +75,7 @@
 					class="mx-2"
 					color="black"
 					dark
-					@click="subtract(pen.v, totalScore), (pen.e = true)"
+					@click="subtract(pen.v, totalScore, false), (pen.e = true)"
 					:disabled="pen.e"
 					v-for="(pen, i) in penalties"
 					:key="i"
@@ -78,6 +105,22 @@
 				<p class="purple--text title" id="finalFinal">{{ totalScore = blueScore + redScore + greenScore + yellowScore + penaltyScore}}</p>
 			</v-col>
 		</v-row>
+		<!--pull this up when 2 rows are locked-->
+		<v-dialog v-model="dialog" persistent max-width="290">
+              <v-card>
+                <v-card-title class="headline">Game Over</v-card-title>
+                <v-card-text>Congratulations! You have finished the game. Would you like to save your score?</v-card-text>
+                <p
+                  class="display-1 text-center mx-auto d-flex justify-center align-center"
+                >Your Score: {{this.totalScore}}</p>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="green darken-1" text @click="dialog = false">No</v-btn>
+                  <v-btn color="green darken-1" text @click="dialog = false">Yes</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+
 	</v-container>
 </template>
 
@@ -90,7 +133,7 @@ export default {
 	data() {
 		return {
 			gameTitle: 'qwixx',
-			dialog: true,
+			dialog: false,
 			name: null,
 			redScore: 0,
 			redRow: 0,
@@ -100,11 +143,10 @@ export default {
 			yellowRow:0,
 			greenScore: 0,
 			greenRow:0,
+			
 			totalScore: 0,
 			penaltyScore:0,
-			state:{
-				isClicked:false,
-			},
+		
 			points: [{ e: false, v: 1 }],
 			penalties: [
 				{ e: false, v: -5 },
@@ -127,50 +169,120 @@ export default {
 				
 			],
 			yellowBtns: [
-				{ id: 1, marked: false, name: '2' },
-				{ id: 1, marked: false, name: '3'},
-				{ id: 1, marked: false, name: '4' },
-				{ id: 1, marked: false, name: '5' },
-				{ id: 1, marked: false, name: '6'},
-				{ id: 1, marked: false, name: '7'},
-				{ id: 1, marked: false, name: '8' },
-				{ id: 1, marked: false, name: '9' },
-				{ id: 1, marked: false, name: '10' },
-				{ id: 1, marked: false, name: '11' },
-				{ id: 1, marked: false, name: '12' },
-				{ id: 1, marked: false, name: 'LOCK' },
+				{ id: 2, marked: false, name: '2' },
+				{ id: 3, marked: false, name: '3'},
+				{ id: 4, marked: false, name: '4' },
+				{ id: 5, marked: false, name: '5' },
+				{ id: 6, marked: false, name: '6'},
+				{ id: 7, marked: false, name: '7'},
+				{ id: 8, marked: false, name: '8' },
+				{ id: 9, marked: false, name: '9' },
+				{ id: 10, marked: false, name: '10' },
+				{ id: 11, marked: false, name: '11' },
+				{ id: 12, marked: false, name: '12' },
+
 			],
 			greenBtns: [
-				{ id: 1, marked: false, name: '12' },
-				{ id: 1, marked: false, name: '11' },
-				{ id: 1, marked: false, name: '10' },
-				{ id: 1, marked: false, name: '9' },
-				{ id: 1, marked: false, name: '8' },
-				{ id: 1, marked: false, name: '7' },
-				{ id: 1, marked: false, name: '6' },
-				{ id: 1, marked: false, name: '5' },
-				{ id: 1, marked: false, name: '4' },
-				{ id: 1, marked: false, name: '3' },
-				{ id: 1, marked: false, name: '2' },
-				{ id: 1, marked: false, name: 'LOCK' },
+				{ id: 2, marked: false, name: '12' },
+				{ id: 3, marked: false, name: '11' },
+				{ id: 4, marked: false, name: '10' },
+				{ id: 5, marked: false, name: '9' },
+				{ id: 6, marked: false, name: '8' },
+				{ id: 7, marked: false, name: '7' },
+				{ id: 8, marked: false, name: '6' },
+				{ id: 9, marked: false, name: '5' },
+				{ id: 10, marked: false, name: '4' },
+				{ id: 11, marked: false, name: '3' },
+				{ id: 12, marked: false, name: '2' },
+
 			],
 			blueBtns: [
-				{ id: 1, marked: false, name: '12' },
-				{ id: 1, marked: false, name: '11' },
-				{ id: 1, marked: false, name: '10' },
-				{ id: 1, marked: false, name: '9' },
-				{ id: 1, marked: false, name: '8' },
-				{ id: 1, marked: false, name: '7' },
-				{ id: 1, marked: false, name: '6' },
-				{ id: 1, marked: false, name: '5' },
-				{ id: 1, marked: false, name: '4' },
-				{ id: 1, marked: false, name: '3' },
-				{ id: 1, marked: false, name: '2' },
-				{ id: 1, marked: false, name: 'LOCK' },
+				{ id: 2, marked: false, name: '12' },
+				{ id: 3, marked: false, name: '11' },
+				{ id: 4, marked: false, name: '10' },
+				{ id: 5, marked: false, name: '9' },
+				{ id: 6, marked: false, name: '8' },
+				{ id: 7, marked: false, name: '7' },
+				{ id: 8, marked: false, name: '6' },
+				{ id: 9, marked: false, name: '5' },
+				{ id: 10, marked: false, name: '4' },
+				{ id: 11, marked: false, name: '3' },
+				{ id: 12, marked: false, name: '2' },
 			],
 		};
 	},
+
+	computed:{
+		checkRed(){
+			console.log('this is from computed ' + this.redBtns[10].name);
+			
+			if((this.redBtns[0].marked || this.redBtns[10].marked) && this.redScore >=15) {
+				console.log('false');
+				return false;
+			}
+			
+			else{
+				console.log('true')
+				return true;
+			
+			}
+		},
+		checkYellow(){
+			console.log('this is from computed ' + this.yellowBtns[10].name);
+			
+			if((this.yellowBtns[0].marked || this.yellowBtns[10].marked) && this.yellowScore >= 15) {
+				console.log('false');
+				return false;
+			}
+			
+			else{
+				console.log('true')
+				return true;
+			}
+		},
+		checkGreen(){
+			console.log('this is from computed ' + this.greenBtns[10].name);
+			
+			if((this.greenBtns[0].marked || this.greenBtns[10].marked) && this.greenScore >= 15) {
+				console.log('false');
+				return false;
+			}
+			
+			else{
+				console.log('true')
+				return true;
+			
+			}
+		},
+		checkBlue(){
+			console.log('this is from computed ' + this.blueBtns[10].name);
+			
+			if((this.blueBtns[0].marked || this.blueBtns[10].marked) && this.blueScore >= 15) {
+				console.log('false');
+				return false;
+			}
+			
+			else{
+				console.log('true')
+				return true;
+			
+			}
+		},
+	
+	},
+
 	methods: {
+		
+		lockRow(row){
+			console.log(row);
+			console.log('this is from lockRow' , this.row);
+			
+			var i;
+			for(i = 0; i < this.row.length; this.row++){
+				this.row.marked = true;
+				console.log('this is from lockRow ' , this.row[i].name)
+			}
+		},
 		
 		calculate(row){
 			if(row === 0){
@@ -213,24 +325,24 @@ export default {
 				return 78;
 			}
 		},
-		
-		//method for adding points when clicking colored buttons
-		add(value, totalScore) {
-			this.value;
-			console.log(totalScore);
-			totalScore = totalScore + value;
-		},
+
 		//method for subtracting penalties
-		subtract(value, totalScore) {
+		subtract(value, penScore, notAdd) {
 			console.log(value);
-			console.log(totalScore);
-			// return this.totalScore = totalScore - this.value;
-			this.penaltyScore = this.totalScore - this.value;
-			console.log(this.penaltyScore)
+			console.log(penScore);
+			console.log(notAdd);
+			this.penScore += value;
+			this.penaltyScore += value;
+			console.log('this is penalty score', this.penaltyScore);
+			if(this.penaltyScore == -20){
+				this.dialog = true;
+			}
+			return this.penaltyScore;
 		},
-		//click event for lock button
+		
 		
 	},
+	
 };
 </script>
 

@@ -9,7 +9,7 @@ Vue.use(Vuex);
 // export const store = new Vuex.Store({
 export default new Vuex.Store({
 	state: {
-		uid: '',
+		uid: null,
 		username: null,
 		gameId: null,
 		game: {},
@@ -25,6 +25,20 @@ export default new Vuex.Store({
 					Object.assign(state, JSON.parse(localStorage.getItem('store'))),
 				);
 			}
+		},
+		signOut(state) {
+			firebase.auth().signOut()
+				.then(() => {
+					// Sign-out successful.
+				}).catch((error) => {
+					console.error('Error Signing out:', error);
+				});
+			state.uid = null;
+			state.username = null;
+			state.gameId = null;
+			state.game = {};
+			state.loginDisabled = false;
+			state.error = null;
 		},
 		setUid(state, uid) {
 			state.uid = uid;
@@ -45,6 +59,14 @@ export default new Vuex.Store({
 			state.error = error;
 		},
 		clearError(state) {
+			state.error = null;
+		},
+		resetState(state) {
+			state.uid = null;
+			state.username = null;
+			state.gameId = null;
+			state.game = {};
+			state.loginDisabled = false;
 			state.error = null;
 		},
 	},
@@ -91,6 +113,9 @@ export default new Vuex.Store({
 						context.commit('enableLogin');
 					},
 				);
+		},
+		signOut(context) {
+			context.commit('signOut');
 		},
 		setUid(context, uid) {
 			context.commit('setUid', uid);

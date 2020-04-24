@@ -87,7 +87,7 @@
 			
 			<v-spacer />
 			<!-- right content if needed -->
-			<router-link to="/signIn" class="auth-link">
+			<router-link to="/signIn" class="auth-link" v-if="!loggedIn">
 				<v-list-item link>
 					<v-list-item-icon class="mr-2">
 						<v-icon>mdi-login</v-icon>
@@ -97,7 +97,7 @@
 					</v-list-item-content>
 				</v-list-item>
 			</router-link>
-			<router-link to="/signUp" class="auth-link">
+			<router-link to="/signUp" class="auth-link" v-if="!loggedIn">
 				<v-list-item link>
 					<v-list-item-icon class="mr-2">
 						<v-icon>mdi-account-plus</v-icon>
@@ -107,6 +107,16 @@
 					</v-list-item-content>
 				</v-list-item>
 			</router-link>
+			<a class="auth-link" @click.prevent="signOut" v-if="loggedIn">
+				<v-list-item link>
+					<v-list-item-icon class="mr-2">
+						<v-icon>mdi-logout</v-icon>
+					</v-list-item-icon>
+					<v-list-item-content>
+						<v-list-item-title>Sign Out</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
+			</a>
 		</v-app-bar>
 		<v-content class="my-0 ">
 			<router-view />
@@ -138,12 +148,36 @@ export default {
 		items: [
 			{ icon: 'mdi-home-outline', text: 'Home', color: 'blue', to: '/' },
 			{
-				icon: 'mdi-history',
-				text: 'Your Score Cards',
-				color: 'blue',
-				to: '/history',
+				text: 'Yahtzee',
+				icon: 'mdi-dice-5-outline',
+				color: 'red',
+				to: '/yahtzee',
 			},
 			{
+				text: 'Quixx',
+				icon: 'mdi-dice-5-outline',
+				color: 'green',
+				to: '/qwixx' ,
+			},
+			{
+				text: 'Yu-Gi-Oh!',
+				icon: 'mdi-cards-outline',
+				color: 'orange',
+				to: '/yugioh',
+			},
+			{
+				text: 'Oh Hell!',
+				icon: 'mdi-emoticon-devil-outline',
+				color: 'red darken-4',
+				to: '/ohhell',
+			},
+			{
+				text: 'Nertz',
+				icon: 'mdi-cards-playing-outline',
+				color: 'red',
+				to: '/nertz',
+			},
+			/*{
 				icon: 'mdi-chevron-up',
 				'icon-alt': 'mdi-chevron-down',
 				text: 'Games',
@@ -156,7 +190,7 @@ export default {
 						to: '/yahtzee',
 					},
 					{
-						text: 'Quix',
+						text: 'Quixx',
 						icon: 'mdi-dice-5-outline',
 						color: 'green',
 						to: '/qwixx' ,
@@ -168,10 +202,10 @@ export default {
 						to: '/yugioh',
 					},
 					{
-						text: 'Oh Hell!',
-						icon: 'mdi-emoticon-devil-outline',
-						color: 'red darken-4',
-						to: '/ohhell',
+						text: 'CLUE',
+						icon: 'mdi-incognito',
+						color: '#0D47A1',
+						to: '/clue',
 					},
 					{
 						text: 'Nertz',
@@ -181,12 +215,26 @@ export default {
 					},
 				],
 			},
-			{ icon: 'mdi-settings', text: 'Settings', color: 'grey', to: '' },
+			{ icon: 'mdi-settings', text: 'Settings', color: 'grey', to: '' },*/
 		],
 	}),
 	computed: {
 		username() {
 			return this.$store.state.username;
+		},
+		loggedIn() {
+			return !!this.$store.state.uid;
+		},
+	},
+	methods: {
+		signOut() {
+			this.$store.dispatch('signOut');
+			this.$router.push('/');
+		},
+	},
+	watch: {
+		'$route' () {
+			this.$store.dispatch('clearError');
 		},
 	},
 };
