@@ -1,6 +1,6 @@
 <template>
 	<v-container>
-		<v-card class="mt-8 mb-12 flex">
+		<v-card :dark="dark" class="mt-8 mb-12 flex">
 			<v-banner class="headline font-weight-bold center">Previous Games:</v-banner>
 			<v-data-iterator
 					:items="games"
@@ -139,6 +139,7 @@ export default {
 	name: 'GamesList',
 	props: [
 		'gameTitle',
+		'dark',
 	],
 	data() {
 		return {
