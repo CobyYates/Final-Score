@@ -350,12 +350,6 @@ export default {
 		};
 	},
 	methods: {
-		getGame() {
-			this.yahtzeeCollectionRef.onSnapshot((doc) => {
-				this.gameName = doc.data().gameName;
-				this.gameData = doc.data().gameData;
-			});
-		},
 		updateFirestore() {
 			this.gameDocRef.update({
 				updated: firebase.firestore.Timestamp.now(),
@@ -412,9 +406,6 @@ export default {
 		saveGame() {
 			this.updateFirestore();
 		},
-	},
-	created() {
-		this.getGame()
 	},
 };
 </script>
