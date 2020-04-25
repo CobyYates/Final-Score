@@ -4,8 +4,8 @@ import SignIn from './views/SignIn';
 import Yahtzee from './views/games/Yahtzee';
 import NertzGames from './views/gamesList/NertzGames';
 import Nertz from './views/games/Nertz';
-import OhHell from './views/games/OhHell';
 import YuGiOhGames from './views/gamesList/YuGiOhGames';
+import Clue from './views/games/Clue';
 import YuGiOh from './views/games/YuGiOh';
 import Qwixx from './views/games/Qwixx';
 
@@ -18,6 +18,6 @@ export const routes = [
 	{ path: '/nertz/:gameId', component: Nertz },
 	{ path: '/yugioh', component: YuGiOhGames },
 	{ path: '/yugioh/:gameId', component: YuGiOh },
-	{ path: '/ohhell', component: OhHell },
+	{ path: '/clue', component: Clue },
 	{ path: '/qwixx', component: Qwixx },
 ];

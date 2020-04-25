@@ -1,10 +1,9 @@
 <template>
-	<div>
 		<v-container>
 			<v-row>
-			<v-col cols="4"></v-col>
-			<v-col cols="4"><p class="display-2 text-center">Yu-Gi-Oh!</p></v-col>
-			<v-col cols="4"><Rules :game="this.gameTitle" /></v-col>
+			<v-col cols="2"></v-col>
+			<v-col cols="8"><p class="display-2 text-center">Yu-Gi-Oh!</p></v-col>
+			<v-col cols="2" style=""><Rules :game="this.gameTitle" /></v-col>
 		</v-row>
 		<v-row>
 			<v-col>
@@ -80,7 +79,6 @@
 					<p><span id="status"></span></p>
 				</div>
 	</v-container>
-	</div>
 </template>
 
 <script>
@@ -148,9 +146,27 @@ export default {
 			});
 		},
 		newGame() {
-			this.$store.dispatch('clearError');
+			this.gameData.players.forEach(player => { // Make an array of all new scores to check the length and make sure all players have a score
+				if (player.newScore != null && player.newScore !== '') {
+					const value = parseInt(player.newScore);
+					this.newScores.push(value);
+				}
+			});
+			if (this.newScores.length === this.gameData.players.length) {
+				this.gameData.players.forEach(player => {
+					player.scores.push(parseInt(player.newScore));
+					player.newScore = null;
+				});
+				this.$store.dispatch('clearError');
+				this.newScores = [];
+				this.sumScores();
+				this.updateFirestore();
+			} else {
+				this.$store.dispatch('error', 'You must enter a score for each player');
+				this.newScores = [];
+			}
 			// clear after dispatch
-			this.gameData.players = [];
+			// this.gameData.players = [];
 		},
 		addPlayer() {
 			let nextId = 1;
