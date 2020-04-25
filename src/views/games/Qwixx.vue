@@ -20,13 +20,11 @@
 
 		
 		<!-----TO DO--------->
-		<!-----END GAME WHEN TWO LOCK BUTTONS ARE CLICKED--->
+		
 		<!------SAVE IT TO FIREBASE....---->
 
 		
 		<!---beginning of the buttons---->
-
-		<!-- row can only be locked if button#2 or button#12 is clicked. When two rows are locked, call the End Game dialog-->
 		<v-row class="mb-6 mx-4">
 			<div class="redBtns mr-3 mb-2" id="redButtons" v-for="(redBtn, i) in redBtns" :key="i">
 				<v-btn class="red mark" @click="redRow++, redBtn.marked = !redBtn.marked"
