@@ -38,13 +38,13 @@ export default {
 	data() {
 		return {
 			userId: this.$store.state.uid,
-			gameTitle: 'Yu-Gi-Oh!',
+			gameTitle: 'YuGiOh',
 			gameName: null,
 			submitDisabled: false,
 		}
 	},
 	computed: {
-		yuGiOhCollectionRef() {
+		yugiohCollectionRef() {
 			if (this.$store.state.uid) {
 				return firestore.collection('users').doc(this.$store.state.uid).collection('yugioh') || null;
 			}
@@ -62,7 +62,7 @@ export default {
 			if (this.loggedIn) {
 				if (this.gameName && this.gameName.length > 1) {
 					this.submitDisabled = true;
-					this.yuGiOhCollectionRef.add({
+					this.yugiohCollectionRef.add({
 						created: firebase.firestore.Timestamp.now(),
 						updated: firebase.firestore.Timestamp.now(),
 						gameId: '',

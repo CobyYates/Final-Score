@@ -127,7 +127,7 @@ export default {
 		},
 		gameDocRef() {
 			if (this.$store.state.uid) {
-				return firestore.collection('users').doc(this.$store.state.uid).collection('nertz').doc(this.gameId) || null;
+				return firestore.collection('users').doc(this.$store.state.uid).collection('yugioh').doc(this.gameId) || null;
 			}
 			return null;
 		},
