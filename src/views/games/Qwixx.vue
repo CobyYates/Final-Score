@@ -35,7 +35,7 @@
 				</v-btn>
 				
 			</div>
-			<v-btn :disabled="checkRed" v-on:click="lockRow(redBtns)">LOCK</v-btn>
+			<v-btn :disabled="checkRed" v-on:click="lockedRow++, lockRow(redBtns)">LOCK</v-btn>
 			
 		</v-row>
 		<!--yellow row-->
@@ -46,7 +46,7 @@
 				</v-btn>
 			</div>
 
-			<v-btn :disabled="checkYellow" v-on:click="lockRow(yellowBtns)">LOCK</v-btn>
+			<v-btn :disabled="checkYellow" v-on:click="lockedRow++, lockRow(yellowBtns)">LOCK</v-btn>
 		</v-row>
 		<!--green row-->
 		<v-row class="mb-6 mx-4">
@@ -56,7 +56,7 @@
 				</v-btn>
 			</div>
 
-			<v-btn :disabled="checkGreen" v-on:click="lockRow(greenBtns)">LOCK</v-btn>
+			<v-btn :disabled="checkGreen" v-on:click="lockedRow++, lockRow(greenBtns)">LOCK</v-btn>
 		</v-row>
 		<!--blue row-->
 		<v-row class="mb-6 mx-4">
@@ -66,7 +66,7 @@
 				</v-btn>
 			</div>
 
-			<v-btn :disabled="checkBlue" v-on:click="lockRow(blueBtns)">LOCK</v-btn>
+			<v-btn :disabled="checkBlue" v-on:click="lockedRow++, lockRow(blueBtns)">LOCK</v-btn>
 		</v-row>
 		<!-- penalties -->
 		<v-row class="mx-4 mb-3">
@@ -145,7 +145,7 @@ export default {
 			yellowRow:0,
 			greenScore: 0,
 			greenRow:0,
-			
+			lockedRow: 0,
 			totalScore: 0,
 			penaltyScore:0,
 		
@@ -251,10 +251,15 @@ export default {
 
 	methods: {
 		lockRow(row){
-			this.row = row;
-			var i;
-			for(i = 0; i < row.length; i++){
-				row[i].marked = true;
+			if(this.lockedRow == 2){
+				this.dialog = true;
+			}
+			else{
+				this.row = row;
+				var i;
+				for(i = 0; i < row.length; i++){
+					row[i].marked = true;
+				}
 			}
 		},
 		
