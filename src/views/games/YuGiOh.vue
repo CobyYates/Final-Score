@@ -4,7 +4,7 @@
 			<v-col cols="2"></v-col>
 			<v-col cols="8"><p class="display-2 text-center">Yu-Gi-Oh!</p></v-col>
 			<v-col cols="2" style=""><Rules :game="this.gameTitle" /></v-col>
-		</v-row>
+			</v-row>
 		<v-row>
 			<v-col>
 				<h2>{{ gameName }}</h2>

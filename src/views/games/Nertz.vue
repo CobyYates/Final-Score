@@ -1,10 +1,9 @@
 <template>
 	<v-container>
 		<v-row>
-			<v-col cols="4"><Rules :game="this.gameTitle" /></v-col>
-		</v-row>
-		<v-row>
-			<v-col cols="4"><p class="display-2 text-center">NERTZ</p></v-col>
+			<v-col cols="4"></v-col>
+			<v-col cols="4"><p class="display-2 text-center">Nertz</p></v-col>
+			<v-col cols="4" style=""><Rules :game="this.gameTitle" /></v-col>
 		</v-row>
 		<v-row>
 			<v-col>
