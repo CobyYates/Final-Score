@@ -4,16 +4,7 @@
 			<v-col cols="12 d-flex flex-column flex-md-row justify-space-between align-center">
 				<h1 class="clue-font">Clue</h1>
 				<div class="buttons mt-4 mt-md-0">
-					<v-btn
-					class="mr-6"
-					large
-					tile
-					href="https://www.ultraboardgames.com/clue/game-rules.php"
-					target="_blank"
-					title="Open Rules in a new tab"
-					>
-						<v-icon class="mr-3" dark>mdi-book-open-variant</v-icon>Rules
-					</v-btn>
+					<Rules :game="this.gameTitle" />
 					<v-btn large tile to="/history">
 						<v-icon class="mr-3" dark>mdi-restore</v-icon>Previous Games
 					</v-btn>
@@ -155,6 +146,14 @@
 						</v-tab-item>
 					</v-tabs>
 				</v-row>
+				<v-row>
+					<v-container>
+						<!-- <p>{{ gameName }}</p> -->
+						<v-btn @click="endRound">
+							Submit Responses
+						</v-btn>
+					</v-container>
+				</v-row>
 			</v-card>
 
 			<div class="notes">
@@ -265,16 +264,28 @@
 </template>
 
 <script>
-/*
 import firestore from '../../firebase';
-import Error from '../../components/Error';
 import Rules from '../../components/Rules';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-*/
 
 export default {
+	components: {
+		Rules,
+	},
 	data: () => ({
+		userId: this.$store.state.uid,
+		gameTitle: 'Clue',
+		gameId: this.$route.params.gameId || null,
+		gameName: this.$store.state.game.gameName || '',
+		gameData: {
+			suspects: [''],
+			weapons: [''],
+			rooms: [''],
+			playerName: '',
+			colorID: 0,
+		},
+
 		dialog: false,
 		noteDialog: false,
 		headers: [
@@ -498,19 +509,101 @@ export default {
 		formTitle () {
 			return this.editedIndex === -1 ? 'New Note' : 'Edit Note'
 		},
+		gameDocRef() {
+			if (this.$store.state.uid) {
+				return firestore.collection('users').doc(this.$store.state.uid).collection('clue').doc(this.gameId) || null;
+			}
+			return null;
+		},
 	},
 	watch: {
 		noteDialog (val) {
 			val || this.close();
 		},
 	},
-	created () {
-		this.initialize();
-	},
 	methods: {
 		initialize () {
 			this.notes = []
 		},
+		
+		getGame() {
+			if(this.gameData != null && this.gameData != '') {
+				this.gameDocRef.onSnapshot((doc) => {
+					this.gameName = doc.data().gameName;
+					this.gameData = doc.data().gameData;
+					this.name = doc.data().gameData.playerName;
+					this.charSelect = doc.data().gameData.colorID;
+
+					for(let i = 0; i <= this.gameData.suspects.length; i++) {
+						if(this.suspects.value.includes(this.gameData.suspects[i])) {
+							let index = this.suspects.indexOf(this.gameData.suspects[i]);
+							this.suspects[index].status = 'yes';
+							this.suspects[index].icon = 'mdi-check-bold';
+							this.suspects[index].bg = '#9eb579';
+						}
+					}
+					for(let i = 0; i <= this.gameData.weapons.length; i++) {
+						if(this.weapons.value.includes(this.gameData.weapons[i])) {
+							let index = this.weapons.indexOf(this.gameData.weapons[i]);
+							this.weapons[index].status = 'yes';
+							this.weapons[index].icon = 'mdi-check-bold';
+							this.weapons[index].bg = '#9eb579';
+						}
+					}
+					for(let i = 0; i <= this.gameData.rooms.length; i++) {
+						if(this.rooms.value.includes(this.gameData.rooms[i])) {
+							let index = this.rooms.indexOf(this.gameData.rooms[i]);
+							this.rooms[index].status = 'yes';
+							this.rooms[index].icon = 'mdi-check-bold';
+							this.rooms[index].bg = '#9eb579';
+						}
+					}
+				});
+			} else {
+				this.gameData.suspects = [''];
+				this.gameData.weapons = [''];
+				this.gameData.rooms = [''];
+				this.gameData.playerName = 'No Name';
+				this.gameData.colorID = 0;
+			}
+		},
+		
+		updateFirestore() {
+			this.gameDocRef.update({
+				updated: firebase.firestore.Timestamp.now(),
+				gameData: this.gameData,
+			});
+		},
+		endRound() {
+			let date = new Date();
+			for(let i = 0; i <= this.suspects.length; i++) {
+				if(this.suspects[i].status === 'yes') {
+					this.gameData.suspects.push(this.suspects[i].value);
+				}
+			}
+
+			for(let i = 0; i <= this.weapons.length; i++) {
+				if(this.weapons[i].status === 'yes') {
+					this.gameData.weapons.push(this.weapons[i].value);
+				}
+			}
+
+			for(let i = 0; i <= this.rooms.length; i++) {
+				if(this.rooms[i].status === 'yes') {
+					this.gameData.rooms.push(this.rooms[i].value);
+				}
+			}
+			
+			if(this.gameName === '') {
+				this.gameName = 'Created game on ' + date;
+			}
+
+			this.name = this.gameData.playerName;
+			this.charSelect = this.gameData.colorID;
+
+			this.updateFirestore();
+		},
+
 		editItem (item) {
 			this.editedIndex = this.notes.indexOf(item);
 			this.editedItem = Object.assign({}, item);
@@ -593,6 +686,10 @@ export default {
 				this.rooms[id].status = 'maybe';
 			}
 		},
+	},
+	created () {
+		this.initialize();
+		this.getGame();
 	},
 };
 </script>
