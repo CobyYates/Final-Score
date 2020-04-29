@@ -542,11 +542,11 @@ export default {
 		},
 		getGame() {
 			this.clueCollectionRef.onSnapshot((doc) => {
-				this.gameId = doc.data().gameId;
 				this.gameName = doc.data().gameName;
 				this.gameData = doc.data().gameData;
 				this.name = doc.data().gameData.playerName;
 				this.charSelect = doc.data().gameData.colorID;
+				console.log('GOT DATA: ' + this.gameData);
 
 				for(let i = 0; i <= this.gameData.suspects.length; i++) {
 					let index = this.gameData.suspects[i];
