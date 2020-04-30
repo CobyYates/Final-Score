@@ -52,8 +52,9 @@ export default {
 				suspects: [''],
 				weapons: [''],
 				rooms: [''],
-				playerName: '',
+				playerName: 'Player',
 				colorID: 0,
+				notes: [''],
 			},
 			submitDisabled: false,
 		}
@@ -88,6 +89,7 @@ export default {
 							rooms: this.defaultGameData.rooms,
 							playerName: this.defaultGameData.playerName,
 							colorID: this.defaultGameData.colorID,
+							notes: this.defaultGameData.notes,
 						},
 					})
 						.then((docRef) => {

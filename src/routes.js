@@ -20,6 +20,6 @@ export const routes = [
 	{ path: '/yugioh', component: YuGiOhGames },
 	{ path: '/yugioh/:gameId', component: YuGiOh },
 	{ path: '/clue', component: ClueGames },
-	{ path: '/clue/:gameID', component: Clue },
+	{ path: '/clue/:gameId', component: Clue },
 	{ path: '/qwixx', component: Qwixx },
 ];

@@ -135,7 +135,7 @@ export default {
 			let id = test[0].games.filter(e => e.name === this.gameSelected)
 			axios
 				.get(
-					`https://www.boardgameatlas.com/api/search?ids=${id[0].id}&client_id=${this.url}`,
+					`https://www.boardgameatlas.com/api/search?ids=${id[0].id}&client_id=${this.id}`,
 				)
 				.then(response => {
 					this.results = response.data.games[0];

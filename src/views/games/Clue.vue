@@ -5,7 +5,7 @@
 				<div class="titles">
 					<h1 class="clue-font">Clue</h1>
 					<h2 class="display-1 ml-1">{{ gameName }}</h2>
-					<p>{{ gameId }}</p>
+					<p class="pl-1 pt-3 grey--text">Unique game ID: {{ gameId }}</p>
 				</div>
 				<div class="top-buttons mt-4 mt-md-0">
 					<Rules :game="this.gameTitle" class="rules mr-md-6" />
@@ -103,14 +103,14 @@
 
 						<v-tab-item class="pt-8">
 							<div class="suspects">
-								<div class="buttons" v-for="suspect in suspects" :key="suspect.i">
-									<p>{{ suspect.value }}</p>
+								<div class="buttons" v-for="(item, i) in suspects" :key="i">
+									<p>{{ item.value }}</p>
 									<div class="mb-3 mr-2 button-container">
-										<v-btn v-model="suspect.status" 
+										<v-btn v-model="item.status" 
 										class="button-icon"
-										:class="suspect.status"
-										:color="suspects[suspect.id].bg"
-										@click="suspectButtonPress(suspect.id)"><v-icon>{{ suspect.icon }}</v-icon>
+										:class="item.status"
+										:color="suspects[item.id].bg"
+										@click="suspectButtonPress(item.id)"><v-icon>{{ item.icon }}</v-icon>
 										</v-btn>
 									</div>
 								</div>
@@ -119,14 +119,14 @@
 
 						<v-tab-item class="pt-8">
 							<div class="weapons">
-								<div class="buttons" v-for="weapon in weapons" :key="weapon.i">
-									<p>{{ weapon.value }}</p>
+								<div class="buttons" v-for="(item, i) in weapons" :key="i">
+									<p>{{ item.value }}</p>
 									<div class="mb-3 mr-2 button-container">
-										<v-btn v-model="weapon.status" 
+										<v-btn v-model="item.status" 
 										class="button-icon"
-										:class="weapon.status"
-										:color="weapons[weapon.id].bg"
-										@click="weaponButtonPress(weapon.id)"><v-icon>{{ weapon.icon }}</v-icon>
+										:class="item.status"
+										:color="weapons[item.id].bg"
+										@click="weaponButtonPress(item.id)"><v-icon>{{ item.icon }}</v-icon>
 										</v-btn>
 									</div>
 								</div>
@@ -135,14 +135,14 @@
 
 						<v-tab-item class="pt-8">
 							<div class="rooms">
-								<div class="buttons" v-for="room in rooms" :key="room.i">
-									<p>{{ room.value }}</p>
+								<div class="buttons" v-for="(item, i) in rooms" :key="i">
+									<p>{{ item.value }}</p>
 									<div class="mb-3 mr-2 button-container">
-										<v-btn v-model="room.status" 
+										<v-btn v-model="item.status" 
 										class="button-icon"
-										:class="room.status"
-										:color="rooms[room.id].bg"
-										@click="roomButtonPress(room.id)"><v-icon>{{ room.icon }}</v-icon>
+										:class="item.status"
+										:color="rooms[item.id].bg"
+										@click="roomButtonPress(item.id)"><v-icon>{{ item.icon }}</v-icon>
 										</v-btn>
 									</div>
 								</div>
@@ -152,7 +152,8 @@
 				</v-row>
 				<v-row class="d-flex justify-center align-center">
 					<v-container>
-						<v-btn depressed block x-large class="ma-0 mb-n3" @click="updateFirestore()">
+						<p class="text-center grey--text body-2 font-weight-light">NOTE: Any new responses will override old ones.</p>
+						<v-btn depressed block x-large class="ma-0 mb-n3" @click="updateFirestore">
 						Submit Responses
 						</v-btn>
 					</v-container>
@@ -192,7 +193,7 @@
 						</div>
 						<v-data-table
 						:headers="headers"
-						:items="notes"
+						:items="notez"
 						>
 							<template #item.action="props">
 								<v-btn
@@ -223,8 +224,8 @@
 						<div class="selected-section">
 							<h3 class="pb-4">Suspects(s) selected:</h3>
 							<div 
-							v-for="item in suspects"
-							:key="item.status">
+							v-for="(item, i) in suspects"
+							:key="i">
 								<div v-if="item.status === 'yes'">
 									<div class="elevation-4 mb-4" color="white">
 										<v-img :src="item.image" :alt="'Image of ' + item.value" class="selected-image" />
@@ -236,8 +237,8 @@
 						<div class="selected-section">
 							<h3 class="pb-4">Weapon(s) selected:</h3>
 							<div 
-							v-for="item in weapons"
-							:key="item.status">
+							v-for="(item, i) in weapons"
+							:key="i">
 								<div v-if="item.status === 'yes'">
 									<div class="elevation-4 mb-4" color="white">
 										<v-img :src="item.image" :alt="'Image of ' + item.value" class="selected-image" />
@@ -249,8 +250,8 @@
 						<div class="selected-section">
 							<h3 class="pb-4">Room(s) selected:</h3>
 							<div 
-							v-for="item in rooms"
-							:key="item.status">
+							v-for="(item, i) in rooms"
+							:key="i">
 								<div v-if="item.status === 'yes'">
 									<div class="elevation-4 mb-4" color="white">
 										<v-img :src="item.image" :alt="'Image of ' + item.value" class="selected-image" />
@@ -285,6 +286,7 @@ export default {
 		return {
 			userId: this.$store.state.uid,
 			gameTitle: 'Clue',
+			created: '',
 			gameId: this.$route.params.gameId || null,
 			gameName: this.$store.state.game.gameName || '',
 			gameData: {
@@ -293,6 +295,7 @@ export default {
 				rooms: [],
 				playerName: '',
 				colorID: 0,
+				notez: [],
 			},
 
 			playerDialog: false,
@@ -301,7 +304,7 @@ export default {
 				{ text: 'Note', sortable: false, value: 'note' },
 				{ text: 'Actions', align: 'right', sortable: false, value: 'action' },
 			],
-			notes: [],
+			notez: [],
 			editedIndex: -1,
 			editedItem: {
 				note: '',
@@ -512,6 +515,9 @@ export default {
 					status: 'maybe',
 				},
 			],
+			tempSuspects: [],
+			tempWeapons: [],
+			tempRooms: [],
 		}
 	},
 	computed: {
@@ -537,67 +543,94 @@ export default {
 		},
 	},
 	methods: {
-		initialize () {
-			this.notes = []
-		},
-		getGame() {
+		async getGame() {
 			this.clueCollectionRef.onSnapshot((doc) => {
+				this.created = doc.data().created;
 				this.gameName = doc.data().gameName;
 				this.gameData = doc.data().gameData;
 				this.name = doc.data().gameData.playerName;
 				this.charSelect = doc.data().gameData.colorID;
+				this.notez = doc.data().gameData.notes;
 				console.log('GOT DATA: ' + this.gameData);
-
-				for(let i = 0; i <= this.gameData.suspects.length; i++) {
-					let index = this.gameData.suspects[i];
-					console.log('SUSPECT INDEX: ' + index);
-					this.suspects[index].status = 'yes';
-					this.suspects[index].icon = 'mdi-check-bold';
-					this.suspects[index].bg = '#9eb579';
-				}
-				for(let i = 0; i <= this.gameData.weapons.length; i++) {
-					let index = this.gameData.weapons[i];
-					console.log('SUSPECT INDEX: ' + index);
-					this.weapons[index].status = 'yes';
-					this.weapons[index].icon = 'mdi-check-bold';
-					this.weapons[index].bg = '#9eb579';
-				}
-				for(let i = 0; i <= this.gameData.rooms.length; i++) {
-					let index = this.gameData.rooms[i];
-					console.log('SUSPECT INDEX: ' + index);
-					this.rooms[index].status = 'yes';
-					this.rooms[index].icon = 'mdi-check-bold';
-					this.rooms[index].bg = '#9eb579';
-				}
-			});
-		},
-		
-		updateFirestore() {
-			this.clueCollectionRef.update({
-				updated: firebase.firestore.Timestamp.now(),
-				gameData: {
-					suspects: this.gameData.suspects,
-					weapons: this.gameData.weapons,
-					rooms: this.gameData.rooms,
-					playerName: this.name,
-					colorID: this.charSelect,
-				},
+				
+				
+				this.getSuspects();
 			})
-				.then(function() {
-					console.log('Firebase successfully Updated Clue Game');
+		},
+		getSuspects() {
+			for(let i = 0; i < this.gameData.suspects.length; i++) {
+				let index = this.gameData.suspects[i];
+				console.log('SUSPECT INDEX: ' + index);
+				this.suspects[index].status = 'yes';
+				this.suspects[index].icon = 'mdi-check-bold';
+				this.suspects[index].bg = '#9eb579';
+			}
+			this.getWeapons();
+		},
+		getWeapons() {
+			for(let i = 0; i < this.gameData.weapons.length; i++) {
+				let index = this.gameData.weapons[i];
+				console.log('WEAPONS INDEX: ' + index);
+				this.weapons[index].status = 'yes';
+				this.weapons[index].icon = 'mdi-check-bold';
+				this.weapons[index].bg = '#9eb579';
+			}
+			this.getRooms();
+		},
+		getRooms() {
+			for(let i = 0; i < this.gameData.rooms.length; i++) {
+				let index = this.gameData.rooms[i];
+				console.log('ROOM INDEX: ' + index);
+				this.rooms[index].status = 'yes';
+				this.rooms[index].icon = 'mdi-check-bold';
+				this.rooms[index].bg = '#9eb579';
+			}
+		},
+		updateFirestore() {
+			if(this.tempSuspects.length === 0) {
+				this.tempSuspects = this.gameData.suspects;
+				console.log('Updating Temp Suspects with saved Data: ' + this.tempSuspects);
+			} 
+			if(this.tempWeapons.length === 0) {
+				this.tempWeapons = this.gameData.weapons;
+				console.log('Updating Temp Weapons with saved Data: ' + this.tempWeapons);
+			} 
+			if(this.tempRooms.length === 0) {
+				this.tempRooms = this.gameData.rooms;
+				console.log('Updating Temp Rooms with saved Data: ' + this.tempRooms);
+			} 
+			else {
+				this.clueCollectionRef.update({
+					created: this.created,
+					gameName: this.gameName,
+					gameId: this.gameId,
+					updated: firebase.firestore.Timestamp.now(),
+					gameData: {
+						suspects: this.tempSuspects,
+						weapons: this.tempWeapons,
+						rooms: this.tempRooms,
+						playerName: this.name,
+						colorID: this.charSelect,
+						notes: this.notez,
+					},
 				})
-				.catch(function(error) {
-					console.error('Error writing to Firebase: ', error);
-				});
+					.then(function() {
+						console.log('Firebase successfully Updated Clue Game');
+					})
+					.catch(function(error) {
+						console.error('Error writing to Firebase: ', error);
+					});
+			}
+			
 		},
 		editItem (item) {
-			this.editedIndex = this.notes.indexOf(item);
+			this.editedIndex = this.notez.indexOf(item);
 			this.editedItem = Object.assign({}, item);
 			this.noteDialog = true;
 		},
 		deleteItem (item) {
-			const index = this.notes.indexOf(item);
-			confirm('Are you sure you want to delete this note?') && this.notes.splice(index, 1);
+			const index = this.notez.indexOf(item);
+			confirm('Are you sure you want to delete this note?') && this.notez.splice(index, 1);
 		},
 		close () {
 			this.noteDialog = false;
@@ -608,9 +641,9 @@ export default {
 		},
 		save () {
 			if (this.editedIndex > -1) {
-				Object.assign(this.notes[this.editedIndex], this.editedItem);
+				Object.assign(this.notez[this.editedIndex], this.editedItem);
 			} else {
-				this.notes.push(this.editedItem);
+				this.notez.push(this.editedItem);
 			}
 			this.close();
 		},
@@ -629,17 +662,17 @@ export default {
 				this.suspects[id].icon = 'mdi-check-bold';
 				this.suspects[id].bg = '#9eb579';
 
-				this.gameData.suspects.push(this.suspects[id].id);
-				console.log('Added ' + this.suspects[id].value + ' to gameData array. == ' + this.gameData.suspects);
+				this.tempSuspects.push(this.suspects[id].id);
+				console.log('Added ' + this.suspects[id].value + ' to TEMP gameData array. == ' + this.tempSuspects);
 
 			} else if (this.suspects[id].status === 'yes') {
 				this.suspects[id].status = 'no';
 				this.suspects[id].icon = 'mdi-close-thick';
 				this.suspects[id].bg = '#bd7373';
 
-				const index = this.gameData.suspects.indexOf(this.suspects[id].id);
-				this.gameData.suspects.splice(index, 1);
-				console.log('Removed ' + this.suspects[id].value + ' from gameData array. == ' + this.gameData.suspects);
+				const index = this.tempSuspects.indexOf(this.suspects[id].id);
+				this.tempSuspects.splice(index, 1);
+				console.log('Removed ' + this.suspects[id].value + ' from TEMP gameData array. == ' + this.tempSuspects);
 
 			} else if (this.suspects[id].status === 'no') {
 				this.suspects[id].status = 'maybe';
@@ -655,17 +688,17 @@ export default {
 				this.weapons[id].icon = 'mdi-check-bold';
 				this.weapons[id].bg = '#9eb579';
 
-				this.gameData.weapons.push(this.weapons[id].id);
-				console.log('Added ' + this.weapons[id].value + ' to gameData array. == ' + this.gameData.weapons);
+				this.tempWeapons.push(this.weapons[id].id);
+				console.log('Added ' + this.weapons[id].value + ' to TEMP gameData array. == ' + this.tempWeapons);
 
 			} else if (this.weapons[id].status === 'yes') {
 				this.weapons[id].status = 'no';
 				this.weapons[id].icon = 'mdi-close-thick';
 				this.weapons[id].bg = '#bd7373';
 
-				const index = this.gameData.weapons.indexOf(this.weapons[id].id);
-				this.gameData.weapons.splice(index, 1);
-				console.log('Removed ' + this.weapons[id].value + ' from gameData array. == ' + this.gameData.weapons);
+				const index = this.tempWeapons.indexOf(this.weapons[id].id);
+				this.tempWeapons.splice(index, 1);
+				console.log('Removed ' + this.weapons[id].value + ' from TEMP gameData array. == ' + this.tempWeapons);
 
 			} else if (this.weapons[id].status === 'no') {
 				this.weapons[id].status = 'maybe';
@@ -681,17 +714,17 @@ export default {
 				this.rooms[id].icon = 'mdi-check-bold';
 				this.rooms[id].bg = '#9eb579';
 
-				this.gameData.rooms.push(this.rooms[id].id);
-				console.log('Added ' + this.rooms[id].value + ' to gameData array. == ' + this.gameData.rooms);
+				this.tempRooms.push(this.rooms[id].id);
+				console.log('Added ' + this.rooms[id].value + ' to TEMP gameData array. == ' + this.tempRooms);
 
 			} else if (this.rooms[id].status === 'yes') {
 				this.rooms[id].status = 'no';
 				this.rooms[id].icon = 'mdi-close-thick';
 				this.rooms[id].bg = '#bd7373';
 
-				const index = this.gameData.rooms.indexOf(this.rooms[id].id);
-				this.gameData.rooms.splice(index, 1);
-				console.log('Removed ' + this.rooms[id].value + ' from gameData array. == ' + this.gameData.rooms);
+				const index = this.tempRooms.indexOf(this.rooms[id].id);
+				this.tempRooms.splice(index, 1);
+				console.log('Removed ' + this.rooms[id].value + ' from TEMP gameData array. == ' + this.tempRooms);
 
 			} else if (this.rooms[id].status === 'no') {
 				this.rooms[id].status = 'maybe';
@@ -703,7 +736,6 @@ export default {
 		},
 	},
 	created () {
-		this.initialize();
 		this.getGame();
 	},
 };
