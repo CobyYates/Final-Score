@@ -10,6 +10,7 @@ import ClueGames from './views/gamesList/ClueGames';
 import YuGiOh from './views/games/YuGiOh';
 import Qwixx from './views/games/Qwixx';
 
+
 export const routes = [
 	{ path: '/', component: Home },
 	{ path: '/signUp', component: SignUp },
