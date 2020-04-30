@@ -1,27 +1,22 @@
 <template>
 	<v-container>
-		<v-row class="pa-4 pl-8 pr-8">
+		<v-row class="pa-4 pl-8 pr-8 mb-md-12">
 			<v-col cols="12 d-flex flex-column flex-md-row justify-space-between align-center">
-				<h1 class="clue-font">Clue</h1>
-				<div class="buttons mt-4 mt-md-0">
-					<v-btn
-					class="mr-6"
-					large
-					tile
-					href="https://www.ultraboardgames.com/clue/game-rules.php"
-					target="_blank"
-					title="Open Rules in a new tab"
-					>
-						<v-icon class="mr-3" dark>mdi-book-open-variant</v-icon>Rules
-					</v-btn>
-					<v-btn large tile to="/history">
-						<v-icon class="mr-3" dark>mdi-restore</v-icon>Previous Games
+				<div class="titles">
+					<h1 class="clue-font">Clue</h1>
+					<h2 class="display-1 ml-1">{{ gameName }}</h2>
+					<p class="pl-1 pt-3 grey--text">Unique game ID: {{ gameId }}</p>
+				</div>
+				<div class="top-buttons mt-4 mt-md-0">
+					<Rules :game="this.gameTitle" class="rules mr-md-6" />
+					<v-btn tile to="/clue/" class="mt-2 mr-md-4">
+						<v-icon class="mr-2" dark>mdi-restore</v-icon>Previous Games
 					</v-btn>
 				</div>
 			</v-col>
 		</v-row>
 
-		<v-row class="clue-content">
+		<v-row class="clue-content pb-12">
 			<v-card elevation="4" class="player-card">
 				<v-row class="player-card-title">
 					<div class="player-info">
@@ -30,7 +25,7 @@
 						<h2 class="text-center text-md-left pl-4 display-1 font-weight-light">{{ this.name }}</h2>
 					</div>
 					<div class="player-edit">
-						<v-dialog v-model="dialog" max-width="600px" @click.stop="dialog = true">
+						<v-dialog v-model="playerDialog" max-width="600px" @click.stop="playerDialog = true">
 							<template v-slot:activator="{ on }">
 								<v-container>
 									<v-btn color="#0D47A1" dark v-on="on"><v-icon class="mr-sm-3">mdi-account-edit-outline</v-icon><span class="hidden-xs-only">Edit Player</span></v-btn>
@@ -108,14 +103,14 @@
 
 						<v-tab-item class="pt-8">
 							<div class="suspects">
-								<div class="buttons" v-for="suspect in suspects" :key="suspect">
-									<p>{{ suspect.value }}</p>
+								<div class="buttons" v-for="(item, i) in suspects" :key="i">
+									<p>{{ item.value }}</p>
 									<div class="mb-3 mr-2 button-container">
-										<v-btn v-model="suspect.status" 
+										<v-btn v-model="item.status" 
 										class="button-icon"
-										:class="suspect.status"
-										:color="suspects[suspect.id].bg"
-										@click="suspectButtonPress(suspect.id)"><v-icon>{{ suspect.icon }}</v-icon>
+										:class="item.status"
+										:color="suspects[item.id].bg"
+										@click="suspectButtonPress(item.id)"><v-icon>{{ item.icon }}</v-icon>
 										</v-btn>
 									</div>
 								</div>
@@ -124,14 +119,14 @@
 
 						<v-tab-item class="pt-8">
 							<div class="weapons">
-								<div class="buttons" v-for="weapon in weapons" :key="weapon">
-									<p>{{ weapon.value }}</p>
+								<div class="buttons" v-for="(item, i) in weapons" :key="i">
+									<p>{{ item.value }}</p>
 									<div class="mb-3 mr-2 button-container">
-										<v-btn v-model="weapon.status" 
+										<v-btn v-model="item.status" 
 										class="button-icon"
-										:class="weapon.status"
-										:color="weapons[weapon.id].bg"
-										@click="weaponButtonPress(weapon.id)"><v-icon>{{ weapon.icon }}</v-icon>
+										:class="item.status"
+										:color="weapons[item.id].bg"
+										@click="weaponButtonPress(item.id)"><v-icon>{{ item.icon }}</v-icon>
 										</v-btn>
 									</div>
 								</div>
@@ -140,20 +135,28 @@
 
 						<v-tab-item class="pt-8">
 							<div class="rooms">
-								<div class="buttons" v-for="room in rooms" :key="room">
-									<p>{{ room.value }}</p>
+								<div class="buttons" v-for="(item, i) in rooms" :key="i">
+									<p>{{ item.value }}</p>
 									<div class="mb-3 mr-2 button-container">
-										<v-btn v-model="room.status" 
+										<v-btn v-model="item.status" 
 										class="button-icon"
-										:class="room.status"
-										:color="rooms[room.id].bg"
-										@click="roomButtonPress(room.id)"><v-icon>{{ room.icon }}</v-icon>
+										:class="item.status"
+										:color="rooms[item.id].bg"
+										@click="roomButtonPress(item.id)"><v-icon>{{ item.icon }}</v-icon>
 										</v-btn>
 									</div>
 								</div>
 							</div>
 						</v-tab-item>
 					</v-tabs>
+				</v-row>
+				<v-row class="d-flex justify-center align-center">
+					<v-container>
+						<p class="text-center grey--text body-2 font-weight-light">NOTE: Any new responses will override old ones.</p>
+						<v-btn depressed block x-large class="ma-0 mb-n3" @click="updateFirestore">
+						Submit Responses
+						</v-btn>
+					</v-container>
 				</v-row>
 			</v-card>
 
@@ -190,7 +193,7 @@
 						</div>
 						<v-data-table
 						:headers="headers"
-						:items="notes"
+						:items="notez"
 						>
 							<template #item.action="props">
 								<v-btn
@@ -221,8 +224,8 @@
 						<div class="selected-section">
 							<h3 class="pb-4">Suspects(s) selected:</h3>
 							<div 
-							v-for="item in suspects"
-							:key="item.status">
+							v-for="(item, i) in suspects"
+							:key="i">
 								<div v-if="item.status === 'yes'">
 									<div class="elevation-4 mb-4" color="white">
 										<v-img :src="item.image" :alt="'Image of ' + item.value" class="selected-image" />
@@ -234,8 +237,8 @@
 						<div class="selected-section">
 							<h3 class="pb-4">Weapon(s) selected:</h3>
 							<div 
-							v-for="item in weapons"
-							:key="item.status">
+							v-for="(item, i) in weapons"
+							:key="i">
 								<div v-if="item.status === 'yes'">
 									<div class="elevation-4 mb-4" color="white">
 										<v-img :src="item.image" :alt="'Image of ' + item.value" class="selected-image" />
@@ -247,8 +250,8 @@
 						<div class="selected-section">
 							<h3 class="pb-4">Room(s) selected:</h3>
 							<div 
-							v-for="item in rooms"
-							:key="item.status">
+							v-for="(item, i) in rooms"
+							:key="i">
 								<div v-if="item.status === 'yes'">
 									<div class="elevation-4 mb-4" color="white">
 										<v-img :src="item.image" :alt="'Image of ' + item.value" class="selected-image" />
@@ -261,234 +264,277 @@
 				</div>
 			</div>
 		</v-row>
+		<v-row>
+			<error :error="error" v-if="error" class="mb-6"></error>
+		</v-row>
 	</v-container>
 </template>
 
 <script>
+import firestore from '../../firebase';
+import Rules from '../../components/Rules';
+import Error from '../../components/Error';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+
 export default {
-	data: () => ({
-		dialog: false,
-		noteDialog: false,
-		headers: [
-			{ text: 'Note', sortable: false, value: 'note' },
-			{ text: 'Actions', align: 'right', sortable: false, value: 'action' },
-		],
-		notes: [],
-		editedIndex: -1,
-		editedItem: {
-			note: '',
-		},
-		defaultItem: {
-			note: '',
-		},
-		name: 'Player',
-		counter: 0,
-		charSelect: 0,
-		characters: [
-			{
-				name: 'Red',
-				image: require('../../assets/images/clue/red-player.jpg'),
+	components: {
+		Error,
+		Rules,
+	},
+	data() {
+		return {
+			userId: this.$store.state.uid,
+			gameTitle: 'Clue',
+			created: '',
+			gameId: this.$route.params.gameId || null,
+			gameName: this.$store.state.game.gameName || '',
+			gameData: {
+				suspects: [],
+				weapons: [],
+				rooms: [],
+				playerName: '',
+				colorID: 0,
+				notez: [],
 			},
-			{
-				name: 'Yellow',
-				image: require('../../assets/images/clue/yellow-player.jpg'),
+
+			playerDialog: false,
+			noteDialog: false,
+			headers: [
+				{ text: 'Note', sortable: false, value: 'note' },
+				{ text: 'Actions', align: 'right', sortable: false, value: 'action' },
+			],
+			notez: [],
+			editedIndex: -1,
+			editedItem: {
+				note: '',
 			},
-			{
-				name: 'Green',
-				image: require('../../assets/images/clue/green-player.jpg'),
+			defaultItem: {
+				note: '',
 			},
-			{
-				name: 'Blue',
-				image: require('../../assets/images/clue/blue-player.jpg'),
-			},
-			{
-				name: 'Purple',
-				image: require('../../assets/images/clue/purple-player.jpg'),
-			},
-			{
-				name: 'White',
-				image: require('../../assets/images/clue/white-player.jpg'),
-			},
-		],
-		blank: require('../../assets/images/clue/blank.jpg'),
-		weapons: [
-			{
-				image: require('../../assets/images/clue/knife.jpg'),
-				value: 'Knife',
-				id: 0,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/candlestick.jpg'),
-				value: 'Candlestick',
-				id: 1,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/revolver.jpg'),
-				value: 'Revolver',
-				id: 2,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/rope.jpg'),
-				value: 'Rope',
-				id: 3,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/lead-pipe.jpg'),
-				value: 'Lead Pipe',
-				id: 4,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/wrench.jpg'),
-				value: 'Wrench',
-				id: 5,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-		],
-		rooms: [
-			{
-				image: require('../../assets/images/clue/hall.jpg'),
-				value: 'Hall',
-				id: 0,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/lounge.jpg'),
-				value: 'Lounge',
-				id: 1,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/dining-room.jpg'),
-				value: 'Dining Room',
-				id: 2,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/kitchen.jpg'),
-				value: 'Kitchen',
-				id: 3,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/ballroom.jpg'),
-				value: 'Ball Room',
-				id: 4,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/conservatory.jpg'),
-				value: 'Conservatory',
-				id: 5,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/billiard-room.jpg'),
-				value: 'Billiards Room',
-				id: 6,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/library.jpg'),
-				value: 'Library',
-				id: 7,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/study.jpg'),
-				value: 'Study',
-				id: 8,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-		],
-		suspects: [
-			{
-				image: require('../../assets/images/clue/colonel-mustard.jpg'),
-				value: 'Colonel Mustard',
-				id: 0,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/miss-scarlet.jpg'),
-				value: 'Miss Scarlet',
-				id: 1,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/mr-green.jpg'),
-				value: 'Mr. Green',
-				id: 2,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/mrs-peacock.jpg'),
-				value: 'Mrs. Peacock',
-				id: 3,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/mrs-white.jpg'),
-				value: 'Mrs. White',
-				id: 4,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-			{
-				image: require('../../assets/images/clue/professor-plum.jpg'),
-				value: 'Professor Plum',
-				id: 5,
-				icon: 'mdi-help',
-				bg: '#eee',
-				status: 'maybe',
-			},
-		],
-	}),
+			name: 'Player',
+			counter: 0,
+			charSelect: 0,
+			characters: [
+				{
+					name: 'Red',
+					image: require('../../assets/images/clue/red-player.jpg'),
+				},
+				{
+					name: 'Yellow',
+					image: require('../../assets/images/clue/yellow-player.jpg'),
+				},
+				{
+					name: 'Green',
+					image: require('../../assets/images/clue/green-player.jpg'),
+				},
+				{
+					name: 'Blue',
+					image: require('../../assets/images/clue/blue-player.jpg'),
+				},
+				{
+					name: 'Purple',
+					image: require('../../assets/images/clue/purple-player.jpg'),
+				},
+				{
+					name: 'White',
+					image: require('../../assets/images/clue/white-player.jpg'),
+				},
+			],
+			weapons: [
+				{
+					image: require('../../assets/images/clue/knife.jpg'),
+					value: 'Knife',
+					id: 0,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/candlestick.jpg'),
+					value: 'Candlestick',
+					id: 1,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/revolver.jpg'),
+					value: 'Revolver',
+					id: 2,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/rope.jpg'),
+					value: 'Rope',
+					id: 3,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/lead-pipe.jpg'),
+					value: 'Lead Pipe',
+					id: 4,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/wrench.jpg'),
+					value: 'Wrench',
+					id: 5,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+			],
+			rooms: [
+				{
+					image: require('../../assets/images/clue/hall.jpg'),
+					value: 'Hall',
+					id: 0,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/lounge.jpg'),
+					value: 'Lounge',
+					id: 1,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/dining-room.jpg'),
+					value: 'Dining Room',
+					id: 2,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/kitchen.jpg'),
+					value: 'Kitchen',
+					id: 3,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/ballroom.jpg'),
+					value: 'Ball Room',
+					id: 4,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/conservatory.jpg'),
+					value: 'Conservatory',
+					id: 5,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/billiard-room.jpg'),
+					value: 'Billiards Room',
+					id: 6,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/library.jpg'),
+					value: 'Library',
+					id: 7,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/study.jpg'),
+					value: 'Study',
+					id: 8,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+			],
+			suspects: [
+				{
+					image: require('../../assets/images/clue/colonel-mustard.jpg'),
+					value: 'Colonel Mustard',
+					id: 0,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/miss-scarlet.jpg'),
+					value: 'Miss Scarlet',
+					id: 1,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/mr-green.jpg'),
+					value: 'Mr. Green',
+					id: 2,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/mrs-peacock.jpg'),
+					value: 'Mrs. Peacock',
+					id: 3,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/mrs-white.jpg'),
+					value: 'Mrs. White',
+					id: 4,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+				{
+					image: require('../../assets/images/clue/professor-plum.jpg'),
+					value: 'Professor Plum',
+					id: 5,
+					icon: 'mdi-help',
+					bg: '#eee',
+					status: 'maybe',
+				},
+			],
+			tempSuspects: [],
+			tempWeapons: [],
+			tempRooms: [],
+		}
+	},
 	computed: {
 		formTitle () {
 			return this.editedIndex === -1 ? 'New Note' : 'Edit Note'
+		},
+		clueCollectionRef() {
+			if (this.$store.state.uid) {
+				return firestore.collection('users').doc(this.$store.state.uid).collection('clue').doc(this.gameId) || null;
+			}
+			return null;
+		},
+		loggedIn() {
+			return !!this.$store.state.uid;
+		},
+		error() {
+			return this.$store.state.error;
 		},
 	},
 	watch: {
@@ -496,21 +542,84 @@ export default {
 			val || this.close();
 		},
 	},
-	created () {
-		this.initialize();
-	},
 	methods: {
-		initialize () {
-			this.notes = []
+		async getGame() {
+			this.clueCollectionRef.onSnapshot((doc) => {
+				this.created = doc.data().created;
+				this.gameName = doc.data().gameName;
+				this.gameData = doc.data().gameData;
+				this.name = doc.data().gameData.playerName;
+				this.charSelect = doc.data().gameData.colorID;
+				this.notez = doc.data().gameData.notes;				
+				
+				this.getSuspects();
+			})
+		},
+		getSuspects() {
+			for(let i = 0; i < this.gameData.suspects.length; i++) {
+				let index = this.gameData.suspects[i];
+				this.suspects[index].status = 'yes';
+				this.suspects[index].icon = 'mdi-check-bold';
+				this.suspects[index].bg = '#9eb579';
+			}
+			this.getWeapons();
+		},
+		getWeapons() {
+			for(let i = 0; i < this.gameData.weapons.length; i++) {
+				let index = this.gameData.weapons[i];
+				this.weapons[index].status = 'yes';
+				this.weapons[index].icon = 'mdi-check-bold';
+				this.weapons[index].bg = '#9eb579';
+			}
+			this.getRooms();
+		},
+		getRooms() {
+			for(let i = 0; i < this.gameData.rooms.length; i++) {
+				let index = this.gameData.rooms[i];
+				this.rooms[index].status = 'yes';
+				this.rooms[index].icon = 'mdi-check-bold';
+				this.rooms[index].bg = '#9eb579';
+			}
+		},
+		updateFirestore() {
+			if(this.tempSuspects.length === 0) {
+				this.tempSuspects = this.gameData.suspects;
+			} 
+			if(this.tempWeapons.length === 0) {
+				this.tempWeapons = this.gameData.weapons;
+			} 
+			if(this.tempRooms.length === 0) {
+				this.tempRooms = this.gameData.rooms;
+			} 
+			else {
+				this.clueCollectionRef.update({
+					created: this.created,
+					gameName: this.gameName,
+					gameId: this.gameId,
+					updated: firebase.firestore.Timestamp.now(),
+					gameData: {
+						suspects: this.tempSuspects,
+						weapons: this.tempWeapons,
+						rooms: this.tempRooms,
+						playerName: this.name,
+						colorID: this.charSelect,
+						notes: this.notez,
+					},
+				})
+					.catch(function(error) {
+						console.error('Error writing to Firebase: ', error);
+					});
+			}
+			
 		},
 		editItem (item) {
-			this.editedIndex = this.notes.indexOf(item);
+			this.editedIndex = this.notez.indexOf(item);
 			this.editedItem = Object.assign({}, item);
 			this.noteDialog = true;
 		},
 		deleteItem (item) {
-			const index = this.notes.indexOf(item);
-			confirm('Are you sure you want to delete this note?') && this.notes.splice(index, 1);
+			const index = this.notez.indexOf(item);
+			confirm('Are you sure you want to delete this note?') && this.notez.splice(index, 1);
 		},
 		close () {
 			this.noteDialog = false;
@@ -521,9 +630,9 @@ export default {
 		},
 		save () {
 			if (this.editedIndex > -1) {
-				Object.assign(this.notes[this.editedIndex], this.editedItem);
+				Object.assign(this.notez[this.editedIndex], this.editedItem);
 			} else {
-				this.notes.push(this.editedItem);
+				this.notez.push(this.editedItem);
 			}
 			this.close();
 		},
@@ -532,17 +641,26 @@ export default {
 		editPlayer(name, charSelect) {
 			this.name = name;
 			this.charSelect = charSelect;
-			this.dialog = false;
+			this.playerName = name;
+			this.gameData.colorID = charSelect;
+			this.playerDialog = false;
 		},
 		suspectButtonPress(id) {
 			if (this.suspects[id].status === 'maybe') {
 				this.suspects[id].status = 'yes';
 				this.suspects[id].icon = 'mdi-check-bold';
 				this.suspects[id].bg = '#9eb579';
+
+				this.tempSuspects.push(this.suspects[id].id);
+
 			} else if (this.suspects[id].status === 'yes') {
 				this.suspects[id].status = 'no';
 				this.suspects[id].icon = 'mdi-close-thick';
 				this.suspects[id].bg = '#bd7373';
+
+				const index = this.tempSuspects.indexOf(this.suspects[id].id);
+				this.tempSuspects.splice(index, 1);
+
 			} else if (this.suspects[id].status === 'no') {
 				this.suspects[id].status = 'maybe';
 				this.suspects[id].icon = 'mdi-help';
@@ -556,10 +674,17 @@ export default {
 				this.weapons[id].status = 'yes';
 				this.weapons[id].icon = 'mdi-check-bold';
 				this.weapons[id].bg = '#9eb579';
+
+				this.tempWeapons.push(this.weapons[id].id);
+
 			} else if (this.weapons[id].status === 'yes') {
 				this.weapons[id].status = 'no';
 				this.weapons[id].icon = 'mdi-close-thick';
 				this.weapons[id].bg = '#bd7373';
+
+				const index = this.tempWeapons.indexOf(this.weapons[id].id);
+				this.tempWeapons.splice(index, 1);
+
 			} else if (this.weapons[id].status === 'no') {
 				this.weapons[id].status = 'maybe';
 				this.weapons[id].icon = 'mdi-help';
@@ -573,10 +698,17 @@ export default {
 				this.rooms[id].status = 'yes';
 				this.rooms[id].icon = 'mdi-check-bold';
 				this.rooms[id].bg = '#9eb579';
+
+				this.tempRooms.push(this.rooms[id].id);
+
 			} else if (this.rooms[id].status === 'yes') {
 				this.rooms[id].status = 'no';
 				this.rooms[id].icon = 'mdi-close-thick';
 				this.rooms[id].bg = '#bd7373';
+
+				const index = this.tempRooms.indexOf(this.rooms[id].id);
+				this.tempRooms.splice(index, 1);
+
 			} else if (this.rooms[id].status === 'no') {
 				this.rooms[id].status = 'maybe';
 				this.rooms[id].icon = 'mdi-help';
@@ -585,6 +717,9 @@ export default {
 				this.rooms[id].status = 'maybe';
 			}
 		},
+	},
+	created () {
+		this.getGame();
 	},
 };
 </script>
@@ -601,6 +736,19 @@ export default {
     opacity: 0.08;
 }
 
+.title-area {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.top-buttons {
+	display: flex;
+	flex-direction: column;
+	justify-content: center !important;
+	align-items: center !important;
+}
 
 .clue-font {
 	font-family: 'Kanit', sans-serif;
@@ -735,6 +883,11 @@ div.clue-content {
 @media only screen and (min-width: 768px) {
 	.player-card {
 		width: 60%;
+	}
+
+	.title-area {
+		justify-content: flex-start;
+		flex-direction: row;
 	}
 }
 

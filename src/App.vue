@@ -166,10 +166,10 @@ export default {
 				to: '/yugioh',
 			},
 			{
-				text: 'Oh Hell!',
-				icon: 'mdi-emoticon-devil-outline',
-				color: 'red darken-4',
-				to: '/ohhell',
+				text: 'Clue',
+				icon: 'mdi-incognito',
+				color: '#0D47A1',
+				to: '/clue',
 			},
 			{
 				text: 'Nertz',
