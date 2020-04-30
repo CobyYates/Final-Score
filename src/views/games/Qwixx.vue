@@ -108,14 +108,14 @@
 		<v-dialog v-model="dialog" persistent max-width="290">
 			<v-card>
 				<v-card-title class="headline">Game Over</v-card-title>
-				<v-card-text>Congratulations! You have finished the game. Would you like to save your score?</v-card-text>
+				<v-card-text>Congratulations! You have finished the game. Would you like to play again?</v-card-text>
 				<p
 					class="display-1 text-center mx-auto d-flex justify-center align-center"
 				>Your Score: {{this.totalScore}}</p>
 				<v-card-actions>
 					<v-spacer></v-spacer>
 					<v-btn color="green darken-1" text @click="dialog = false">No</v-btn>
-					<v-btn color="green darken-1" text @click="dialog = false">Yes</v-btn>
+					<v-btn color="green darken-1" text @click="dialog = false, reloadPage()">Yes</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -124,38 +124,33 @@
 
 <script>
 import Rules from '../../components/Rules';
-import firestore from '../../firebase';
-// import firebase from 'firebase/app';
-import 'firebase/firestore';
+
 
 export default {
 	components: {
-		
 		Rules,
 	},
 	data() {
 		return {
-			gameID: this.$route.params.gameID || null,
-			userID: this.$store.state.uid,
-			gameName: this.$store.state.game.gameName || ' ',
+			
 			gameTitle: 'qwixx',
 
 			dialog: false,
 			name: null,
 
-			gameData:{
-				redScore: 0,
-				redRow: 0,
-				blueScore: 0,
-				blueRow:0,
-				yellowScore: 0,
-				yellowRow:0,
-				greenScore: 0,
-				greenRow:0,
-				lockedRow: 0,
-				totalScore: 0,
-				penaltyScore:0,
-			},
+		
+			redScore: 0,
+			redRow: 0,
+			blueScore: 0,
+			blueRow:0,
+			yellowScore: 0,
+			yellowRow:0,
+			greenScore: 0,
+			greenRow:0,
+			lockedRow: 0,
+			totalScore: 0,
+			penaltyScore:0,
+			
 
 		
 			points: [{ e: false, v: 1 }],
@@ -221,18 +216,7 @@ export default {
 		};
 	},
 	computed:{
-		qwixxCollectionRef(){
-			if(this.$store.state.uid){
-				return firestore.collection('users').doc(this.$store.state.uid).collection('qwixx').doc(this.gameID) || null;
-			}
-			return null;
-		},
-		loggedIn(){
-			return !!this.$store.state.uid;
-		},
-		error(){
-			return this.$store.state.error;
-		},
+		
 		checkRed(){
 			console.log('this is from computed ' + this.redBtns[10].name);
 			
@@ -267,6 +251,10 @@ export default {
 	
 	},
 	methods: {
+		reloadPage(){
+			window.location.reload()
+		},
+	
 		lockRow(row){
 			if(this.lockedRow == 2){
 				this.dialog = true;
