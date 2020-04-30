@@ -8,6 +8,7 @@ import YuGiOhGames from './views/gamesList/YuGiOhGames';
 import Clue from './views/games/Clue';
 import YuGiOh from './views/games/YuGiOh';
 import Qwixx from './views/games/Qwixx';
+import QwixxGames from './views/gamesList/QwixxGames';
 
 export const routes = [
 	{ path: '/', component: Home },
@@ -19,5 +20,6 @@ export const routes = [
 	{ path: '/yugioh', component: YuGiOhGames },
 	{ path: '/yugioh/:gameId', component: YuGiOh },
 	{ path: '/clue', component: Clue },
-	{ path: '/qwixx', component: Qwixx },
+	{ path: '/qwixx', component: QwixxGames },
+	{ path: '/qwixx/:gameId', component: Qwixx },
 ];

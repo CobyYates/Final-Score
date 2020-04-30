@@ -2,39 +2,35 @@
 	<v-container>
 		<v-row class="mx-4 my-4">
 			<h2 class="display-3 font-weight-black underlined">Qwixx</h2>
-			<v-col cols="4"><Rules :game="this.gameTitle" /></v-col>
-			<v-col cols="4"><v-btn
+			<v-col cols="4">
+				<Rules :game="this.gameTitle" />
+			</v-col>
+			<v-col cols="4">
+				<v-btn
 					class="mr-6"
 					large
 					tile
 					href="https://www.ultraboardgames.com/qwixx/game-rules.php"
 					target="_blank"
 					title="Open Rules in a new tab"
-					>
+				>
 					<v-icon class="mr-3" dark>mdi-book-open-variant</v-icon>Rules
-					</v-btn>
+				</v-btn>
 			</v-col>
-			
-			
 		</v-row>
 
-		
 		<!-----TO DO--------->
-		
+
 		<!------SAVE IT TO FIREBASE....---->
 
-		
 		<!---beginning of the buttons---->
 		<v-row class="mb-6 mx-4">
 			<div class="redBtns mr-3 mb-2" id="redButtons" v-for="(redBtn, i) in redBtns" :key="i">
-				<v-btn class="red mark" @click="redRow++, redBtn.marked = !redBtn.marked"
-				dark >
+				<v-btn class="red mark" @click="redRow++, redBtn.marked = !redBtn.marked" dark>
 					<i v-bind:class="[{ 'white' : redBtn.marked }, 'material-icons']">{{redBtn.name}}</i>
 				</v-btn>
-				
 			</div>
 			<v-btn :disabled="checkRed" v-on:click="lockedRow++, lockRow(redBtns)">LOCK</v-btn>
-			
 		</v-row>
 		<!--yellow row-->
 		<v-row class="mb-6 mx-4">
@@ -68,9 +64,9 @@
 		</v-row>
 		<!-- penalties -->
 		<v-row class="mx-4 mb-3">
-			<v-col >
+			<v-col>
 				<p>Penalties</p>
-				
+
 				<v-btn
 					class="mx-2"
 					color="black"
@@ -102,50 +98,65 @@
 			</v-col>
 			<v-col lg="2">
 				<h4>TOTAL SCORE</h4>
-				<p class="purple--text title" id="finalFinal">{{ totalScore = blueScore + redScore + greenScore + yellowScore + penaltyScore}}</p>
+				<p
+					class="purple--text title"
+					id="finalFinal"
+				>{{ totalScore = blueScore + redScore + greenScore + yellowScore + penaltyScore}}</p>
 			</v-col>
 		</v-row>
 		<!--pull this up when 2 rows are locked-->
 		<v-dialog v-model="dialog" persistent max-width="290">
-              <v-card>
-                <v-card-title class="headline">Game Over</v-card-title>
-                <v-card-text>Congratulations! You have finished the game. Would you like to save your score?</v-card-text>
-                <p
-                  class="display-1 text-center mx-auto d-flex justify-center align-center"
-                >Your Score: {{this.totalScore}}</p>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="green darken-1" text @click="dialog = false">No</v-btn>
-                  <v-btn color="green darken-1" text @click="dialog = false">Yes</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-
+			<v-card>
+				<v-card-title class="headline">Game Over</v-card-title>
+				<v-card-text>Congratulations! You have finished the game. Would you like to save your score?</v-card-text>
+				<p
+					class="display-1 text-center mx-auto d-flex justify-center align-center"
+				>Your Score: {{this.totalScore}}</p>
+				<v-card-actions>
+					<v-spacer></v-spacer>
+					<v-btn color="green darken-1" text @click="dialog = false">No</v-btn>
+					<v-btn color="green darken-1" text @click="dialog = false">Yes</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 	</v-container>
 </template>
 
 <script>
 import Rules from '../../components/Rules';
+import firestore from '../../firebase';
+// import firebase from 'firebase/app';
+import 'firebase/firestore';
+
 export default {
 	components: {
+		
 		Rules,
 	},
 	data() {
 		return {
+			gameID: this.$route.params.gameID || null,
+			userID: this.$store.state.uid,
+			gameName: this.$store.state.game.gameName || ' ',
 			gameTitle: 'qwixx',
+
 			dialog: false,
 			name: null,
-			redScore: 0,
-			redRow: 0,
-			blueScore: 0,
-			blueRow:0,
-			yellowScore: 0,
-			yellowRow:0,
-			greenScore: 0,
-			greenRow:0,
-			lockedRow: 0,
-			totalScore: 0,
-			penaltyScore:0,
+
+			gameData:{
+				redScore: 0,
+				redRow: 0,
+				blueScore: 0,
+				blueRow:0,
+				yellowScore: 0,
+				yellowRow:0,
+				greenScore: 0,
+				greenRow:0,
+				lockedRow: 0,
+				totalScore: 0,
+				penaltyScore:0,
+			},
+
 		
 			points: [{ e: false, v: 1 }],
 			penalties: [
@@ -180,7 +191,6 @@ export default {
 				{ id: 10, marked: false, name: '10' },
 				{ id: 11, marked: false, name: '11' },
 				{ id: 12, marked: false, name: '12' },
-
 			],
 			greenBtns: [
 				{ id: 2, marked: false, name: '12' },
@@ -194,7 +204,6 @@ export default {
 				{ id: 10, marked: false, name: '4' },
 				{ id: 11, marked: false, name: '3' },
 				{ id: 12, marked: false, name: '2' },
-
 			],
 			blueBtns: [
 				{ id: 2, marked: false, name: '12' },
@@ -211,8 +220,19 @@ export default {
 			],
 		};
 	},
-
 	computed:{
+		qwixxCollectionRef(){
+			if(this.$store.state.uid){
+				return firestore.collection('users').doc(this.$store.state.uid).collection('qwixx').doc(this.gameID) || null;
+			}
+			return null;
+		},
+		loggedIn(){
+			return !!this.$store.state.uid;
+		},
+		error(){
+			return this.$store.state.error;
+		},
 		checkRed(){
 			console.log('this is from computed ' + this.redBtns[10].name);
 			
@@ -246,7 +266,6 @@ export default {
 		},
 	
 	},
-
 	methods: {
 		lockRow(row){
 			if(this.lockedRow == 2){
@@ -302,7 +321,6 @@ export default {
 				return 78;
 			}
 		},
-
 		//method for subtracting penalties
 		subtract(value, penScore, notAdd) {
 			this.value = value;
