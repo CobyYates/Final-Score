@@ -550,9 +550,7 @@ export default {
 				this.gameData = doc.data().gameData;
 				this.name = doc.data().gameData.playerName;
 				this.charSelect = doc.data().gameData.colorID;
-				this.notez = doc.data().gameData.notes;
-				console.log('GOT DATA: ' + this.gameData);
-				
+				this.notez = doc.data().gameData.notes;				
 				
 				this.getSuspects();
 			})
@@ -560,7 +558,6 @@ export default {
 		getSuspects() {
 			for(let i = 0; i < this.gameData.suspects.length; i++) {
 				let index = this.gameData.suspects[i];
-				console.log('SUSPECT INDEX: ' + index);
 				this.suspects[index].status = 'yes';
 				this.suspects[index].icon = 'mdi-check-bold';
 				this.suspects[index].bg = '#9eb579';
@@ -570,7 +567,6 @@ export default {
 		getWeapons() {
 			for(let i = 0; i < this.gameData.weapons.length; i++) {
 				let index = this.gameData.weapons[i];
-				console.log('WEAPONS INDEX: ' + index);
 				this.weapons[index].status = 'yes';
 				this.weapons[index].icon = 'mdi-check-bold';
 				this.weapons[index].bg = '#9eb579';
@@ -580,7 +576,6 @@ export default {
 		getRooms() {
 			for(let i = 0; i < this.gameData.rooms.length; i++) {
 				let index = this.gameData.rooms[i];
-				console.log('ROOM INDEX: ' + index);
 				this.rooms[index].status = 'yes';
 				this.rooms[index].icon = 'mdi-check-bold';
 				this.rooms[index].bg = '#9eb579';
@@ -589,15 +584,12 @@ export default {
 		updateFirestore() {
 			if(this.tempSuspects.length === 0) {
 				this.tempSuspects = this.gameData.suspects;
-				console.log('Updating Temp Suspects with saved Data: ' + this.tempSuspects);
 			} 
 			if(this.tempWeapons.length === 0) {
 				this.tempWeapons = this.gameData.weapons;
-				console.log('Updating Temp Weapons with saved Data: ' + this.tempWeapons);
 			} 
 			if(this.tempRooms.length === 0) {
 				this.tempRooms = this.gameData.rooms;
-				console.log('Updating Temp Rooms with saved Data: ' + this.tempRooms);
 			} 
 			else {
 				this.clueCollectionRef.update({
@@ -614,9 +606,6 @@ export default {
 						notes: this.notez,
 					},
 				})
-					.then(function() {
-						console.log('Firebase successfully Updated Clue Game');
-					})
 					.catch(function(error) {
 						console.error('Error writing to Firebase: ', error);
 					});
@@ -663,7 +652,6 @@ export default {
 				this.suspects[id].bg = '#9eb579';
 
 				this.tempSuspects.push(this.suspects[id].id);
-				console.log('Added ' + this.suspects[id].value + ' to TEMP gameData array. == ' + this.tempSuspects);
 
 			} else if (this.suspects[id].status === 'yes') {
 				this.suspects[id].status = 'no';
@@ -672,7 +660,6 @@ export default {
 
 				const index = this.tempSuspects.indexOf(this.suspects[id].id);
 				this.tempSuspects.splice(index, 1);
-				console.log('Removed ' + this.suspects[id].value + ' from TEMP gameData array. == ' + this.tempSuspects);
 
 			} else if (this.suspects[id].status === 'no') {
 				this.suspects[id].status = 'maybe';
@@ -689,7 +676,6 @@ export default {
 				this.weapons[id].bg = '#9eb579';
 
 				this.tempWeapons.push(this.weapons[id].id);
-				console.log('Added ' + this.weapons[id].value + ' to TEMP gameData array. == ' + this.tempWeapons);
 
 			} else if (this.weapons[id].status === 'yes') {
 				this.weapons[id].status = 'no';
@@ -698,7 +684,6 @@ export default {
 
 				const index = this.tempWeapons.indexOf(this.weapons[id].id);
 				this.tempWeapons.splice(index, 1);
-				console.log('Removed ' + this.weapons[id].value + ' from TEMP gameData array. == ' + this.tempWeapons);
 
 			} else if (this.weapons[id].status === 'no') {
 				this.weapons[id].status = 'maybe';
@@ -715,7 +700,6 @@ export default {
 				this.rooms[id].bg = '#9eb579';
 
 				this.tempRooms.push(this.rooms[id].id);
-				console.log('Added ' + this.rooms[id].value + ' to TEMP gameData array. == ' + this.tempRooms);
 
 			} else if (this.rooms[id].status === 'yes') {
 				this.rooms[id].status = 'no';
@@ -724,7 +708,6 @@ export default {
 
 				const index = this.tempRooms.indexOf(this.rooms[id].id);
 				this.tempRooms.splice(index, 1);
-				console.log('Removed ' + this.rooms[id].value + ' from TEMP gameData array. == ' + this.tempRooms);
 
 			} else if (this.rooms[id].status === 'no') {
 				this.rooms[id].status = 'maybe';
