@@ -7,7 +7,7 @@
 		</v-row>
 		<v-row>
 			<v-col>
-				<h2>{{ gameName }}</h2>
+				<h2 class="text-center green--text" color="blue">{{ gameName }}</h2>
 				<v-container>
 					<v-row>
 						<v-col>
