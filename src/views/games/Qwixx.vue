@@ -218,31 +218,23 @@ export default {
 	computed:{
 		
 		checkRed(){
-			console.log('this is from computed ' + this.redBtns[10].name);
-			
 			if((this.redBtns[0].marked || this.redBtns[10].marked) && this.redScore >=15) {
 				return false;
 			}return true;
 		},
 		checkYellow(){
-			console.log('this is from computed ' + this.yellowBtns[10].name);
-			
 			if((this.yellowBtns[0].marked || this.yellowBtns[10].marked) && this.yellowScore >= 15) {
 				return false;
 			}return true;
 			
 		},
 		checkGreen(){
-			console.log('this is from computed ' + this.greenBtns[10].name);
-			
 			if((this.greenBtns[0].marked || this.greenBtns[10].marked) && this.greenScore >= 15) {
 				return false;
 			}return true;
 			
 		},
 		checkBlue(){
-			console.log('this is from computed ' + this.blueBtns[10].name);
-			
 			if((this.blueBtns[0].marked || this.blueBtns[10].marked) && this.blueScore >= 15) {
 				return false;
 			}return true;
